@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FastColoredTextBox</name>
+    </assembly>
+    <members>
+        <member name="T:FastColoredTextBoxNS.FastColoredTextBox.ToolTipNeededEventArgs">
+            <summary>
+            ToolTipNeeded event args
+            </summary>
+        </member>
+        <member name="E:FastColoredTextBoxNS.FastColoredTextBox.ToolTipNeeded">
+            <summary>
+            Occurs when mouse is moving over text and tooltip is needed
+            </summary>
+        </member>
+        <member name="P:FastColoredTextBoxNS.FastColoredTextBox.ToolTip">
+            <summary>
+            ToolTip component
+            </summary>
+        </member>
+        <member name="P:FastColoredTextBoxNS.FastColoredTextBox.ToolTipDelay">
+            <summary>
+            Delay (ms) of ToolTip
+            </summary>
+        </member>
+        <member name="F:FastColoredTextBoxNS.GoToForm.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:FastColoredTextBoxNS.GoToForm.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:FastColoredTextBoxNS.GoToForm.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:FastColoredTextBoxNS.Line.ClearStyle(FastColoredTextBoxNS.StyleIndex)">
+            <summary>
+            Clears style of chars, delete folding markers
+            </summary>
+        </member>
+        <member name="M:FastColoredTextBoxNS.Range.SetFoldingMarkers(System.String,System.Text.RegularExpressions.RegexOptions)">
+            <summary>
+            Sets folding markers
+            </summary>
+            <param name="startEndFoldingPattern">Pattern for start and end folding line</param>
+        </member>
+        <member name="T:FastColoredTextBoxNS.Render.DeclarationSnippet">
+            <summary>
+            This item appears when any part of snippet text is typed
+            </summary>
+        </member>
+        <member name="T:FastColoredTextBoxNS.Render.InsertEnterSnippet">
+            <summary>
+            Inerts line break after '}'
+            </summary>
+        </member>
+        <member name="T:FastColoredTextBoxNS.Render.InsertSpaceSnippet">
+            <summary>
+            Divides numbers) (words: "123AND456" -> "123) (456"
+            Or "i=2" -> "i = 2"
+            </summary>
+        </member>
+        <member name="T:FastColoredTextBoxNS.SnippetAutocompleteItem">
+            <summary>
+            Autocomplete item for code snippets
+            </summary>
+            <remarks>Snippet can contain special char ^ for caret position.</remarks>
+        </member>
+        <member name="M:FastColoredTextBoxNS.SnippetAutocompleteItem.Compare(System.String)">
+            <summary>
+            Compares fragment text with this item
+            </summary>
+        </member>
+    </members>
+</doc>
