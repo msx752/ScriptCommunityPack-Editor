@@ -67,7 +67,6 @@ namespace FastColoredTextBoxNS.Render
         public static void LOAD()
         {
             #region keywordsInformation
-
             keywordsInfo.Add(new Keyword("dorigin", "x, , y", "Sets the origin coordinates for dynamically positioned elements.", "[ Dialog (Properties) ]"));
             keywordsInfo.Add(new Keyword("nomove", "", "Prevents the dialog from being moved around the screen.", "[ Dialog (Properties) ]"));
             keywordsInfo.Add(new Keyword("noclose", "", "Prevents the dialog from being closed when right-clicked.", "[ Dialog (Properties) ]"));
