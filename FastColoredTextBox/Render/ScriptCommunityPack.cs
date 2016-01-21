@@ -25,7 +25,7 @@ namespace FastColoredTextBoxNS.Render
         };
 
         public static AutoCompleteItem[] keywords = new AutoCompleteItem[0];
-        
+
         public static MethodAuto[] methods = new MethodAuto[]
         {
             new MethodAuto("act") { ImageIndex=2 },
@@ -77,6 +77,7 @@ namespace FastColoredTextBoxNS.Render
         };
 
         public static List<PopupToolTip> KeywordsInformation = new List<PopupToolTip>();
+
         public static SnippetAuto[] snippets = new SnippetAuto[]
         {
             new SnippetAuto("if (<^>)\n\nendif") { ImageIndex=1 },
@@ -110,8 +111,8 @@ namespace FastColoredTextBoxNS.Render
             new SnippetAuto("strlen(^)") { ImageIndex=1 },
             new SnippetAuto("strmatch(^)") { ImageIndex=1 },
             new SnippetAuto("strregex(^)") { ImageIndex=1 },
-
         };
+
         public static void LOAD()
         {
             #region keywordsInformation
@@ -815,14 +816,22 @@ namespace FastColoredTextBoxNS.Render
 
             #endregion TRIGGERS information
 
+
+            //PopupToolTip[] test = KeywordsInformation.FindAll(p => p.Name.IndexOf("@") == -1).ToArray();
+            //keywords = new AutoCompleteItem[test.Length];
+            //for (int i = 0; i < test.Length; i++)
+            //{
+            //    keywords[i] = new AutoCompleteItem();
+            //    keywords[i].ImageIndex = 1;
+            //    keywords[i].loadPopupToolTip(test[i]);
+            //}
+
+
             #region KeywordsAutoComplete
-            keywords = new AutoCompleteItem[KeywordsInformation.Count];
-            for (int i = 0; i < KeywordsInformation.Count; i++)
-            {
-                keywords[i] = new AutoCompleteItem(KeywordsInformation[i]);
-                keywords[i].ImageIndex = 1;
-            }
-            #endregion
+            for (int i = 0; i < methods.Length; i++)
+                methods[i].loadPopupToolTip(KeywordsInformation.Find(p => p.Name == methods[i].Text));
+
+            #endregion KeywordsAutoComplete
         }
     }
 }

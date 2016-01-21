@@ -14,7 +14,7 @@ namespace FastColoredTextBoxNS
 
         public AutoCompleteItem()
         {
-            this.ImageIndex = -1;
+            ImageIndex = -1;
         }
 
         public AutoCompleteItem(PopupToolTip _keyword)
@@ -23,10 +23,14 @@ namespace FastColoredTextBoxNS
             toolTipTitle = _keyword.Name;
             toolTipText = _keyword.ToString();
         }
-
+        public void loadPopupToolTip(PopupToolTip _loadit)
+        {
+            Text = _loadit.Name;
+            toolTipTitle = _loadit.Name;
+            toolTipText = _loadit.ToString();
+        }
         public AutoCompleteItem(string text)
         {
-            this.ImageIndex = -1;
             this.Text = text;
         }
 

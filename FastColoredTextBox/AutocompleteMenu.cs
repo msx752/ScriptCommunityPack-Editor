@@ -40,6 +40,7 @@
         public event EventHandler<SelectedEventArgs> Selected;
 
         public event EventHandler<SelectingEventArgs> Selecting;
+
         public bool AllowTabKey
         {
             get
@@ -121,6 +122,7 @@
             this.host.Size = this.listView.Size;
             base.Size = new Size(this.listView.Size.Width + 4, this.listView.Size.Height + 4);
         }
+
         internal void OnSelecting(SelectingEventArgs args)
         {
             if (this.Selecting != null)
@@ -128,6 +130,7 @@
                 this.Selecting(this, args);
             }
         }
+
 #pragma warning disable CS0114 // Member hides inherited member; missing override keyword
     }
 }

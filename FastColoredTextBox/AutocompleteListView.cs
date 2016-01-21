@@ -20,6 +20,7 @@ namespace FastColoredTextBoxNS
         private IEnumerable<AutoCompleteItem> sourceItems;
         private FastColoredTextBox tb;
         private Timer timer;
+
         internal AutocompleteListView(FastColoredTextBox tb)
         {
             EventHandler handler = null;
