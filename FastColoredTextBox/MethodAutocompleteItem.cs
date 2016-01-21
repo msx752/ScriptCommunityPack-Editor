@@ -14,7 +14,7 @@ namespace FastColoredTextBoxNS
             this.lowercaseText = base.Text.ToLower();
         }
 
-        public MethodAutocompleteItem(Keyword _keyword)
+        public MethodAutocompleteItem(PopupInfo _keyword)
             : base(_keyword)
         {
             this.lowercaseText = base.Text.ToLower();

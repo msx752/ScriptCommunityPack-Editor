@@ -532,7 +532,7 @@ namespace FastColoredTextBoxNS
                 Font destinationFONT = new Font(e.Font.FontFamily, 7.5f, FontStyle.Regular);
                 if (texti.Length == 4)
                 {
-                    g.DrawString(texti[3] + " ]",
+                    g.DrawString(texti[3],
                         destinationFONT, Brushes.Blue, new PointF(rct.X + 4, rct.Y + 30)); // bot layer
                 }
                 else if (texti.Length > 4)
@@ -542,12 +542,11 @@ namespace FastColoredTextBoxNS
                     {
                         if (i == texti.Length - 1)
                         {
-                            texti[i] = texti[i] + " ]";
+                            texti[i] = texti[i];
                         }
                         g.DrawString(texti[i],
                             destinationFONT, Brushes.Blue, new PointF(rct.X + 4, rct.Y + 30 + ((i - 3) * 15))); // bot layer
                     }
-                    //MessageBox.Show("TOOLTİP TANIMLA");
                 }
                 g.Dispose();
             }

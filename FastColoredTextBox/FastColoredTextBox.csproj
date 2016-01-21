@@ -111,7 +111,6 @@
     <Compile Include="RangeInfo.cs" />
     <Compile Include="Render\Enum\PropertyTypes.cs" />
     <Compile Include="Render\Enum\SyntaxType.cs" />
-    <Compile Include="Render\Keyword.cs" />
     <Compile Include="Render\DeclarationSnippet.cs" />
     <Compile Include="Render\Enum\ExplorerItemType.cs" />
     <Compile Include="Render\ExplorerItem.cs" />

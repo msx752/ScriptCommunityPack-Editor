@@ -11,37 +11,25 @@ namespace FastColoredTextBoxNS.Render
     public class PopupInfo : IDisposable
     {
         public string Name { get; set; } = "";
-        public List<String> Parameters { get; set; } = new List<string>();
+        public String Parameters { get; set; } ="";
         public string Comment { get; set; } = "none";
         public List<PropertyTypes> Properties { get; set; } = new List<PropertyTypes>();
 
         public override string ToString()
         {
-            string paramList = "";
-            for (int i = 0; i < Parameters.Count; i++)
-            {
-                paramList += "," + Parameters[i];
-            }
-            //this.Destination = this.Destination.Replace(",", "\r\n");
+
             string propList = "";
             for (int i = 0; i < Properties.Count; i++)
-            {
-                propList += Properties[i].ToString() + ",";
-            }
-            //string[] lst = this.Destination.Split(new string[] { "\r\n" }, StringSplitOptions.None);
-            //lst[0] = lst[0].Replace("[ [", "[");
-            //lst[lst.Length - 1] = lst[lst.Length - 1].Replace("] ]", "]");
-            //string dest = "";
-            //string valu = "";
+                propList += " , " + Properties[i].ToString();
 
-            //foreach (string item in lst)
-            //{
-            //    dest = dest + item + "\r\n";
-            //}
+            string newName = Name;
+            if (newName.IndexOf("@") != -1)
+                newName += "\n";
 
-            string valu = Name + "|" + paramList + "|" + Comment + "|" + propList;
+            if (propList.Length > 0)
+                propList = propList.Substring(3);
 
-            //valu = valu.Substring(0, valu.Length - 4);
+            string valu = string.Format("{0}\r\n {{ {1} }}\r\n{2}\r\nProperties [ {3} ]", newName, Parameters.Replace("," ,", "), Comment, propList);
             return valu;
         }
 

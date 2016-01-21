@@ -17,10 +17,10 @@ namespace FastColoredTextBoxNS
             this.ImageIndex = -1;
         }
 
-        public AutocompleteItem(Keyword _keyword)
+        public AutocompleteItem(PopupInfo _keyword)
         {
-            Text = _keyword.Keywords;
-            toolTipTitle = _keyword.Keywords;
+            Text = _keyword.Name;
+            toolTipTitle = _keyword.Name;
             toolTipText = _keyword.ToString();
         }
 

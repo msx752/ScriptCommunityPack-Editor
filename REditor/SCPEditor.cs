@@ -183,37 +183,31 @@ namespace SphereScp
                     //
                     if (i < ScriptCommunityPack.methods.Count())
                     {
-                        int index = ScriptCommunityPack.keywordsInfo.FindIndex(x => x.Keywords.ToLower() == ScriptCommunityPack.methods[i].ToString().ToLower());
+                        int index = ScriptCommunityPack.ppiList.FindIndex(x => x.Name.ToLower() == ScriptCommunityPack.methods[i].ToLower());
                         if (index == -1)
                         {
-                            Keyword keyf = ScriptCommunityPack.keywordsInfo[0];
-                            keyf.Keywords = ScriptCommunityPack.methods[i].ToString();
-                            keyf.Parameters = "";
-                            keyf.Destination = "";
-                            keyf.Comment = "";
+                            PopupInfo keyf = ScriptCommunityPack.ppiList[0];
+                            keyf.Name = ScriptCommunityPack.methods[i].ToString();
                             items.Add(new MethodAutocompleteItem(keyf) { ImageIndex = 2 });
                         }
                         else
                         {
-                            items.Add(new MethodAutocompleteItem(ScriptCommunityPack.keywordsInfo[index]) { ImageIndex = 2 });
+                            items.Add(new MethodAutocompleteItem(ScriptCommunityPack.ppiList[index]) { ImageIndex = 2 });
                         }
                     }
                     //
                     if (i < ScriptCommunityPack._keywords.Count())
                     {
-                        int index = ScriptCommunityPack.keywordsInfo.FindIndex(x => x.Keywords.ToLower() == ScriptCommunityPack._keywords[i].ToString().ToLower());
+                        int index = ScriptCommunityPack.ppiList.FindIndex(x => x.Name.ToLower() == ScriptCommunityPack._keywords[i].ToLower());
                         if (index == -1)
                         {
-                            Keyword keyf = ScriptCommunityPack.keywordsInfo[0];
-                            keyf.Keywords = ScriptCommunityPack._keywords[i].ToString();
-                            keyf.Parameters = "";
-                            keyf.Destination = "";
-                            keyf.Comment = "";
+                            PopupInfo keyf = ScriptCommunityPack.ppiList[0];
+                            keyf.Name = ScriptCommunityPack._keywords[i];
                             items.Add(new AutocompleteItem(keyf) { ImageIndex = 1 });
                         }
                         else
                         {
-                            items.Add(new AutocompleteItem(ScriptCommunityPack.keywordsInfo[index]) { ImageIndex = 1 });
+                            items.Add(new AutocompleteItem(ScriptCommunityPack.ppiList[index]) { ImageIndex = 1 });
                         }
                     }
                 }
@@ -335,18 +329,7 @@ namespace SphereScp
             //if (btInvisibleChars.Checked)
             //    range.SetStyle(invisibleCharsStyle, @".$|.\r\n|\s");
         }
-
-        private void install()
-        {
-            try
-            {
-                this.myComputer.Registry.ClassesRoot.CreateSubKey(this.ExtensionName).SetValue("", this.ExtensionDescription, RegistryValueKind.String);
-                this.myComputer.Registry.ClassesRoot.CreateSubKey(this.ExtensionDescription + @"\shell\open\command").SetValue("", Application.ExecutablePath + " \"%l\" ", RegistryValueKind.String);
-            }
-            catch (Exception)
-            {
-            }
-        }
+        
 
         private void loadDialogToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -684,10 +667,10 @@ namespace SphereScp
             {
                 if (e.HoveredWord != null | e.HoveredWord != "")
                 {
-                    Keyword keyw = ScriptCommunityPack.keywordsInfo.Find(x => x.Keywords.ToLower() == e.HoveredWord.ToLower());
+                    PopupInfo keyw = ScriptCommunityPack.ppiList.Find(x => x.Name.ToLower() == e.HoveredWord.ToLower());
                     if (keyw != null)
                     {
-                        e.ToolTipTitle = keyw.Keywords;
+                        e.ToolTipTitle = keyw.Name;
 
                         e.ToolTipText = keyw.ToString();
                     }
@@ -779,22 +762,18 @@ namespace SphereScp
                 Font destinationFONT = new Font(e.Font.FontFamily, 7.5f, FontStyle.Regular);
                 if (texti.Length == 4)
                 {
-                    g.DrawString(texti[3] + " ]",
-                        destinationFONT, Brushes.Blue, new PointF(rct.X + 4, rct.Y + 30)); // bot layer
+                    g.DrawString(texti[3], destinationFONT, Brushes.Blue, new PointF(rct.X + 4, rct.Y + 30)); // bot layer
                 }
                 else if (texti.Length > 4)
                 {
-                    //texti[3]=texti[3] + " ]";
                     for (int i = 3; i < texti.Length; i++)
                     {
                         if (i == texti.Length - 1)
                         {
-                            texti[i] = texti[i] + " ]";
+                            texti[i] = texti[i];
                         }
-                        g.DrawString(texti[i],
-                            destinationFONT, Brushes.Blue, new PointF(rct.X + 4, rct.Y + 30 + ((i - 3) * 15))); // bot layer
+                        g.DrawString(texti[i], destinationFONT, Brushes.Blue, new PointF(rct.X + 4, rct.Y + 30 + ((i - 3) * 15))); // bot layer
                     }
-                    //MessageBox.Show("TOOLTİP TANIMLA");
                 }
                 g.Dispose();
             }
@@ -837,6 +816,7 @@ namespace SphereScp
             }
             e.ToolTipSize = sz;
         }
+
         private void tsFiles_TabStripItemClosing(TabStripItemClosingEventArgs e)
         {
             if ((e.Item.Controls[0] as FastColoredTextBox).IsChanged)
