@@ -109,6 +109,8 @@
     <Compile Include="PrintDialogSettings.cs" />
     <Compile Include="Range.cs" />
     <Compile Include="RangeInfo.cs" />
+    <Compile Include="Render\Enum\PropertyTypes.cs" />
+    <Compile Include="Render\Enum\SyntaxType.cs" />
     <Compile Include="Render\Keyword.cs" />
     <Compile Include="Render\DeclarationSnippet.cs" />
     <Compile Include="Render\Enum\ExplorerItemType.cs" />
@@ -117,6 +119,7 @@
     <Compile Include="Render\InsertEnterSnippet.cs" />
     <Compile Include="Render\InsertSpaceSnippet.cs" />
     <Compile Include="Render\InvisibleCharsRenderer.cs" />
+    <Compile Include="Render\PopupInfo.cs" />
     <Compile Include="Render\ScriptCommunityPack.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReplaceForm.cs">
