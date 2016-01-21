@@ -1,5 +1,4 @@
-﻿
-namespace FastColoredTextBoxNS.Render
+﻿namespace FastColoredTextBoxNS.Render
 {
     public enum PropertyTypes
     {

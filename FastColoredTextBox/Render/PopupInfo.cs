@@ -1,23 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FastColoredTextBoxNS.Render
 {
     public class PopupInfo : IDisposable
     {
-        public string Name { get; set; } = "";
-        public String Parameters { get; set; } ="";
         public string Comment { get; set; } = "none";
+
+        public string Name { get; set; } = "";
+
+        public String Parameters { get; set; } = "";
         public List<PropertyTypes> Properties { get; set; } = new List<PropertyTypes>();
 
         public override string ToString()
         {
-
             string propList = "";
             for (int i = 0; i < Properties.Count; i++)
                 propList += " , " + Properties[i].ToString();
@@ -29,12 +25,22 @@ namespace FastColoredTextBoxNS.Render
             if (propList.Length > 0)
                 propList = propList.Substring(3);
 
-            string valu = string.Format("{0}\r\n {{ {1} }}\r\n{2}\r\nProperties [ {3} ]", newName, Parameters.Replace("," ,", "), Comment, propList);
+            string valu = string.Format("{0}\r\n {{ {1} }}\r\n{2}\r\nProperties [ {3} ]", newName, Parameters.Replace(",", ", "), Comment, propList);
             return valu;
         }
 
         #region IDisposable Support
+
         private bool disposedValue = false; // To detect redundant calls
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            // TODO: uncomment the following line if the finalizer is overridden above.
+            // GC.SuppressFinalize(this);
+        }
 
         protected virtual void Dispose(bool disposing)
         {
@@ -57,16 +63,6 @@ namespace FastColoredTextBoxNS.Render
         //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
         //   Dispose(false);
         // }
-
-        // This code added to correctly implement the disposable pattern.
-        public void Dispose()
-        {
-            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-            Dispose(true);
-            // TODO: uncomment the following line if the finalizer is overridden above.
-            // GC.SuppressFinalize(this);
-        }
-        #endregion
-
+        #endregion IDisposable Support
     }
 }

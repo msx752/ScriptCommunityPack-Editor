@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 
 namespace FastColoredTextBoxNS.Render
 {
     public class ScriptCommunityPack
     {
-
-        public static List<string> _keywords = new List<string>
+        public static List<string> _keywords = new List<string>()
         {
         "uid", "src", "tag", "tag0", "ctag", "ctag0", "var", "var0", "local", "float", "ref", "def",
         "def0", "act", "targ", "serv", "new", "cont", "list", "obj", "topobj", "account", "region",
@@ -38,16 +35,14 @@ namespace FastColoredTextBoxNS.Render
         "On=@Gain\n","On=@PreStart\n","On=@Select\n","On=@Start\n","On=@Success\n","On=@UseQuick\n","On=@Effect\n"
         };
 
-        public static string[] declarationSnippets = new string[]
+        public static List<string> declarationSnippets = new List<string>()
         {
         "[AREADEF a_^]","[CHARDEF c_^]","[ROOMDEF a_^]","[SKILL ^]","[SKILLCLASS ^]",
         "[DIALOG d_^]","[EVENTS e_^]","[ITEMDEF i_^]","[MENU m_^]","[REGIONTYPE r_^]",
         "[SKILLMENU sm_^]","[SPAWN ^]","[SPELL ^]","[TYPEDEF t_^]","[FUNCTION f_^]","[EOF]^"
         };
 
-        public static List<PopupInfo> ppiList = new List<PopupInfo>();
-
-        public static List<string> methods = new List<string>
+        public static List<string> methods = new List<string>()
         {
         "act", "attr", "body", "dex", "findcont", "findid", "findlayer", "findtype",
         "id", "int", "ischar", "iscont", "isevent", "isgm", "isitem", "isneartype",
@@ -56,6 +51,9 @@ namespace FastColoredTextBoxNS.Render
         "modstr", "obody", "odex", "oint", "oskin", "ostr", "owner", "p", "region", "room",
         "sector", "stam", "str", "home","hits", "memoryfindtype"
          };
+
+
+        public static List<PopupInfo> ppiList = new List<PopupInfo>();
 
         public static List<string> snippets = new List<string>()
         {
@@ -67,10 +65,10 @@ namespace FastColoredTextBoxNS.Render
         "<qval <^>>", "<uval <^>>", "<fval <^>>", "<feval <^>>", "<fhval <^>>", "<hval <^>>", "strcmp(^)",
         "strcmpi(^)", "strindexof(^)", "strlen(^)", "strmatch(^)", "strregex(^)"
          };
-
         public static void LOAD()
         {
             #region keywordsInformation
+
             ppiList.Add(new PopupInfo() { Name = "dorigin", Parameters = "x,y", Comment = "Sets the origin coordinates for dynamically positioned elements.", Properties = new List<PropertyTypes>() { PropertyTypes.Dialog } });
             ppiList.Add(new PopupInfo() { Name = "nomove", Parameters = "", Comment = "Prevents the dialog from being moved around the screen.", Properties = new List<PropertyTypes>() { PropertyTypes.Dialog } });
             ppiList.Add(new PopupInfo() { Name = "noclose", Parameters = "", Comment = "Prevents the dialog from being closed when right-clicked.", Properties = new List<PropertyTypes>() { PropertyTypes.Dialog } });
@@ -608,6 +606,7 @@ namespace FastColoredTextBoxNS.Render
             #endregion keywordsInformation
 
             #region TRIGGERS information
+
             ppiList.Add(new PopupInfo() { Name = "On=@AfterClick", Parameters = "", Comment = " Fires when the object has been single-clicked, just before the overhead name is shown.", Properties = new List<PropertyTypes>() { PropertyTypes.Mobile, PropertyTypes.Item, PropertyTypes.Trigger } });
             ppiList.Add(new PopupInfo() { Name = "On=@Attack", Parameters = "", Comment = " Fires when the Mobile begins attacking another.", Properties = new List<PropertyTypes>() { PropertyTypes.Mobile, PropertyTypes.Trigger } });
             ppiList.Add(new PopupInfo() { Name = "On=@CallGuards", Parameters = "", Comment = " Fires when the Mobile calls for guards.", Properties = new List<PropertyTypes>() { PropertyTypes.Mobile, PropertyTypes.Trigger } });
@@ -767,8 +766,7 @@ namespace FastColoredTextBoxNS.Render
             ppiList.Add(new PopupInfo() { Name = "On=@UseQuick", Parameters = "", Comment = " Fires when a Mobile quickly uses the skill, without changing their ACTION.", Properties = new List<PropertyTypes>() { PropertyTypes.Skills, PropertyTypes.Trigger } });
             ppiList.Add(new PopupInfo() { Name = "On=@Effect", Parameters = "", Comment = " Fires when a Mobile or item is hit by the spell.", Properties = new List<PropertyTypes>() { PropertyTypes.Spell, PropertyTypes.Trigger } });
 
-            #endregion TRIGGERS
+            #endregion TRIGGERS information
         }
-
     }
 }

@@ -2,7 +2,6 @@
 using FastColoredTextBoxNS;
 using FastColoredTextBoxNS.Render;
 using Microsoft.VisualBasic.Devices;
-using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -329,7 +328,6 @@ namespace SphereScp
             //if (btInvisibleChars.Checked)
             //    range.SetStyle(invisibleCharsStyle, @".$|.\r\n|\s");
         }
-        
 
         private void loadDialogToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -399,6 +397,7 @@ namespace SphereScp
         {
             CreateTab(null);
         }
+
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (ofdMain.ShowDialog() == System.Windows.Forms.DialogResult.OK)
@@ -834,6 +833,7 @@ namespace SphereScp
                 }
             }
         }
+
         private void tsFiles_TabStripItemSelectionChanged(TabStripItemChangedEventArgs e)
         {
             if (CurrentTB != null)
@@ -856,6 +856,7 @@ namespace SphereScp
             if (CurrentTB.UndoEnabled)
                 CurrentTB.Undo();
         }
+
         private void uninstall()
         {
             try
