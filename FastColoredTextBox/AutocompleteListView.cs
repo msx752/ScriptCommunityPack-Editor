@@ -12,12 +12,12 @@ namespace FastColoredTextBoxNS
     public class AutocompleteListView : UserControl
     {
         internal ToolTip toolTip;
-        internal List<AutocompleteItem> visibleItems;
+        internal List<AutoCompleteItem> visibleItems;
         private int hoveredItemIndex;
         private int itemHeight;
         private int oldItemCount;
         private int selectedItemIndex;
-        private IEnumerable<AutocompleteItem> sourceItems;
+        private IEnumerable<AutoCompleteItem> sourceItems;
         private FastColoredTextBox tb;
         private Timer timer;
         internal AutocompleteListView(FastColoredTextBox tb)
@@ -28,7 +28,7 @@ namespace FastColoredTextBoxNS
             EventHandler handler4 = null;
             EventHandler handler5 = null;
             ScrollEventHandler handler6 = null;
-            this.sourceItems = new List<AutocompleteItem>();
+            this.sourceItems = new List<AutoCompleteItem>();
             this.selectedItemIndex = 0;
             this.hoveredItemIndex = -1;
             this.oldItemCount = 0;
@@ -36,7 +36,7 @@ namespace FastColoredTextBoxNS
             this.timer = new Timer();
             base.SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint, true);
             base.Font = new Font(FontFamily.GenericSansSerif, 9f);
-            this.visibleItems = new List<AutocompleteItem>();
+            this.visibleItems = new List<AutoCompleteItem>();
             this.itemHeight = this.Font.Height + 2;
             base.VerticalScroll.SmallChange = this.itemHeight;
             this.BackColor = Color.White;
@@ -133,17 +133,17 @@ namespace FastColoredTextBoxNS
             base.Invalidate();
         }
 
-        public void SetAutocompleteItems(ICollection<AutocompleteItem> items)
+        public void SetAutocompleteItems(ICollection<AutoCompleteItem> items)
         {
             this.sourceItems = items;
         }
 
         public void SetAutocompleteItems(ICollection<string> items)
         {
-            List<AutocompleteItem> list = new List<AutocompleteItem>(items.Count);
+            List<AutoCompleteItem> list = new List<AutoCompleteItem>(items.Count);
             foreach (string str in items)
             {
-                list.Add(new AutocompleteItem(str));
+                list.Add(new AutoCompleteItem(str));
             }
             this.SetAutocompleteItems(list);
         }
@@ -172,7 +172,7 @@ namespace FastColoredTextBoxNS
                 {
                     this.Menu.Fragment = fragment;
                     bool flag = false;
-                    foreach (AutocompleteItem item in this.sourceItems)
+                    foreach (AutoCompleteItem item in this.sourceItems)
                     {
                         item.Parent = this.Menu;
                         CompareResult result = item.Compare(text);
@@ -222,7 +222,7 @@ namespace FastColoredTextBoxNS
                 this.tb.TextSource.Manager.BeginAutoUndoCommands();
                 try
                 {
-                    AutocompleteItem item = this.visibleItems[this.selectedItemIndex];
+                    AutoCompleteItem item = this.visibleItems[this.selectedItemIndex];
                     SelectingEventArgs args = new SelectingEventArgs
                     {
                         Item = item,
@@ -331,7 +331,7 @@ namespace FastColoredTextBoxNS
             }
         }
 
-        private void DoAutocomplete(AutocompleteItem item, Range fragment)
+        private void DoAutocomplete(AutoCompleteItem item, Range fragment)
         {
             string textForReplace = item.GetTextForReplace();
             FastColoredTextBox tb = fragment.tb;
@@ -413,7 +413,7 @@ namespace FastColoredTextBoxNS
             timer.Start();
         }
 
-        private void SetToolTip(AutocompleteItem autocompleteItem)
+        private void SetToolTip(AutoCompleteItem autocompleteItem)
         {
             string toolTipTitle = this.visibleItems[this.selectedItemIndex].ToolTipTitle;
             string toolTipText = this.visibleItems[this.selectedItemIndex].ToolTipText;

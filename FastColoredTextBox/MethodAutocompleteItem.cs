@@ -3,18 +3,18 @@ using System;
 
 namespace FastColoredTextBoxNS
 {
-    public class MethodAutocompleteItem : AutocompleteItem
+    public class MethodAuto : AutoCompleteItem
     {
         private string firstPart;
         private string lowercaseText;
 
-        public MethodAutocompleteItem(string text)
+        public MethodAuto(string text)
             : base(text)
         {
             this.lowercaseText = base.Text.ToLower();
         }
 
-        public MethodAutocompleteItem(PopupInfo _keyword)
+        public MethodAuto(PopupToolTip _keyword)
             : base(_keyword)
         {
             this.lowercaseText = base.Text.ToLower();

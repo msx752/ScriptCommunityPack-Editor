@@ -5,7 +5,7 @@ namespace FastColoredTextBoxNS.Render
     /// <summary>
     /// Inerts line break after '}'
     /// </summary>
-    public class InsertEnterSnippet : AutocompleteItem
+    public class InsertEnterSnippet : AutoCompleteItem
     {
         private Place enterPlace = Place.Empty;
 

@@ -21,10 +21,8 @@ namespace SphereScp
         private Color changedLineColor = Color.FromArgb(255, 230, 230, 255);
         private Color currentLineColor = Color.FromArgb(100, 210, 210, 255);
         private List<ExplorerItem> explorerList = new List<ExplorerItem>();
-        private string ExtensionDescription = "SCP File";
-        private string ExtensionName = ".scp";
         private Style invisibleCharsStyle = new InvisibleCharsRenderer(Pens.Gray);
-        private List<AutocompleteItem> items = new List<AutocompleteItem>();
+        private List<AutoCompleteItem> items = new List<AutoCompleteItem>();
 
         private DateTime lastNavigatedDateTime = DateTime.Now;
 
@@ -74,7 +72,7 @@ namespace SphereScp
                 if (fileName != null)
                     tb.Text = File.ReadAllText(fileName, Encoding.Default);
                 tb.ClearUndo();
-                tb.Tag = new TbInfo();
+                tb.Tag = new PopupMenu();
                 tb.IsChanged = false;
                 tab.Width = 250;
                 tsFiles.AddTab(tab);
@@ -90,11 +88,11 @@ namespace SphereScp
                 tb.ChangedLineColor = changedLineColor;
                 tb.CurrentLineColor = currentLineColor;
                 tb.HighlightingRangeType = HighlightingRangeType.VisibleRange;
-                AutocompleteMenu popupMenu = new AutocompleteMenu(tb);
-                popupMenu.Items.ImageList = ilAutocomplete;
-                popupMenu.Opening += new EventHandler<CancelEventArgs>(popupMenu_Opening);
-                BuildAutocompleteMenu(popupMenu);
-                (tb.Tag as TbInfo).popupMenu = popupMenu;
+                AutocompleteMenu _popupMenu = new AutocompleteMenu(tb);
+                _popupMenu.Items.ImageList = ilAutocomplete;
+                _popupMenu.Opening += new EventHandler<CancelEventArgs>(popupMenu_Opening);
+                BuildAutocompleteMenu(_popupMenu);
+                (tb.Tag as PopupMenu).popupMenu = _popupMenu;
                 tb.ToolTip.OwnerDraw = true;
                 tb.ToolTip.Draw += ToolTip_Draw;
                 tb.ToolTip.Popup += ToolTip_Popup;
@@ -161,55 +159,12 @@ namespace SphereScp
         {
             if (items.Count == 0)
             {
-                List<int> maxi = new List<int>();
-                maxi.Add(ScriptCommunityPack.snippets.Count());
-                maxi.Add(ScriptCommunityPack.declarationSnippets.Count());
-                maxi.Add(ScriptCommunityPack.methods.Count());
-                maxi.Add(ScriptCommunityPack._keywords.Count());
-                maxi = maxi.OrderBy(p => p).ToList();
+                items.AddRange(ScriptCommunityPack.snippets);
+                items.AddRange(ScriptCommunityPack.declaration);
+                items.AddRange(ScriptCommunityPack.methods);
+                items.AddRange(ScriptCommunityPack.keywords);
+               
 
-                for (int i = 0; i < maxi[maxi.Count - 1]; i++)
-                {
-                    if (i < ScriptCommunityPack.snippets.Count())
-                    {
-                        items.Add(new SnippetAutocompleteItem(ScriptCommunityPack.snippets[i]) { ImageIndex = 1 });
-                    }
-                    //
-                    if (i < ScriptCommunityPack.declarationSnippets.Count())
-                    {
-                        items.Add(new DeclarationSnippet(ScriptCommunityPack.declarationSnippets[i]) { ImageIndex = 1 });
-                    }
-                    //
-                    if (i < ScriptCommunityPack.methods.Count())
-                    {
-                        int index = ScriptCommunityPack.ppiList.FindIndex(x => x.Name.ToLower() == ScriptCommunityPack.methods[i].ToLower());
-                        if (index == -1)
-                        {
-                            PopupInfo keyf = ScriptCommunityPack.ppiList[0];
-                            keyf.Name = ScriptCommunityPack.methods[i].ToString();
-                            items.Add(new MethodAutocompleteItem(keyf) { ImageIndex = 2 });
-                        }
-                        else
-                        {
-                            items.Add(new MethodAutocompleteItem(ScriptCommunityPack.ppiList[index]) { ImageIndex = 2 });
-                        }
-                    }
-                    //
-                    if (i < ScriptCommunityPack._keywords.Count())
-                    {
-                        int index = ScriptCommunityPack.ppiList.FindIndex(x => x.Name.ToLower() == ScriptCommunityPack._keywords[i].ToLower());
-                        if (index == -1)
-                        {
-                            PopupInfo keyf = ScriptCommunityPack.ppiList[0];
-                            keyf.Name = ScriptCommunityPack._keywords[i];
-                            items.Add(new AutocompleteItem(keyf) { ImageIndex = 1 });
-                        }
-                        else
-                        {
-                            items.Add(new AutocompleteItem(ScriptCommunityPack.ppiList[index]) { ImageIndex = 1 });
-                        }
-                    }
-                }
                 items.Add(new InsertSpaceSnippet());
                 items.Add(new InsertSpaceSnippet(@"^(\w+)([=<>!:]+)(\w+)$"));
                 items.Add(new InsertEnterSnippet());
@@ -450,9 +405,6 @@ namespace SphereScp
             //fixing
             CreateTab(null);
             this.tsFiles.Items.Clear();
-            //
-
-            //install();
         }
 
         private void quitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -466,31 +418,32 @@ namespace SphereScp
             {
                 List<ExplorerItem> list = new List<ExplorerItem>();
                 int lastClassIndex = -1;
-                //find classes, methods) (properties
-                //Regex regex = new Regex(@"(?<range>(\[\w+\s+\w+(\s+\w+)?\]))|(?<range>((\bon=[@]?)([0-9]?|[a-z]?)+))", RegexOptions.IgnoreCase | RegexOptions.Multiline);
                 Regex regex = new Regex(@"(?<range>(\[\w+\s+\w+(\s+\w+)?\]))|(?<range>((\bon=@)([a-z]?)+))", RegexOptions.IgnoreCase | RegexOptions.Multiline);
                 foreach (Match r in regex.Matches(text))
+                {
                     try
                     {
                         string s = r.Value;
                         s = s.Trim();
-
                         ExplorerItem item = new ExplorerItem() { title = s, position = r.Index };
-
                         if (item.title.ToLower().StartsWith("["))
                         {
                             string[] parts = item.title.Split(' ');
                             if (parts.Length <= 2)
                             {
                                 string tit = parts[0].ToUpper() + " ";
+
                                 for (int i = 1; i < parts.Length; i++)
-                                {
                                     tit = tit + parts[i] + " ";
-                                }
+
                                 item.title = tit;
-                                item.type = ExplorerItemType.Class;
                                 list.Sort(lastClassIndex + 1, list.Count - (lastClassIndex + 1), new ExplorerItemComparer());
                                 lastClassIndex = list.Count;
+                                if (parts[0].ToLower() == "[events")
+                                    item.type = ExplorerItemType.Event;
+                                else
+                                    item.type = ExplorerItemType.Class;
+
                                 list.Add(item);
                             }
                         }
@@ -508,20 +461,22 @@ namespace SphereScp
                             }
                         }
                     }
-                    catch { }
-
-                list.Sort(lastClassIndex + 1, list.Count - (lastClassIndex + 1), new ExplorerItemComparer());
-
+                    catch (Exception e)
+                    {
+                    }
+                }
                 BeginInvoke(
                     new Action(() =>
-                        {
-                            explorerList = list;
-                            dgvObjectExplorer.RowCount = explorerList.Count;
-                            dgvObjectExplorer.Invalidate();
-                        })
+                    {
+                        explorerList = list;
+                        dgvObjectExplorer.RowCount = explorerList.Count;
+                        dgvObjectExplorer.Invalidate();
+                    })
                 );
             }
-            catch { }
+            catch (Exception e)
+            {
+            }
         }
 
         private void redoToolStripMenuItem_Click(object sender, EventArgs e)
@@ -607,7 +562,7 @@ namespace SphereScp
             if (e.KeyData == (Keys.K | Keys.Control))
             {
                 //forced show (MinFragmentLength will be ignored)
-                (CurrentTB.Tag as TbInfo).popupMenu.Show(true);
+                (CurrentTB.Tag as PopupMenu).popupMenu.Show(true);
                 e.Handled = true;
             }
         }
@@ -655,9 +610,7 @@ namespace SphereScp
 
         private void tb_TextChangedDelayed(object sender, TextChangedEventArgs e)
         {
-            FastColoredTextBox tb = (sender as FastColoredTextBox);
-            //rebuild object explorer
-            ThreadPool.QueueUserWorkItem((o) => ReBuildObjectExplorer((sender as FastColoredTextBox).Text));
+            ThreadPool.QueueUserWorkItem((o) => ReBuildObjectExplorer((sender as FastColoredTextBox).Text));//rebuild object explorer
         }
 
         private void tb_ToolTipNeeded(object sender, FastColoredTextBox.ToolTipNeededEventArgs e)
@@ -666,7 +619,7 @@ namespace SphereScp
             {
                 if (e.HoveredWord != null | e.HoveredWord != "")
                 {
-                    PopupInfo keyw = ScriptCommunityPack.ppiList.Find(x => x.Name.ToLower() == e.HoveredWord.ToLower());
+                    PopupToolTip keyw = ScriptCommunityPack.KeywordsInformation.Find(x => x.Name.ToLower() == e.HoveredWord.ToLower());
                     if (keyw != null)
                     {
                         e.ToolTipTitle = keyw.Name;
@@ -856,28 +809,5 @@ namespace SphereScp
             if (CurrentTB.UndoEnabled)
                 CurrentTB.Undo();
         }
-
-        private void uninstall()
-        {
-            try
-            {
-                this.myComputer.Registry.ClassesRoot.DeleteSubKeyTree(this.ExtensionName);
-                this.myComputer.Registry.ClassesRoot.DeleteSubKeyTree(this.ExtensionDescription);
-            }
-            catch (Exception)
-            {
-            }
-        }
-
-        private void Zoom_click(object sender, EventArgs e)
-        {
-            //if (CurrentTB != null)
-            //    CurrentTB.Zoom = int.Parse((sender as ToolStripItem).Tag.ToString());
-        }
-    }
-
-    public class TbInfo
-    {
-        public AutocompleteMenu popupMenu;
     }
 }

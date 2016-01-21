@@ -8,7 +8,7 @@ namespace FastColoredTextBoxNS
 
         public bool Handled { get; set; }
 
-        public AutocompleteItem Item { get; internal set; }
+        public AutoCompleteItem Item { get; internal set; }
 
         public int SelectedIndex { get; set; }
     }

@@ -97,7 +97,7 @@
             this.fileToolStripMenuItem});
             this.msMain.Location = new System.Drawing.Point(0, 0);
             this.msMain.Name = "msMain";
-            this.msMain.Size = new System.Drawing.Size(657, 24);
+            this.msMain.Size = new System.Drawing.Size(969, 24);
             this.msMain.TabIndex = 0;
             this.msMain.Text = "menuStrip1";
             // 
@@ -164,9 +164,9 @@
             // 
             this.ssMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lbWordUnderMouse});
-            this.ssMain.Location = new System.Drawing.Point(0, 373);
+            this.ssMain.Location = new System.Drawing.Point(0, 470);
             this.ssMain.Name = "ssMain";
-            this.ssMain.Size = new System.Drawing.Size(657, 22);
+            this.ssMain.Size = new System.Drawing.Size(969, 22);
             this.ssMain.TabIndex = 2;
             this.ssMain.Text = "statusStrip1";
             // 
@@ -175,7 +175,7 @@
             this.lbWordUnderMouse.AutoSize = false;
             this.lbWordUnderMouse.ForeColor = System.Drawing.Color.Gray;
             this.lbWordUnderMouse.Name = "lbWordUnderMouse";
-            this.lbWordUnderMouse.Size = new System.Drawing.Size(642, 17);
+            this.lbWordUnderMouse.Size = new System.Drawing.Size(954, 17);
             this.lbWordUnderMouse.Spring = true;
             this.lbWordUnderMouse.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -196,7 +196,7 @@
             this.toolStripLabel1});
             this.tsMain.Location = new System.Drawing.Point(0, 24);
             this.tsMain.Name = "tsMain";
-            this.tsMain.Size = new System.Drawing.Size(657, 25);
+            this.tsMain.Size = new System.Drawing.Size(969, 25);
             this.tsMain.TabIndex = 3;
             this.tsMain.Text = "toolStrip1";
             // 
@@ -322,7 +322,7 @@
             this.tsFiles.Font = new System.Drawing.Font("Tahoma", 8.25F);
             this.tsFiles.Location = new System.Drawing.Point(225, 49);
             this.tsFiles.Name = "tsFiles";
-            this.tsFiles.Size = new System.Drawing.Size(432, 324);
+            this.tsFiles.Size = new System.Drawing.Size(744, 421);
             this.tsFiles.TabIndex = 0;
             this.tsFiles.Text = "faTabStrip1";
             this.tsFiles.TabStripItemClosing += new FarsiLibrary.Win.TabStripItemClosingHandler(this.tsFiles_TabStripItemClosing);
@@ -332,7 +332,7 @@
             // 
             this.splitter1.Location = new System.Drawing.Point(215, 49);
             this.splitter1.Name = "splitter1";
-            this.splitter1.Size = new System.Drawing.Size(10, 324);
+            this.splitter1.Size = new System.Drawing.Size(10, 421);
             this.splitter1.TabIndex = 5;
             this.splitter1.TabStop = false;
             // 
@@ -506,9 +506,8 @@
             this.dgvObjectExplorer.RowTemplate.DefaultCellStyle.ForeColor = System.Drawing.Color.Black;
             this.dgvObjectExplorer.RowTemplate.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.White;
             this.dgvObjectExplorer.RowTemplate.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.Green;
-            this.dgvObjectExplorer.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.dgvObjectExplorer.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvObjectExplorer.Size = new System.Drawing.Size(215, 324);
+            this.dgvObjectExplorer.Size = new System.Drawing.Size(215, 421);
             this.dgvObjectExplorer.TabIndex = 6;
             this.dgvObjectExplorer.VirtualMode = true;
             this.dgvObjectExplorer.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvObjectExplorer_CellMouseDoubleClick);
@@ -537,12 +536,12 @@
             this.ilAutocomplete.Images.SetKeyName(1, "app_16x16.png");
             this.ilAutocomplete.Images.SetKeyName(2, "1302166543_virtualbox.png");
             // 
-            // _sscripteditor
+            // MAIN
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(657, 395);
+            this.ClientSize = new System.Drawing.Size(969, 492);
             this.Controls.Add(this.tsFiles);
             this.Controls.Add(this.splitter1);
             this.Controls.Add(this.dgvObjectExplorer);
@@ -550,9 +549,8 @@
             this.Controls.Add(this.msMain);
             this.Controls.Add(this.ssMain);
             this.MainMenuStrip = this.msMain;
-            this.Name = "_sscripteditor";
+            this.Name = "MAIN";
             this.Text = "REditor";
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PowerfulCSharpEditor_FormClosing);
             this.Load += new System.EventHandler(this.PowerfulCSharpEditor_Load);
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this._sscripteditor_DragDrop);

@@ -5,9 +5,9 @@ namespace FastColoredTextBoxNS.Render
     /// <summary>
     /// This item appears when any part of snippet text is typed
     /// </summary>
-    public class DeclarationSnippet : SnippetAutocompleteItem
+    public class DeclarationAuto : SnippetAuto
     {
-        public DeclarationSnippet(string snippet)
+        public DeclarationAuto(string snippet)
             : base(snippet)
         {
         }

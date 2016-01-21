@@ -6,7 +6,7 @@ namespace FastColoredTextBoxNS.Render
     /// Divides numbers) (words: "123AND456" -> "123) (456"
     /// Or "i=2" -> "i = 2"
     /// </summary>
-    public class InsertSpaceSnippet : AutocompleteItem
+    public class InsertSpaceSnippet : AutoCompleteItem
 
     {
         private string pattern;

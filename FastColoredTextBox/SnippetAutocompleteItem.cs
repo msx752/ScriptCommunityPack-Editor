@@ -6,9 +6,9 @@
     /// Autocomplete item for code snippets
     /// </summary>
     /// <remarks>Snippet can contain special char ^ for caret position.</remarks>
-    public class SnippetAutocompleteItem : AutocompleteItem
+    public class SnippetAuto : AutoCompleteItem
     {
-        public SnippetAutocompleteItem(string snippet)
+        public SnippetAuto(string snippet)
         {
             Text = snippet.Replace("\r", "");
             ToolTipTitle = this.ToolTipTitle;

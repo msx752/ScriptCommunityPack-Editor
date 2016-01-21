@@ -3,7 +3,7 @@ using System;
 
 namespace FastColoredTextBoxNS
 {
-    public class AutocompleteItem
+    public class AutoCompleteItem
     {
         public int ImageIndex;
         public object Tag;
@@ -12,37 +12,37 @@ namespace FastColoredTextBoxNS
         private string toolTipText;
         private string toolTipTitle;
 
-        public AutocompleteItem()
+        public AutoCompleteItem()
         {
             this.ImageIndex = -1;
         }
 
-        public AutocompleteItem(PopupInfo _keyword)
+        public AutoCompleteItem(PopupToolTip _keyword)
         {
             Text = _keyword.Name;
             toolTipTitle = _keyword.Name;
             toolTipText = _keyword.ToString();
         }
 
-        public AutocompleteItem(string text)
+        public AutoCompleteItem(string text)
         {
             this.ImageIndex = -1;
             this.Text = text;
         }
 
-        public AutocompleteItem(string text, int imageIndex)
+        public AutoCompleteItem(string text, int imageIndex)
             : this(text)
         {
             this.ImageIndex = imageIndex;
         }
 
-        public AutocompleteItem(string text, int imageIndex, string menuText)
+        public AutoCompleteItem(string text, int imageIndex, string menuText)
             : this(text, imageIndex)
         {
             this.menuText = menuText;
         }
 
-        public AutocompleteItem(string text, int imageIndex, string menuText, string toolTipTitle, string toolTipText)
+        public AutoCompleteItem(string text, int imageIndex, string menuText, string toolTipTitle, string toolTipText)
             : this(text, imageIndex, menuText)
         {
             this.toolTipTitle = toolTipTitle;
