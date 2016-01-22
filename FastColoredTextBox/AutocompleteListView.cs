@@ -17,7 +17,7 @@ namespace FastColoredTextBoxNS
         private int itemHeight;
         private int oldItemCount;
         private int selectedItemIndex;
-        private IEnumerable<AutoCompleteItem> sourceItems;
+        private List<AutoCompleteItem> sourceItems;
         private FastColoredTextBox tb;
         private Timer timer;
 
@@ -134,7 +134,7 @@ namespace FastColoredTextBoxNS
             base.Invalidate();
         }
 
-        public void SetAutocompleteItems(ICollection<AutoCompleteItem> items)
+        public void SetAutocompleteItems(List<AutoCompleteItem> items)
         {
             this.sourceItems = items;
         }
@@ -173,19 +173,40 @@ namespace FastColoredTextBoxNS
                 {
                     this.Menu.Fragment = fragment;
                     bool flag = false;
-                    foreach (AutoCompleteItem item in this.sourceItems)
+
+                    this.sourceItems
+                        .Where(p => p.ToolTipTitle != null)
+                        .ToList()
+                        .ForEach(val => val.Parent = this.Menu);//all member sets parent
+
+                    List<AutoCompleteItem> finded = this.sourceItems
+                        .Where(p => p.ToolTipTitle != null).ToList()
+                        .Where(p => p.Compare(text) == CompareResult.Visible)
+                        .ToList();
+
+                    if (finded.Count > 0)
                     {
-                        item.Parent = this.Menu;
-                        CompareResult result = item.Compare(text);
-                        if (result != CompareResult.Hidden)
-                        {
-                            this.visibleItems.Add(item);
-                        }
-                        if (!((result != CompareResult.VisibleAndSelected) || flag))
-                        {
-                            flag = true;
-                            this.selectedItemIndex = this.visibleItems.Count - 1;
-                        }
+                        while (finded.Count >= 31)//max listed func
+                            finded.RemoveAt(30);
+                        this.visibleItems.AddRange(finded);
+                    }
+
+                    finded = this.sourceItems
+                        .Where(p => p.ToolTipTitle != null).ToList()
+                        .Where(p => p.Compare(text) == CompareResult.VisibleAndSelected)
+                        .ToList();
+
+                    if (finded.Count > 0)
+                    {
+                        while (finded.Count >= 31)//max listed func
+                            finded.RemoveAt(30);
+                        this.visibleItems.AddRange(finded);
+                        string[] splited = text.Split('.');//for sourcetree (notimplemented)
+                        this.visibleItems = this.visibleItems
+                            .OrderBy(p => p.Text.IndexOf(splited[splited.Length - 1]))
+                            .ToList();
+                        flag = true;
+                        this.selectedItemIndex = 0;
                     }
                     if (flag)
                     {

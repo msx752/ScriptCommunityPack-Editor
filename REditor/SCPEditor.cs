@@ -161,8 +161,8 @@ namespace SphereScp
             {
                 items.AddRange(ScriptCommunityPack.snippets);
                 items.AddRange(ScriptCommunityPack.declaration);
-                items.AddRange(ScriptCommunityPack.methods);
-                //items.AddRange(ScriptCommunityPack.keywords);
+                //items.AddRange(ScriptCommunityPack.methods);
+                items.AddRange(ScriptCommunityPack.keywords);
 
                 items.Add(new InsertSpaceSnippet());
                 items.Add(new InsertSpaceSnippet(@"^(\w+)([=<>!:]+)(\w+)$"));

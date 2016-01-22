@@ -24,7 +24,7 @@ namespace FastColoredTextBoxNS.Render
             new DeclarationAuto("[EOF]^") { ImageIndex=1 },
         };
 
-        public static AutoCompleteItem[] keywords = new AutoCompleteItem[0];
+        public static MethodAuto[] keywords = new MethodAuto[0];
 
         public static MethodAuto[] methods = new MethodAuto[]
         {
@@ -815,17 +815,14 @@ namespace FastColoredTextBoxNS.Render
             KeywordsInformation.Add(new PopupToolTip() { Name = "On=@Effect", Parameters = "", Comment = " Fires when a Mobile or item is hit by the spell.", Properties = new List<PropertyTypes>() { PropertyTypes.Spell, PropertyTypes.Trigger } });
 
             #endregion TRIGGERS information
-
-
-            //PopupToolTip[] test = KeywordsInformation.FindAll(p => p.Name.IndexOf("@") == -1).ToArray();
-            //keywords = new AutoCompleteItem[test.Length];
-            //for (int i = 0; i < test.Length; i++)
-            //{
-            //    keywords[i] = new AutoCompleteItem();
-            //    keywords[i].ImageIndex = 1;
-            //    keywords[i].loadPopupToolTip(test[i]);
-            //}
-
+            
+            PopupToolTip[] test = KeywordsInformation.FindAll(p => p.Name.IndexOf("@") == -1).ToArray();
+            keywords = new MethodAuto[test.Length];
+            for (int i = 0; i < test.Length; i++)
+            {
+                keywords[i] = new MethodAuto(test[i]);
+                keywords[i].ImageIndex = 2;
+            }
 
             #region KeywordsAutoComplete
             for (int i = 0; i < methods.Length; i++)

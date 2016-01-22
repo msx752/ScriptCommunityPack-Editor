@@ -19,9 +19,7 @@ namespace FastColoredTextBoxNS
 
         public AutoCompleteItem(PopupToolTip _keyword)
         {
-            Text = _keyword.Name;
-            toolTipTitle = _keyword.Name;
-            toolTipText = _keyword.ToString();
+            loadPopupToolTip(_keyword);
         }
         public void loadPopupToolTip(PopupToolTip _loadit)
         {
