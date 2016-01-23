@@ -123,6 +123,11 @@
     <Compile Include="Render\Enum\ExplorerItemType.cs" />
     <Compile Include="Render\ExplorerItem.cs" />
     <Compile Include="Render\ExplorerItemComparer.cs" />
+    <Compile Include="Render\Indexer\BaseDefine.cs" />
+    <Compile Include="Render\Indexer\IBaseDefine.cs" />
+    <Compile Include="Render\Indexer\ObjectDefine.cs" />
+    <Compile Include="Render\Indexer\ScpIndexer.cs" />
+    <Compile Include="Render\Indexer\SubObjectDefine.cs" />
     <Compile Include="Render\InsertEnterSnippet.cs" />
     <Compile Include="Render\InsertSpaceSnippet.cs" />
     <Compile Include="Render\InvisibleCharsRenderer.cs" />

@@ -26,55 +26,55 @@ namespace FastColoredTextBoxNS.Render
 
         public static MethodAuto[] keywords = new MethodAuto[0];
 
-        public static MethodAuto[] methods = new MethodAuto[]
-        {
-            new MethodAuto("act") { ImageIndex=2 },
-            new MethodAuto("attr") { ImageIndex=2 },
-            new MethodAuto("body") { ImageIndex=2 },
-            new MethodAuto("dex") { ImageIndex=2 },
-            new MethodAuto("findcont") { ImageIndex=2 },
-            new MethodAuto("findid") { ImageIndex=2 },
-            new MethodAuto("findlayer") { ImageIndex=2 },
-            new MethodAuto("findtype") { ImageIndex=2 },
-            new MethodAuto("id") { ImageIndex=2 },
-            new MethodAuto("int") { ImageIndex=2 },
-            new MethodAuto("ischar") { ImageIndex=2 },
-            new MethodAuto("iscont") { ImageIndex=2 },
-            new MethodAuto("isevent") { ImageIndex=2 },
-            new MethodAuto("isgm") { ImageIndex=2 },
-            new MethodAuto("isitem") { ImageIndex=2 },
-            new MethodAuto("isneartype") { ImageIndex=2 },
-            new MethodAuto("istevent") { ImageIndex=2 },
-            new MethodAuto("mana") { ImageIndex=2 },
-            new MethodAuto("maxhits") { ImageIndex=2 },
-            new MethodAuto("maxmana") { ImageIndex=2 },
-            new MethodAuto("maxstam") { ImageIndex=2 },
-            new MethodAuto("maxweight") { ImageIndex=2 },
-            new MethodAuto("memoryfindtype") { ImageIndex=2 },
-            new MethodAuto("memoryfind") { ImageIndex=2 },
-            new MethodAuto("message") { ImageIndex=2 },
-            new MethodAuto("messageua") { ImageIndex=2 },
-            new MethodAuto("modar") { ImageIndex=2 },
-            new MethodAuto("moddex") { ImageIndex=2 },
-            new MethodAuto("modint") { ImageIndex=2 },
-            new MethodAuto("modmaxweight") { ImageIndex=2 },
-            new MethodAuto("modstr") { ImageIndex=2 },
-            new MethodAuto("obody") { ImageIndex=2 },
-            new MethodAuto("odex") { ImageIndex=2 },
-            new MethodAuto("oint") { ImageIndex=2 },
-            new MethodAuto("oskin") { ImageIndex=2 },
-            new MethodAuto("ostr") { ImageIndex=2 },
-            new MethodAuto("owner") { ImageIndex=2 },
-            new MethodAuto("p") { ImageIndex=2 },
-            new MethodAuto("region") { ImageIndex=2 },
-            new MethodAuto("room") { ImageIndex=2 },
-            new MethodAuto("sector") { ImageIndex=2 },
-            new MethodAuto("stam") { ImageIndex=2 },
-            new MethodAuto("str") { ImageIndex=2 },
-            new MethodAuto("home") { ImageIndex=2 },
-            new MethodAuto("hits") { ImageIndex=2 },
-            new MethodAuto("memoryfindtype") { ImageIndex=2 }
-        };
+        //public static MethodAuto[] methods = new MethodAuto[]
+        //{
+        //    new MethodAuto("act") { ImageIndex=2 },
+        //    new MethodAuto("attr") { ImageIndex=2 },
+        //    new MethodAuto("body") { ImageIndex=2 },
+        //    new MethodAuto("dex") { ImageIndex=2 },
+        //    new MethodAuto("findcont") { ImageIndex=2 },
+        //    new MethodAuto("findid") { ImageIndex=2 },
+        //    new MethodAuto("findlayer") { ImageIndex=2 },
+        //    new MethodAuto("findtype") { ImageIndex=2 },
+        //    new MethodAuto("id") { ImageIndex=2 },
+        //    new MethodAuto("int") { ImageIndex=2 },
+        //    new MethodAuto("ischar") { ImageIndex=2 },
+        //    new MethodAuto("iscont") { ImageIndex=2 },
+        //    new MethodAuto("isevent") { ImageIndex=2 },
+        //    new MethodAuto("isgm") { ImageIndex=2 },
+        //    new MethodAuto("isitem") { ImageIndex=2 },
+        //    new MethodAuto("isneartype") { ImageIndex=2 },
+        //    new MethodAuto("istevent") { ImageIndex=2 },
+        //    new MethodAuto("mana") { ImageIndex=2 },
+        //    new MethodAuto("maxhits") { ImageIndex=2 },
+        //    new MethodAuto("maxmana") { ImageIndex=2 },
+        //    new MethodAuto("maxstam") { ImageIndex=2 },
+        //    new MethodAuto("maxweight") { ImageIndex=2 },
+        //    new MethodAuto("memoryfindtype") { ImageIndex=2 },
+        //    new MethodAuto("memoryfind") { ImageIndex=2 },
+        //    new MethodAuto("message") { ImageIndex=2 },
+        //    new MethodAuto("messageua") { ImageIndex=2 },
+        //    new MethodAuto("modar") { ImageIndex=2 },
+        //    new MethodAuto("moddex") { ImageIndex=2 },
+        //    new MethodAuto("modint") { ImageIndex=2 },
+        //    new MethodAuto("modmaxweight") { ImageIndex=2 },
+        //    new MethodAuto("modstr") { ImageIndex=2 },
+        //    new MethodAuto("obody") { ImageIndex=2 },
+        //    new MethodAuto("odex") { ImageIndex=2 },
+        //    new MethodAuto("oint") { ImageIndex=2 },
+        //    new MethodAuto("oskin") { ImageIndex=2 },
+        //    new MethodAuto("ostr") { ImageIndex=2 },
+        //    new MethodAuto("owner") { ImageIndex=2 },
+        //    new MethodAuto("p") { ImageIndex=2 },
+        //    new MethodAuto("region") { ImageIndex=2 },
+        //    new MethodAuto("room") { ImageIndex=2 },
+        //    new MethodAuto("sector") { ImageIndex=2 },
+        //    new MethodAuto("stam") { ImageIndex=2 },
+        //    new MethodAuto("str") { ImageIndex=2 },
+        //    new MethodAuto("home") { ImageIndex=2 },
+        //    new MethodAuto("hits") { ImageIndex=2 },
+        //    new MethodAuto("memoryfindtype") { ImageIndex=2 }
+        //};
 
         public static List<PopupToolTip> KeywordsInformation = new List<PopupToolTip>();
 
@@ -815,7 +815,8 @@ namespace FastColoredTextBoxNS.Render
             KeywordsInformation.Add(new PopupToolTip() { Name = "On=@Effect", Parameters = "", Comment = " Fires when a Mobile or item is hit by the spell.", Properties = new List<PropertyTypes>() { PropertyTypes.Spell, PropertyTypes.Trigger } });
 
             #endregion TRIGGERS information
-            
+
+            #region KeywordsAutoComplete
             PopupToolTip[] test = KeywordsInformation.FindAll(p => p.Name.IndexOf("@") == -1).ToArray();
             keywords = new MethodAuto[test.Length];
             for (int i = 0; i < test.Length; i++)
@@ -823,12 +824,12 @@ namespace FastColoredTextBoxNS.Render
                 keywords[i] = new MethodAuto(test[i]);
                 keywords[i].ImageIndex = 2;
             }
-
-            #region KeywordsAutoComplete
-            for (int i = 0; i < methods.Length; i++)
-                methods[i].loadPopupToolTip(KeywordsInformation.Find(p => p.Name == methods[i].Text));
-
             #endregion KeywordsAutoComplete
+            //
+            //for (int i = 0; i < methods.Length; i++)
+            //    methods[i].loadPopupToolTip(KeywordsInformation.Find(p => p.Name == methods[i].Text));
+
+            //
         }
     }
 }
