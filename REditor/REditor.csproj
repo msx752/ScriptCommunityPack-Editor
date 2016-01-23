@@ -102,6 +102,106 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FastColoredTextBox\AutocompleteItem.cs" />
+    <Compile Include="FastColoredTextBox\AutocompleteListView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FastColoredTextBox\AutocompleteMenu.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="FastColoredTextBox\AutoIndentEventArgs.cs" />
+    <Compile Include="FastColoredTextBox\Char.cs" />
+    <Compile Include="FastColoredTextBox\ClearSelectedCommand.cs" />
+    <Compile Include="FastColoredTextBox\CollapseFoldingMarker.cs" />
+    <Compile Include="FastColoredTextBox\Command.cs" />
+    <Compile Include="FastColoredTextBox\CommandManager.cs" />
+    <Compile Include="FastColoredTextBox\CompareResult.cs" />
+    <Compile Include="FastColoredTextBox\ExpandFoldingMarker.cs" />
+    <Compile Include="FastColoredTextBox\ExportToHTML.cs" />
+    <Compile Include="FastColoredTextBox\FastColoredTextBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FastColoredTextBox\FCTBDescriptionProvider.cs" />
+    <Compile Include="FastColoredTextBox\FCTBTypeDescriptor.cs" />
+    <Compile Include="FastColoredTextBox\FileTextSource.cs" />
+    <Compile Include="FastColoredTextBox\FindForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FastColoredTextBox\FoldedAreaMarker.cs" />
+    <Compile Include="FastColoredTextBox\FoldedBlockStyle.cs" />
+    <Compile Include="FastColoredTextBox\FoldingDesc.cs" />
+    <Compile Include="FastColoredTextBox\FooTextChangedDescriptor.cs" />
+    <Compile Include="FastColoredTextBox\GoToForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FastColoredTextBox\GoToForm.designer.cs">
+      <DependentUpon>GoToForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FastColoredTextBox\HighlightingRangeType.cs" />
+    <Compile Include="FastColoredTextBox\IndentMarker.cs" />
+    <Compile Include="FastColoredTextBox\InsertCharCommand.cs" />
+    <Compile Include="FastColoredTextBox\InsertTextCommand.cs" />
+    <Compile Include="FastColoredTextBox\Language.cs" />
+    <Compile Include="FastColoredTextBox\LimitedStack.cs" />
+    <Compile Include="FastColoredTextBox\Line.cs" />
+    <Compile Include="FastColoredTextBox\LineInfo.cs" />
+    <Compile Include="FastColoredTextBox\LineInsertedEventArgs.cs" />
+    <Compile Include="FastColoredTextBox\LineNeededEventArgs.cs" />
+    <Compile Include="FastColoredTextBox\LinePushedEventArgs.cs" />
+    <Compile Include="FastColoredTextBox\LineRemovedEventArgs.cs" />
+    <Compile Include="FastColoredTextBox\LinesAccessor.cs" />
+    <Compile Include="FastColoredTextBox\MarkerStyle.cs" />
+    <Compile Include="FastColoredTextBox\MethodAutocompleteItem.cs" />
+    <Compile Include="FastColoredTextBox\PaintLineEventArgs.cs" />
+    <Compile Include="FastColoredTextBox\Place.cs" />
+    <Compile Include="FastColoredTextBox\Platform.cs" />
+    <Compile Include="FastColoredTextBox\PlatformType.cs" />
+    <Compile Include="FastColoredTextBox\PrintDialogSettings.cs" />
+    <Compile Include="FastColoredTextBox\Range.cs" />
+    <Compile Include="FastColoredTextBox\RangeInfo.cs" />
+    <Compile Include="FastColoredTextBox\Render\DeclarationSnippet.cs" />
+    <Compile Include="FastColoredTextBox\Render\Enum\ExplorerItemType.cs" />
+    <Compile Include="FastColoredTextBox\Render\Enum\PropertyTypes.cs" />
+    <Compile Include="FastColoredTextBox\Render\Enum\SyntaxType.cs" />
+    <Compile Include="FastColoredTextBox\Render\ExplorerItem.cs" />
+    <Compile Include="FastColoredTextBox\Render\ExplorerItemComparer.cs" />
+    <Compile Include="FastColoredTextBox\Render\Indexer\CmdDefType.cs" />
+    <Compile Include="FastColoredTextBox\Render\Indexer\IBaseDefine.cs" />
+    <Compile Include="FastColoredTextBox\Render\Indexer\BaseDef.cs" />
+    <Compile Include="FastColoredTextBox\Render\Indexer\ObjectDef.cs" />
+    <Compile Include="FastColoredTextBox\Render\Indexer\ScpIndexer.cs" />
+    <Compile Include="FastColoredTextBox\Render\InsertEnterSnippet.cs" />
+    <Compile Include="FastColoredTextBox\Render\InsertSpaceSnippet.cs" />
+    <Compile Include="FastColoredTextBox\Render\InvisibleCharsRenderer.cs" />
+    <Compile Include="FastColoredTextBox\Render\PopupInfo.cs" />
+    <Compile Include="FastColoredTextBox\Render\PopupMenu.cs" />
+    <Compile Include="FastColoredTextBox\Render\ScriptCommunityPack.cs" />
+    <Compile Include="FastColoredTextBox\ReplaceForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FastColoredTextBox\ReplaceMultipleTextCommand.cs" />
+    <Compile Include="FastColoredTextBox\ReplaceTextCommand.cs" />
+    <Compile Include="FastColoredTextBox\RuleDesc.cs" />
+    <Compile Include="FastColoredTextBox\SelectedEventArgs.cs" />
+    <Compile Include="FastColoredTextBox\SelectingEventArgs.cs" />
+    <Compile Include="FastColoredTextBox\SelectionStyle.cs" />
+    <Compile Include="FastColoredTextBox\ShortcutStyle.cs" />
+    <Compile Include="FastColoredTextBox\SnippetAutocompleteItem.cs" />
+    <Compile Include="FastColoredTextBox\Style.cs" />
+    <Compile Include="FastColoredTextBox\StyleIndex.cs" />
+    <Compile Include="FastColoredTextBox\StyleVisualMarker.cs" />
+    <Compile Include="FastColoredTextBox\SyntaxDescriptor.cs" />
+    <Compile Include="FastColoredTextBox\SyntaxHighlighter.cs" />
+    <Compile Include="FastColoredTextBox\TextChangedEventArgs.cs" />
+    <Compile Include="FastColoredTextBox\TextChangingEventArgs.cs" />
+    <Compile Include="FastColoredTextBox\TextSource.cs" />
+    <Compile Include="FastColoredTextBox\TextStyle.cs" />
+    <Compile Include="FastColoredTextBox\UndoableCommand.cs" />
+    <Compile Include="FastColoredTextBox\VisibleState.cs" />
+    <Compile Include="FastColoredTextBox\VisualMarker.cs" />
+    <Compile Include="FastColoredTextBox\VisualMarkerEventArgs.cs" />
+    <Compile Include="FastColoredTextBox\WavyLineStyle.cs" />
+    <Compile Include="FastColoredTextBox\WordWrapMode.cs" />
     <Compile Include="SCPEditor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -110,6 +210,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="FastColoredTextBox\GoToForm.resx">
+      <DependentUpon>GoToForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SCPEditor.resx">
       <DependentUpon>SCPEditor.cs</DependentUpon>
     </EmbeddedResource>
@@ -189,10 +292,7 @@
     <None Include="Resources\undo_16x16.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FastColoredTextBox\FastColoredTextBox.csproj">
-      <Project>{6dd14a85-ccfc-4774-bd26-0f5772512319}</Project>
-      <Name>FastColoredTextBox</Name>
-    </ProjectReference>
+    <Content Include="FastColoredTextBox\license.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
