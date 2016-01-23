@@ -172,41 +172,63 @@ namespace FastColoredTextBoxNS
                 if (forced || ((text.Length >= this.Menu.MinFragmentLength) && (this.tb.Selection.Start == this.tb.Selection.End)))
                 {
                     this.Menu.Fragment = fragment;
+
+                    if (text.Length == 0)
+                        return;
                     bool flag = false;
-
                     this.sourceItems
-                        .Where(p => p.ToolTipTitle != null)
-                        .ToList()
                         .ForEach(val => val.Parent = this.Menu);//all member sets parent
-
-                    List<AutoCompleteItem> finded = this.sourceItems
-                        .Where(p => p.ToolTipTitle != null).ToList()
-                        .Where(p => p.Compare(text) == CompareResult.Visible)
-                        .ToList();
-
-                    if (finded.Count > 0)
+                    List<AutoCompleteItem> finded;
+                    if (this.tb.GetLineText(this.Menu.Fragment.Start.iLine).Replace(" ", "").StartsWith("[") == false)
                     {
-                        while (finded.Count >= 31)//max listed func
-                            finded.RemoveAt(30);
-                        this.visibleItems.AddRange(finded);
-                    }
+                        string[] splited = text.Replace(" ", "").Split('.');//for sourcetree (notimplemented)
 
-                    finded = this.sourceItems
-                        .Where(p => p.ToolTipTitle != null).ToList()
-                        .Where(p => p.Compare(text) == CompareResult.VisibleAndSelected)
-                        .ToList();
+                        //listing which are all
+                        finded = this.sourceItems
+                           .Where(p => p.ToolTipTitle != null).ToList()
+                           .Where(p => p.Compare(text) == CompareResult.Visible)
+                           .ToList();
+                        if (finded.Count > 0)
+                        {
+                            while (finded.Count >= 31)//max listed func
+                                finded.RemoveAt(30);
+                            this.visibleItems.AddRange(finded);
+                        }
 
-                    if (finded.Count > 0)
-                    {
-                        while (finded.Count >= 31)//max listed func
-                            finded.RemoveAt(30);
-                        this.visibleItems.AddRange(finded);
-                        string[] splited = text.Split('.');//for sourcetree (notimplemented)
-                        this.visibleItems = this.visibleItems
-                            .OrderBy(p => p.Text.IndexOf(splited[splited.Length - 1]))
+                        //listing which is searching
+                        finded = this.sourceItems
+                            .Where(p => p.ToolTipTitle != null).ToList()
+                            .Where(p => p.Compare(text) == CompareResult.VisibleAndSelected)
                             .ToList();
-                        flag = true;
-                        this.selectedItemIndex = 0;
+                        if (finded.Count > 0)
+                        {
+                            while (finded.Count >= 31)//max listed func
+                                finded.RemoveAt(30);
+                            this.visibleItems.AddRange(finded);
+
+
+                            this.visibleItems = this.visibleItems
+                                .OrderBy(p => p.Text.IndexOf(splited[splited.Length - 1]))
+                                .ToList();
+                            flag = true;
+                            this.selectedItemIndex = 0;
+                        }
+                    }
+                    else if (text.IndexOf(".") == -1)//defane is cannot using DOT
+                    {
+                        //listing which are all
+                        finded = this.sourceItems
+                           .Where(p => p.Text.ToLower()
+                           .Replace("ı", "i")//turkish language fix
+                           .IndexOf("[" + text.ToLower()) != -1)
+                           .ToList();
+                        if (finded.Count > 0)
+                        {
+                            while (finded.Count >= 31)//max listed func
+                                finded.RemoveAt(30);
+                            this.visibleItems.AddRange(finded);
+                        }
+
                     }
                     if (flag)
                     {
@@ -357,7 +379,10 @@ namespace FastColoredTextBoxNS
         {
             string textForReplace = item.GetTextForReplace();
             FastColoredTextBox tb = fragment.tb;
-            tb.Selection.Start = fragment.Start;
+            if (textForReplace.StartsWith("["))
+                tb.Selection.Start = new Place(fragment.Start.iChar - 1, fragment.Start.iLine);
+            else
+                tb.Selection.Start = fragment.Start;
             tb.Selection.End = fragment.End;
             tb.InsertText(textForReplace);
             tb.Focus();

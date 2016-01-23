@@ -161,7 +161,7 @@ namespace SphereScp
             {
                 items.AddRange(ScriptCommunityPack.snippets);
                 items.AddRange(ScriptCommunityPack.declaration);
-                //items.AddRange(ScriptCommunityPack.methods);
+                //items.AddRange(ScriptCommunityPack.methods);//not necessary
                 items.AddRange(ScriptCommunityPack.keywords);
 
                 items.Add(new InsertSpaceSnippet());
