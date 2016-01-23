@@ -813,6 +813,8 @@ namespace SphereScp
         
         private void loadScpIndexIndexToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            MessageBox.Show("disabled[not implemented]: primarily, you need update keyword information about local script command");
+            return;
             ScpIndexer.LoadScpCmd();
         }
     }
