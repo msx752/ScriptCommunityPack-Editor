@@ -13,5 +13,6 @@ namespace FastColoredTextBoxNS.Render
         //find base define
         //find sub define
         //compare and add parent define
+        //casecontrol(upper,lower)
     }
 }
