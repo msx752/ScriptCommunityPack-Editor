@@ -34,7 +34,8 @@ namespace SphereScp
         {
             InitializeComponent();
             CheckForIllegalCrossThreadCalls = false;
-            ScriptCommunityPack.LOAD();
+            ScpIndexer.LoadScpCmd();
+            ScriptCommunityPack.LoadKeywords();
         }
 
         private FastColoredTextBox CurrentTB
@@ -163,6 +164,7 @@ namespace SphereScp
                 items.AddRange(ScriptCommunityPack.declaration);
                 //items.AddRange(ScriptCommunityPack.methods);//not necessary
                 items.AddRange(ScriptCommunityPack.keywords);
+                items.AddRange(ScriptCommunityPack.fileCommands);//NEW
 
                 items.Add(new InsertSpaceSnippet());
                 items.Add(new InsertSpaceSnippet(@"^(\w+)([=<>!:]+)(\w+)$"));
@@ -808,10 +810,10 @@ namespace SphereScp
             if (CurrentTB.UndoEnabled)
                 CurrentTB.Undo();
         }
-
-        private void loadScpFileCmdToolStripMenuItem_Click(object sender, EventArgs e)
+        
+        private void loadScpIndexIndexToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ScpIndexer.UpdateScpCmdList();
+            ScpIndexer.LoadScpCmd();
         }
     }
 }

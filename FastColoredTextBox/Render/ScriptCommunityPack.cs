@@ -113,7 +113,8 @@ namespace FastColoredTextBoxNS.Render
             new SnippetAuto("strregex(^)") { ImageIndex=1 },
         };
 
-        public static void LOAD()
+        public static MethodAuto[] fileCommands = new MethodAuto[0];
+        public static void LoadKeywords()
         {
             #region keywordsInformation
 
@@ -825,6 +826,25 @@ namespace FastColoredTextBoxNS.Render
                 keywords[i].ImageIndex = 2;
             }
             #endregion KeywordsAutoComplete
+            fileCommands = new MethodAuto[ScpIndexer.Commands.Count];
+            for (int i = 0; i < fileCommands.Length; i++)
+            {
+                IBaseDef cmd = ScpIndexer.Commands[i];
+                fileCommands[i] = new MethodAuto(cmd.Cmd);
+                string define = string.Format("[{0} {1}]", cmd.CmdType.ToString(), cmd.Cmd);
+                if (cmd is ObjectDef)
+                {
+                    fileCommands[i].ImageIndex = 1;
+                    fileCommands[i].ToolTipTitle = define;
+                    string children = "";
+                    foreach (ObjectDef item in (cmd as ObjectDef).Child)
+                        children += "," + item;
+                    if (children.Length > 0)
+                        children = children.Substring(1);
+                    string titletext = string.Format("{0}\r\n{1}\r\n File: {2}    {{Line: {3}}}\r\nParent: {4}\r\nChild: {5}", (cmd as ObjectDef).Name, "", cmd.File.Name, cmd.RangeOfCommand.Y, (cmd as ObjectDef).ParentId, children);
+                    fileCommands[i].ToolTipText = titletext;
+                }
+            }
             //
             //for (int i = 0; i < methods.Length; i++)
             //    methods[i].loadPopupToolTip(KeywordsInformation.Find(p => p.Name == methods[i].Text));

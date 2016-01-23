@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MAIN));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             this.msMain = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -84,7 +84,7 @@
             this.clName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ilAutocomplete = new System.Windows.Forms.ImageList(this.components);
             this.scpFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.loadScpFileCmdToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadScpIndexIndexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.msMain.SuspendLayout();
             this.ssMain.SuspendLayout();
             this.tsMain.SuspendLayout();
@@ -477,28 +477,28 @@
             this.dgvObjectExplorer.AllowUserToResizeRows = false;
             this.dgvObjectExplorer.BackgroundColor = System.Drawing.Color.White;
             this.dgvObjectExplorer.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvObjectExplorer.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvObjectExplorer.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle9;
             this.dgvObjectExplorer.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvObjectExplorer.ColumnHeadersVisible = false;
             this.dgvObjectExplorer.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.clImage,
             this.clName});
             this.dgvObjectExplorer.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F);
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvObjectExplorer.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F);
+            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvObjectExplorer.DefaultCellStyle = dataGridViewCellStyle10;
             this.dgvObjectExplorer.Dock = System.Windows.Forms.DockStyle.Left;
             this.dgvObjectExplorer.GridColor = System.Drawing.Color.White;
             this.dgvObjectExplorer.Location = new System.Drawing.Point(0, 49);
@@ -542,17 +542,17 @@
             // scpFileToolStripMenuItem
             // 
             this.scpFileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.loadScpFileCmdToolStripMenuItem});
+            this.loadScpIndexIndexToolStripMenuItem});
             this.scpFileToolStripMenuItem.Name = "scpFileToolStripMenuItem";
             this.scpFileToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
             this.scpFileToolStripMenuItem.Text = "ScpFile";
             // 
-            // loadScpFileCmdToolStripMenuItem
+            // loadScpIndexIndexToolStripMenuItem
             // 
-            this.loadScpFileCmdToolStripMenuItem.Name = "loadScpFileCmdToolStripMenuItem";
-            this.loadScpFileCmdToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
-            this.loadScpFileCmdToolStripMenuItem.Text = "UpdateScpFileCmd";
-            this.loadScpFileCmdToolStripMenuItem.Click += new System.EventHandler(this.loadScpFileCmdToolStripMenuItem_Click);
+            this.loadScpIndexIndexToolStripMenuItem.Name = "loadScpIndexIndexToolStripMenuItem";
+            this.loadScpIndexIndexToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
+            this.loadScpIndexIndexToolStripMenuItem.Text = "[2]LoadScpIndexIndex";
+            this.loadScpIndexIndexToolStripMenuItem.Click += new System.EventHandler(this.loadScpIndexIndexToolStripMenuItem_Click);
             // 
             // MAIN
             // 
@@ -641,6 +641,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem5;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
         private System.Windows.Forms.ToolStripMenuItem scpFileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem loadScpFileCmdToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem loadScpIndexIndexToolStripMenuItem;
     }
 }

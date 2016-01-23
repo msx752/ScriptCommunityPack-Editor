@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -27,7 +28,7 @@ namespace FastColoredTextBoxNS.Render
     {
         string Cmd { get; set; }
         FileInfo File { get; set; }
-        Range RangeOfCommand { get; set; }
+        Point RangeOfCommand { get; set; }
         CmdDefType CmdType { get; set; }
         bool checkFileChanges();
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -17,12 +18,12 @@ namespace FastColoredTextBoxNS.Render
         string _cmd;
         CmdDefType _cmdtype;
         private FileInfo _file;
-        private Range _rangeofcmd;
+        private Point _rangeofcmd;
 
         public string Cmd { get { return _cmd; } set { _cmd = value; } }
         public CmdDefType CmdType { get { return _cmdtype; } set { _cmdtype = value; } }
         public FileInfo File { get { return _file; } set { _file = value; } }
-        public Range RangeOfCommand { get { return _rangeofcmd; } set { _rangeofcmd = value; } }
+        public Point RangeOfCommand { get { return _rangeofcmd; } set { _rangeofcmd = value; } }
 
         public BaseDef(string newCmd, CmdDefType newCmdDefType)
         {

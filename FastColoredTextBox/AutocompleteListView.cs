@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FastColoredTextBoxNS.Render;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -183,35 +184,70 @@ namespace FastColoredTextBoxNS
                     {
                         string[] splited = text.Replace(" ", "").Split('.');//for sourcetree (notimplemented)
 
-                        //listing which are all
-                        finded = this.sourceItems
-                           .Where(p => p.ToolTipTitle != null).ToList()
-                           .Where(p => p.Compare(text) == CompareResult.Visible)
-                           .ToList();
-                        if (finded.Count > 0)
+                        if (splited.Length==1
+                            &&(text.StartsWith("i_")
+                            || text.StartsWith("c_")
+                            || text.StartsWith("d_")
+                            || text.StartsWith("e_")
+                            || text.StartsWith("f_")))
                         {
-                            while (finded.Count >= 31)//max listed func
-                                finded.RemoveAt(30);
-                            this.visibleItems.AddRange(finded);
+                            CmdDefType typ = CmdDefType.NONE;
+                            if (splited[0].StartsWith("i_"))
+                                typ = CmdDefType.ITEMDEF;
+                            else if (splited[0].StartsWith("c_"))
+                                typ = CmdDefType.CHARDEF;
+                            else if (splited[0].StartsWith("d_"))
+                                typ = CmdDefType.DIALOG;
+                            else if (splited[0].StartsWith("e_"))
+                                typ = CmdDefType.EVENTS;
+                            else if (splited[0].StartsWith("f_"))
+                                typ = CmdDefType.FUNCTION;
+
+                            //listing which are all
+                            finded = this.sourceItems
+                               .Where(p => p.ToolTipTitle != null).ToList()
+                               .Where(p => p.ToolTipTitle.IndexOf("[" + typ.ToString()) != -1)
+                               .Where(p => p.Text.IndexOf("_") != -1)
+                               .ToList();
+                            if (finded.Count > 0)
+                            {
+                                while (finded.Count >= 31)//max listed func
+                                    finded.RemoveAt(30);
+                                this.visibleItems.AddRange(finded);
+                            }
                         }
-
-                        //listing which is searching
-                        finded = this.sourceItems
-                            .Where(p => p.ToolTipTitle != null).ToList()
-                            .Where(p => p.Compare(text) == CompareResult.VisibleAndSelected)
-                            .ToList();
-                        if (finded.Count > 0)
+                        else
                         {
-                            while (finded.Count >= 31)//max listed func
-                                finded.RemoveAt(30);
-                            this.visibleItems.AddRange(finded);
+                            //listing which are all
+                            finded = this.sourceItems
+                               .Where(p => p.ToolTipTitle != null).ToList()
+                               .Where(p => p.Compare(text) == CompareResult.Visible)
+                               .ToList();
+                            if (finded.Count > 0)
+                            {
+                                while (finded.Count >= 31)//max listed func
+                                    finded.RemoveAt(30);
+                                this.visibleItems.AddRange(finded);
+                            }
 
-
-                            this.visibleItems = this.visibleItems
-                                .OrderBy(p => p.Text.IndexOf(splited[splited.Length - 1]))
+                            //listing which is searching
+                            finded = this.sourceItems
+                                .Where(p => p.ToolTipTitle != null).ToList()
+                                .Where(p => p.Compare(text) == CompareResult.VisibleAndSelected)
                                 .ToList();
-                            flag = true;
-                            this.selectedItemIndex = 0;
+                            if (finded.Count > 0)
+                            {
+                                while (finded.Count >= 31)//max listed func
+                                    finded.RemoveAt(30);
+                                this.visibleItems.AddRange(finded);
+
+
+                                this.visibleItems = this.visibleItems
+                                    .OrderBy(p => p.Text.IndexOf(splited[splited.Length - 1]))
+                                    .ToList();
+                                flag = true;
+                                this.selectedItemIndex = 0;
+                            }
                         }
                     }
                     else if (text.IndexOf(".") == -1)//defane is cannot using DOT
@@ -381,6 +417,10 @@ namespace FastColoredTextBoxNS
             FastColoredTextBox tb = fragment.tb;
             if (textForReplace.StartsWith("["))
                 tb.Selection.Start = new Place(fragment.Start.iChar - 1, fragment.Start.iLine);
+            //else if (item.ToolTipTitle.Split(' ')[0].StartsWith("["))
+            //{
+            //    tb.Selection.Start = new Place(tb.Selection.Start.iChar- item.ToolTipTitle.Split(' ')[0].Length, tb.Selection.Start.iLine);
+            //}
             else
                 tb.Selection.Start = fragment.Start;
             tb.Selection.End = fragment.End;

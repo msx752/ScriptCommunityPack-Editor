@@ -17,12 +17,18 @@ namespace FastColoredTextBoxNS.Render
         //compare and add parent define
         static string pathIndex = Path.Combine(Application.StartupPath, "scp_index");
         static string pathScripts = Path.Combine(Application.StartupPath, "scripts");
-        static List<IBaseDef> Commands = new List<IBaseDef>();
+        public static List<IBaseDef> Commands = new List<IBaseDef>();
 
+        //if filechanged call
         public static bool UpdateScpCmd()
         {
             try
             {
+                if (!Directory.Exists(pathScripts))
+                {
+                    MessageBox.Show("error:: scripts folder couldn't find. if you don't have you can download here:\r\nhttps://github.com/MSAlih1/Scripts");
+                    return false;
+                }
                 string[] FileList = Directory.GetFiles(pathScripts, "*.scp", SearchOption.AllDirectories);
                 for (int i = 0; i < FileList.Length; i++)
                 {
@@ -113,9 +119,62 @@ namespace FastColoredTextBoxNS.Render
 
         public static void LoadScpCmd()
         {
-            if (UpdateScpCmd())
+            bool bl = UpdateScpCmd();//if filechanged call
+            if (bl)
             {
-                
+                Commands.Clear();
+                string[] FileList = Directory.GetFiles(pathIndex, "*.scp", SearchOption.AllDirectories);
+                foreach (string item in FileList)
+                {
+                    FileInfo fif = new FileInfo(item);
+                    StreamReader sr = new StreamReader(fif.FullName, Encoding.UTF8);
+                    string currLine;
+                    sr.ReadLine();
+                    sr.ReadLine();
+                    while ((currLine = sr.ReadLine()) != null)
+                    {
+                        //define
+                        //define value
+                        //id
+                        //name
+                        //defname
+                        //line
+                        //selected chars count
+                        string[] definatin = currLine.Split(':');
+                        IBaseDef valuedef = null;
+                        CmdDefType deftyp = (CmdDefType)Enum.Parse(typeof(CmdDefType), definatin[0], true);
+                        if (deftyp != CmdDefType.NONE)
+                        {
+                            if (deftyp == CmdDefType.CHARDEF || deftyp == CmdDefType.ITEMDEF)
+                            {
+                                if (definatin[2] != "")//is children
+                                {
+                                    valuedef = new ObjectDef(definatin[1], deftyp);
+                                    (valuedef as ObjectDef).ParentId = definatin[2];
+                                    (valuedef as ObjectDef).Name = definatin[3];
+                                }
+                                else if (definatin[4] != "")//is parent
+                                {
+                                    valuedef = new ObjectDef(definatin[1], deftyp);
+                                    (valuedef as ObjectDef).Defname = definatin[4];
+                                }
+                                else//is parent (base parent is hardcoding)
+                                {
+                                    valuedef = new ObjectDef(definatin[1], deftyp);
+                                    (valuedef as ObjectDef).Defname = definatin[4];
+                                }
+                            }
+                            else
+                            {
+                                valuedef = new BaseDef(definatin[1], deftyp);
+                            }
+                            valuedef.File = new FileInfo(item.Replace(pathIndex, pathScripts));
+                            valuedef.RangeOfCommand = new System.Drawing.Point(int.Parse(definatin[6]), int.Parse(definatin[5]));
+                        }
+                        if (valuedef != null)
+                            Commands.Add(valuedef);
+                    }
+                }
             }
         }
     }
