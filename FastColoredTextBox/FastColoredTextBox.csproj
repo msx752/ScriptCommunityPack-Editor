@@ -128,7 +128,6 @@
     <Compile Include="Render\Indexer\IBaseDefine.cs" />
     <Compile Include="Render\Indexer\ObjectDefine.cs" />
     <Compile Include="Render\Indexer\ScpIndexer.cs" />
-    <Compile Include="Render\Indexer\SubObjectDefine.cs" />
     <Compile Include="Render\InsertEnterSnippet.cs" />
     <Compile Include="Render\InsertSpaceSnippet.cs" />
     <Compile Include="Render\InvisibleCharsRenderer.cs" />

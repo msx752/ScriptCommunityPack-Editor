@@ -808,5 +808,10 @@ namespace SphereScp
             if (CurrentTB.UndoEnabled)
                 CurrentTB.Undo();
         }
+
+        private void loadScpFileCmdToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ScpIndexer.UpdateScpCmdList();
+        }
     }
 }

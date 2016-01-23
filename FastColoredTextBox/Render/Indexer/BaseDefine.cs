@@ -12,7 +12,7 @@ namespace FastColoredTextBoxNS.Render
     //File: FileLocation
     //Point: IndexOfCommand
     //DateTime: ScpFileLastChangedTime (for refreshing)
-    public class BaseDefine : IBaseDef
+    public class BaseDef : IBaseDef
     {
         string _cmd;
         CmdDefType _cmdtype;
@@ -24,7 +24,7 @@ namespace FastColoredTextBoxNS.Render
         public FileInfo File { get { return _file; } set { _file = value; } }
         public Range RangeOfCommand { get { return _rangeofcmd; } set { _rangeofcmd = value; } }
 
-        public BaseDefine(string newCmd, CmdDefType newCmdDefType)
+        public BaseDef(string newCmd, CmdDefType newCmdDefType)
         {
             Cmd = newCmd;
             CmdType = newCmdDefType;

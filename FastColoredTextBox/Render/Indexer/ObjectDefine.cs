@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace FastColoredTextBoxNS.Render.Indexer
 {
-    public class ObjectDefine : BaseDefine
+    public class ObjectDef : BaseDef
     {
-        public ObjectDefine(string newCmd, CmdDefType newCmdDefType) 
+        public ObjectDef(string newCmd, CmdDefType newCmdDefType) 
             : base(newCmd, newCmdDefType)
         {
         }
@@ -22,6 +22,8 @@ namespace FastColoredTextBoxNS.Render.Indexer
         //      string[PARENT]: DEFNAME=
         //File: FileLocation
         //Point: IndexOfCommand
-        ObjectDefine Defname { get; set; }
+
+        public string Name { get; set; }
+        public ObjectDef Parent { get; set; }
     }
 }

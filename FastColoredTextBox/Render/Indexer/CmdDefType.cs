@@ -12,6 +12,7 @@ namespace FastColoredTextBoxNS.Render
         CHARDEF = 2,
         DIALOG = 4,
         EVENTS = 8,
-        FUNCTION = 16
+        FUNCTION = 16,
+        NONE = 32
     }
 }
