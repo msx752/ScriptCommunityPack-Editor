@@ -124,6 +124,7 @@
     <Compile Include="Render\ExplorerItem.cs" />
     <Compile Include="Render\ExplorerItemComparer.cs" />
     <Compile Include="Render\Indexer\BaseDefine.cs" />
+    <Compile Include="Render\Indexer\CmdDefType.cs" />
     <Compile Include="Render\Indexer\IBaseDefine.cs" />
     <Compile Include="Render\Indexer\ObjectDefine.cs" />
     <Compile Include="Render\Indexer\ScpIndexer.cs" />

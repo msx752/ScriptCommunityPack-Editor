@@ -8,5 +8,20 @@ namespace FastColoredTextBoxNS.Render.Indexer
 {
     public class ObjectDefine : BaseDefine
     {
+        public ObjectDefine(string newCmd, CmdDefType newCmdDefType) 
+            : base(newCmd, newCmdDefType)
+        {
+        }
+
+        //[itemdef,chardef]
+        //-SubObjectDefine
+        //      string[PARENT]: ID=
+        //      string: NAME=
+        //OR
+        //-ObjectDefine
+        //      string[PARENT]: DEFNAME=
+        //File: FileLocation
+        //Point: IndexOfCommand
+        ObjectDefine Defname { get; set; }
     }
 }
