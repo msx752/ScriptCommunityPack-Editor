@@ -21,6 +21,7 @@ namespace FastColoredTextBoxNS.Render
     //-BaseDefine
     //File: FileLocation
     //Point: IndexOfCommand
+    //DateTime: ScpFileLastChangedTime (for refreshing)
     interface IBaseDefine
     {
     }
