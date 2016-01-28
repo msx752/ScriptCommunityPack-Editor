@@ -243,6 +243,19 @@ namespace FastColoredTextBoxNS
                                 visibleItems.AddRange(finded);
                             }
                         }
+                        else if (splited.Length == 1
+                          && text.StartsWith("if"))
+                        {
+                            finded = sourceItems
+                                  .Where(p => p.Text.ToLower().StartsWith(splited[0]))
+                                  .ToList();
+                            if (finded.Count > 0)
+                            {
+                                while (finded.Count >= 31)//max listed func
+                                    finded.RemoveAt(30);
+                                visibleItems.AddRange(finded);
+                            }
+                        }
                         else
                         {
                             //listing which are all
