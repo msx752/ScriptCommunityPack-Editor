@@ -23,7 +23,8 @@ namespace FastColoredTextBoxNS.Render
             bool bl = UpdateScpCmd();//if filechanged call
             if (bl)
             {
-                Commands.Clear();
+                ScriptCommunityPack.fileScpCommands.Clear();
+                //Commands.Clear();
                 string[] FileList = Directory.GetFiles(pathIndex, "*.scp", SearchOption.AllDirectories);
                 foreach (string item in FileList)
                 {
@@ -73,7 +74,24 @@ namespace FastColoredTextBoxNS.Render
                             valuedef.RangeOfCommand = new System.Drawing.Point(int.Parse(definatin[6]), int.Parse(definatin[5]));
                         }
                         if (valuedef != null)
-                            Commands.Add(valuedef);
+                        {
+                            //Commands.Add(valuedef);
+                            MethodAuto newScpCmd = new MethodAuto(valuedef.Cmd);
+                            string define = string.Format("[{0} {1}]", valuedef.CmdType.ToString(), valuedef.Cmd);
+                            if (valuedef is ObjectDef)
+                            {
+                                newScpCmd.ImageIndex = 1;
+                                newScpCmd.ToolTipTitle = define;
+                                string children = "";
+                                foreach (ObjectDef item2 in (valuedef as ObjectDef).Child)
+                                    children += "," + item2;
+                                if (children.Length > 0)
+                                    children = children.Substring(1);
+                                string titletext = string.Format("{0}\r\n{1}\r\n File: {2}    {{Line: {3}}}\r\nParent: {4}\r\nChild: {5}", (valuedef as ObjectDef).Name, "", valuedef.File.Name, valuedef.RangeOfCommand.Y, (valuedef as ObjectDef).ParentId, children);
+                                newScpCmd.ToolTipText = titletext;
+                                ScriptCommunityPack.fileScpCommands.Add(newScpCmd);
+                            }
+                        }
                     }
                 }
             }
@@ -84,15 +102,25 @@ namespace FastColoredTextBoxNS.Render
         {
             try
             {
-                MessageBox.Show("Please select Scripts Folder for Auto Complete");
-                FolderBrowserDialog opf = new FolderBrowserDialog();
-                if (opf.ShowDialog()!=DialogResult.OK)
+                ;
+                if (MessageBox.Show("Please select Scripts Folder\n or \nif you have \"Startup Folder\\scripts\" press Cancel", "", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
                 {
-                    MessageBox.Show("You didn't select any sphere scripts folder");
-                    return false;
+                    pathScripts = Path.Combine(Application.StartupPath, "scripts");//DEBUG MOD FAST LOAD
                 }
-                
-                pathScripts = opf.SelectedPath;
+                else
+                {
+                    FolderBrowserDialog opf = new FolderBrowserDialog();
+                    if (opf.ShowDialog()!= DialogResult.OK)
+                    {
+                        MessageBox.Show("please select correct folder");
+                        return false;
+                    }
+                    else
+                    {
+                        pathScripts = opf.SelectedPath;
+                    }
+                }
+
                 if (!Directory.Exists(pathScripts))
                 {
                     MessageBox.Show("error:: scripts folder couldn't find. if you don't have you can download here:\r\nhttps://github.com/MSAlih1/Scripts");

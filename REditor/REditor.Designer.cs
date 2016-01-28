@@ -105,6 +105,7 @@
             this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripMenuItem();
             this.tsFiles = new FarsiLibrary.Win.FATabStrip();
             this.documentMap1 = new FastColoredTextBoxNS.DocumentMap();
+            this.loadKeywordsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.msMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.cmMain.SuspendLayout();
@@ -181,6 +182,7 @@
             // loadSphereScriptsToolStripMenuItem
             // 
             this.loadSphereScriptsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.loadKeywordsToolStripMenuItem,
             this.loadToolStripMenuItem});
             this.loadSphereScriptsToolStripMenuItem.Name = "loadSphereScriptsToolStripMenuItem";
             this.loadSphereScriptsToolStripMenuItem.Size = new System.Drawing.Size(120, 20);
@@ -784,6 +786,13 @@
             this.documentMap1.Target = null;
             this.documentMap1.Text = "documentMap1";
             // 
+            // loadKeywordsToolStripMenuItem
+            // 
+            this.loadKeywordsToolStripMenuItem.Name = "loadKeywordsToolStripMenuItem";
+            this.loadKeywordsToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.loadKeywordsToolStripMenuItem.Text = "Load Keywords";
+            this.loadKeywordsToolStripMenuItem.Click += new System.EventHandler(this.loadKeywordsToolStripMenuItem_Click);
+            // 
             // MAIN
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -893,5 +902,6 @@
         private System.Windows.Forms.ToolStripMenuItem loadSphereScriptsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem loadKeywordsToolStripMenuItem;
     }
 }

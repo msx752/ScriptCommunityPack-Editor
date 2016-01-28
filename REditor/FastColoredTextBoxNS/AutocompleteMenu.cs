@@ -151,7 +151,10 @@ namespace FastColoredTextBoxNS
         {
             DoAutocomplete(false);
         }
-
+        /// <summary>
+        /// WARNING ####### THIS METHOD WORKING ONLY LANGUAGE.SCP TYPE
+        /// </summary>
+        /// <param name="forced"></param>
         internal void DoAutocomplete(bool forced)
         {
             if (!Menu.Enabled)
@@ -167,7 +170,7 @@ namespace FastColoredTextBoxNS
                 string text = fragment.Text;
                 Point position = tb.PlaceToPoint(fragment.End);
                 position.Offset(2, tb.CharHeight);
-                if (forced || ((text.Length >= Menu.MinFragmentLength) && (tb.Selection.Start == tb.Selection.End)))
+                if (forced || (((text.Length >= Menu.MinFragmentLength) && (tb.Selection.Start == tb.Selection.End)))|| text.EndsWith("<"))
                 {
                     Menu.Fragment = fragment;
 
@@ -177,9 +180,10 @@ namespace FastColoredTextBoxNS
                     sourceItems
                         .ForEach(val => val.Parent = Menu);//all member sets parent
                     List<AutoCompleteItem> finded;
+                    ///NEED CHANGES THAT CODES I KNOW. BUT NOW OKAY
                     if (tb.GetLineText(Menu.Fragment.Start.iLine).Replace(" ", "").StartsWith("[") == false)
                     {
-                        string[] splited = text.Replace(" ", "").Split('.');//for sourcetree (notimplemented)
+                        string[] splited = text.ToLower().Replace("ı", "i").Replace(" ", "").Split('.');//for sourcetree (notimplemented)
 
                         if (splited.Length == 1
                             && (text.StartsWith("i_")
@@ -206,6 +210,32 @@ namespace FastColoredTextBoxNS
                                .Where(p => p.ToolTipTitle.IndexOf("[" + typ.ToString()) != -1)
                                .Where(p => p.Text.IndexOf("_") != -1)
                                .ToList();
+                            if (finded.Count > 0)
+                            {
+                                while (finded.Count >= 31)//max listed func
+                                    finded.RemoveAt(30);
+                                visibleItems.AddRange(finded);
+                            }
+                        }
+                        else if (splited.Length == 1
+                            && text.StartsWith("on="))
+                        {
+                            finded = sourceItems
+                                  .Where(p => p.Text.ToLower().StartsWith(splited[0]))
+                                  .ToList();
+                            if (finded.Count > 0)
+                            {
+                                while (finded.Count >= 31)//max listed func
+                                    finded.RemoveAt(30);
+                                visibleItems.AddRange(finded);
+                            }
+                        }
+                        else if (splited.Length == 1
+                           && text.StartsWith("<"))
+                        {
+                            finded = sourceItems
+                                  .Where(p => p.Text.ToLower().StartsWith(splited[0].Replace(">", "")))
+                                  .ToList();
                             if (finded.Count > 0)
                             {
                                 while (finded.Count >= 31)//max listed func
@@ -245,6 +275,7 @@ namespace FastColoredTextBoxNS
                                 FocussedItemIndex = visibleItems.Count - 1;
                             }
                         }
+
                     }
                     else if (text.IndexOf(".") == -1)//defane is cannot using DOT
                     {
@@ -507,7 +538,10 @@ namespace FastColoredTextBoxNS
             }
             else
             {
-                tb.Selection.Start = fragment.Start;
+                if (newText.StartsWith("["))
+                    tb.Selection.Start = new Place(fragment.Start.iChar - 1, fragment.Start.iLine);
+                else
+                    tb.Selection.Start = fragment.Start;
                 tb.Selection.End = fragment.End;
             }
             tb.InsertText(newText);

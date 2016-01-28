@@ -5,14 +5,26 @@ namespace FastColoredTextBoxNS.Render
 {
     public class PopupToolTip : IDisposable
     {
+        public T GetACItem<T>() where T : AutoCompleteItem
+        {
+            object classType = new object();
+            if (Properties.Contains(PropertyTypes.SnippetAuto))
+                classType = new SnippetAuto(Name) { ImageIndex = 1 };
+            else if (Properties.Contains(PropertyTypes.DeclarationAuto))
+                classType = new DeclarationAuto(Name) { ImageIndex = 1 };
+            else if (Properties.Contains(PropertyTypes.TriggerAuto))
+                classType = new MethodAuto(Name) { ImageIndex = 2 };
+            else {
+                classType = new MethodAuto(this);
+                (classType as MethodAuto).ImageIndex = 2;
+            }
+            return classType as T;
+        }
+
         public string Comment { get; set; } = "none";
-
         public string Name { get; set; } = "";
-
         public String Parameters { get; set; } = "";
-
         public List<PropertyTypes> Properties { get; set; } = new List<PropertyTypes>();
-
         public override string ToString()
         {
             string propList = "";

@@ -134,11 +134,11 @@ namespace SphereScp
             }
             else
             {
-                items.AddRange(ScriptCommunityPack.snippets);
-                items.AddRange(ScriptCommunityPack.declaration);
-                //items.AddRange(ScriptCommunityPack.methods);//not necessary
-                items.AddRange(ScriptCommunityPack.keywords);
-                items.AddRange(ScriptCommunityPack.fileCommands);//NEW
+                items.AddRange(ScriptCommunityPack.loadKwCommand<MethodAuto>(PropertyTypes.TriggerAuto));//improved
+                items.AddRange(ScriptCommunityPack.loadKwCommand<DeclarationAuto>(PropertyTypes.DeclarationAuto));//improved
+                items.AddRange(ScriptCommunityPack.loadKwCommand<SnippetAuto>(PropertyTypes.SnippetAuto));//improved
+                items.AddRange(ScriptCommunityPack.loadKwCommand<MethodAuto>(true, PropertyTypes.SnippetAuto, PropertyTypes.DeclarationAuto, PropertyTypes.TriggerAuto));//improved
+                items.AddRange(ScriptCommunityPack.fileScpCommands);//NEW scp commands
             }
 
             items.Add(new InsertSpaceSnippet());
@@ -147,7 +147,7 @@ namespace SphereScp
 
             //set as autocomplete source
             popupMenu.Items.SetAutocompleteItems(items);
-            popupMenu.SearchPattern = @"[\w\.:=!<>]";
+            popupMenu.SearchPattern = @"[\w\.@:=!<>]";
         }
 
         private void cloneLinesAndCommentToolStripMenuItem_Click(object sender, EventArgs e)
@@ -192,6 +192,11 @@ namespace SphereScp
 
         private void CreateTab(string fileName)
         {
+            if (ScriptCommunityPack.keywordsInformation.Count == 0)
+            {
+                MessageBox.Show("primarily load keywords");
+                return;
+            }
             try
             {
                 FastColoredTextBox tb = new FastColoredTextBox();
@@ -753,12 +758,16 @@ namespace SphereScp
             {
                 if (e.HoveredWord != null | e.HoveredWord != "")
                 {
-                    PopupToolTip keyw = ScriptCommunityPack.KeywordsInformation.Find(x => x.Name.ToLower() == e.HoveredWord.ToLower());
+                    PopupToolTip keyw = ScriptCommunityPack.keywordsInformation.Find(x => x.Name.ToLower() == e.HoveredWord.ToLower());
                     if (keyw != null)
                     {
                         e.ToolTipTitle = keyw.Name;
 
                         e.ToolTipText = keyw.ToString();
+                    }
+                    else
+                    {
+                        //scp command tooltip
                     }
                 }
             }
@@ -955,8 +964,19 @@ namespace SphereScp
 
         private void loadToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (ScriptCommunityPack.keywordsInformation.Count == 0)
+            {
+                MessageBox.Show("primarily load keywords");
+                return;
+            }
             tsFiles.Enabled = false;
             ScpIndexer.LoadScpCmd();
+            tsFiles.Enabled = true;
+        }
+
+        private void loadKeywordsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            tsFiles.Enabled = false;
             ScriptCommunityPack.LoadKeywords();
             tsFiles.Enabled = true;
         }
