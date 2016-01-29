@@ -175,6 +175,7 @@ namespace FastColoredTextBoxNS
                     string text = fragment.Text;
                     Point position = tb.PlaceToPoint(fragment.End);
                     position.Offset(2, tb.CharHeight);
+                    List<AutoCompleteItem> finded = new List<AutoCompleteItem>();
                     if (forced || (((text.Length >= Menu.MinFragmentLength) && (tb.Selection.Start == tb.Selection.End))) || text.EndsWith("<"))
                     {
                         Menu.Fragment = fragment;
@@ -184,7 +185,6 @@ namespace FastColoredTextBoxNS
                         bool flag = false;
                         sourceItems
                             .ForEach(val => val.Parent = Menu);//all member sets parent
-                        List<AutoCompleteItem> finded;
                         ///NEED CHANGES THAT CODES I KNOW. BUT NOW OKAY
                         CultureInfo eng = new CultureInfo("en-US");
                         if (tb.GetLineText(Menu.Fragment.Start.iLine).Replace(" ", "").StartsWith("[") == false)
@@ -221,7 +221,7 @@ namespace FastColoredTextBoxNS
                                 && text.StartsWith("on=", true, eng))
                             {
                                 finded = sourceItems
-                                      .Where(p => p.Text.StartsWith(splited[0], true, eng))
+                                      .Where(p => p.Text.StartsWith("@", true, eng))
                                       .ToList();
                             }
                             else if (splited.Length == 1
@@ -246,20 +246,6 @@ namespace FastColoredTextBoxNS
                                    .Where(p => p.Text.StartsWith(splited[splited.Length - 1], true, eng))
                                    .ToList();
                             }
-
-                            if (finded.Count > 0)
-                            {
-                                finded = finded.OrderBy(p => p.Text)
-                                .Where(p => !(p is InsertEnterSnippet) && !(p is InsertSpaceSnippet))
-                                .ToList();
-
-                                while (finded.Count >= 31)//max listed func
-                                    finded.RemoveAt(30);
-                                visibleItems.AddRange(finded);
-                                flag = true;
-                                FocussedItemIndex = 0;
-                            }
-
                         }
                         else if (text.IndexOf(".") == -1)//defane is cannot using DOT
                         {
@@ -269,12 +255,20 @@ namespace FastColoredTextBoxNS
                                .Replace("ı", "i")//turkish language fix
                                .IndexOf("[" + text.ToLower()) != -1)
                                .ToList();
-                            if (finded.Count > 0)
-                            {
-                                while (finded.Count >= 31)//max listed func
-                                    finded.RemoveAt(30);
-                                visibleItems.AddRange(finded);
-                            }
+                        }
+
+                        if (finded.Count > 0)
+                        {
+                            finded = finded.OrderBy(p => p.Text)
+                            .Where(p => !(p is InsertEnterSnippet) && !(p is InsertSpaceSnippet))
+                            .ToList();
+
+                            while (finded.Count >= 31)//max listed func
+                                finded.RemoveAt(30);
+                            visibleItems.AddRange(finded);
+
+                            flag = true;
+                            FocussedItemIndex = 0;
                         }
                         if (flag)
                         {
@@ -501,10 +495,8 @@ namespace FastColoredTextBoxNS
         private void DoAutocomplete(AutoCompleteItem item, Range fragment)
         {
             string newText = item.GetTextForReplace();
-
             //replace text of fragment
             var tb = fragment.tb;
-
             tb.BeginAutoUndo();
             tb.TextSource.Manager.ExecuteCommand(new SelectCommand(tb.TextSource));
             if (tb.Selection.ColumnSelectionMode)
@@ -521,11 +513,11 @@ namespace FastColoredTextBoxNS
                 if (newText.StartsWith("["))
                     tb.Selection.Start = new Place(fragment.Start.iChar - 1, fragment.Start.iLine);
                 else
-                    tb.Selection.Start = fragment.Start;
-                tb.Selection.End = fragment.End;
-                if (newText.ToLower().StartsWith(".on=@"))//.On=@ (DOT bug fixed)
-                    newText = newText.Substring(1);
+                    tb.Selection.Start = new Place(tb.Selection.Start.iChar - 1, tb.Selection.Start.iLine);
 
+                tb.Selection.End = fragment.End;
+                if (newText.ToLower().StartsWith(".@"))//.On=@ (DOT bug fixed)
+                    newText = newText.Replace(".@","=@");
             }
             tb.InsertText(newText);
             tb.TextSource.Manager.ExecuteCommand(new SelectCommand(tb.TextSource));
@@ -702,9 +694,7 @@ namespace FastColoredTextBoxNS
             if (texti.Length == 3)
             {
                 if (texti[1] == "" & texti[2] == "")
-                {
                     return;
-                }
             }
             if (texti.Length > 1)
             {
@@ -735,9 +725,8 @@ namespace FastColoredTextBoxNS
                     for (int i = 3; i < texti.Length; i++)
                     {
                         if (i == texti.Length - 1)
-                        {
                             texti[i] = texti[i];
-                        }
+
                         g.DrawString(texti[i],
                             destinationFONT, Brushes.Blue, new PointF(rct.X + 4, rct.Y + 30 + ((i - 3) * 15))); // bot layer
                     }
@@ -766,21 +755,16 @@ namespace FastColoredTextBoxNS
                 string[] it = new string[title.Length - 1];
                 it[0] = title[0] + " " + title[1];
                 for (int i = 1; i < it.Length; i++)
-                {
                     it[i] = title[i + 1];
-                }
+
                 it = it.OrderBy(x => x.Length).ToArray();
                 sz.Width = (it[it.Length - 1].Length * 5) + 15;
             }
 
             if (title.Length <= 3)
-            {
                 sz.Height = 36;
-            }
             else
-            {
                 sz.Height = 14 * title.Length;
-            }
             e.ToolTipSize = sz;
         }
     }

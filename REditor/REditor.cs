@@ -48,7 +48,8 @@ namespace SphereScp
             //ScpIndexer.LoadScpCmd();
             //ScriptCommunityPack.LoadKeywords();
         }
-        FastColoredTextBox CurrentTB
+
+        private FastColoredTextBox CurrentTB
         {
             get
             {
@@ -402,6 +403,7 @@ namespace SphereScp
         {
             CreateTab(null);
         }
+
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ofdMain.Filter = string.Format("FileType (*.{0} )|*.{0}", currentLang.ToString().ToLower());
@@ -414,7 +416,7 @@ namespace SphereScp
             CurrentTB.Paste();
         }
 
-        void popupMenu_Opening(object sender, CancelEventArgs e)
+        private void popupMenu_Opening(object sender, CancelEventArgs e)
         {
             //---block autocomplete menu for comments
             //get index of green style (used for comments)
@@ -466,8 +468,7 @@ namespace SphereScp
         {
             Close();
         }
-
-
+        
         private void ReBuildObjectExplorer(string text)
         {
             try
@@ -677,7 +678,7 @@ namespace SphereScp
             CurrentTB.Selection.SelectAll();
         }
 
-        void tb_KeyDown(object sender, KeyEventArgs e)
+        private void tb_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Modifiers == Keys.Control && e.KeyCode == Keys.OemMinus)
             {
@@ -699,7 +700,7 @@ namespace SphereScp
             }
         }
 
-        void tb_MouseMove(object sender, MouseEventArgs e)
+        private void tb_MouseMove(object sender, MouseEventArgs e)
         {
             var tb = sender as FastColoredTextBox;
             var place = tb.PointToPlace(e.Location);
@@ -709,7 +710,7 @@ namespace SphereScp
             lbWordUnderMouse.Text = text;
         }
 
-        void tb_SelectionChangedDelayed(object sender, EventArgs e)
+        private void tb_SelectionChangedDelayed(object sender, EventArgs e)
         {
             var tb = sender as FastColoredTextBox;
             //remember last visit time
@@ -739,7 +740,7 @@ namespace SphereScp
                     r.SetStyle(sameWordsStyle);
         }
 
-        void tb_TextChangedDelayed(object sender, TextChangedEventArgs e)
+        private void tb_TextChangedDelayed(object sender, TextChangedEventArgs e)
         {
             //FastColoredTextBox tb = (sender as FastColoredTextBox);
             ////rebuild object explorer
@@ -758,11 +759,10 @@ namespace SphereScp
             {
                 if (e.HoveredWord != null | e.HoveredWord != "")
                 {
-                    PopupToolTip keyw = ScriptCommunityPack.keywordsInformation.Find(x => x.Name.ToLower() == e.HoveredWord.ToLower());
+                    PopupToolTip keyw = ScriptCommunityPack.keywordsInformation.Find(x => x.Name.ToLower().StartsWith(e.HoveredWord.ToLower()));
                     if (keyw != null)
                     {
                         e.ToolTipTitle = keyw.Name;
-
                         e.ToolTipText = keyw.ToString();
                     }
                     else
@@ -838,9 +838,7 @@ namespace SphereScp
             if (texti.Length == 3)
             {
                 if (texti[1] == "" & texti[2] == "")
-                {
                     return;
-                }
             }
             if (texti.Length > 1)
             {
@@ -871,9 +869,8 @@ namespace SphereScp
                     for (int i = 3; i < texti.Length; i++)
                     {
                         if (i == texti.Length - 1)
-                        {
                             texti[i] = texti[i];
-                        }
+
                         g.DrawString(texti[i], destinationFONT, Brushes.Blue, new PointF(rct.X + 4, rct.Y + 30 + ((i - 3) * 15))); // bot layer
                     }
                 }
@@ -909,15 +906,13 @@ namespace SphereScp
             }
 
             if (title.Length <= 3)
-            {
                 sz.Height = 36;
-            }
             else
-            {
                 sz.Height = 14 * title.Length;
-            }
+
             e.ToolTipSize = sz;
         }
+
         private void tsFiles_TabStripItemClosing(TabStripItemClosingEventArgs e)
         {
             if ((e.Item.Controls[0] as FastColoredTextBox).IsChanged)
@@ -934,6 +929,7 @@ namespace SphereScp
                 }
             }
         }
+
         private void tsFiles_TabStripItemSelectionChanged(TabStripItemChangedEventArgs e)
         {
             if (CurrentTB != null)
@@ -956,6 +952,7 @@ namespace SphereScp
             if (CurrentTB.UndoEnabled)
                 CurrentTB.Undo();
         }
+
         private void Zoom_click(object sender, EventArgs e)
         {
             if (CurrentTB != null)
