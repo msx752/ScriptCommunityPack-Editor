@@ -258,6 +258,7 @@ namespace FastColoredTextBoxNS
                     {
                         finded = finded.OrderBy(p => p.Text)
                         .Where(p => !(p is InsertEnterSnippet) && !(p is InsertSpaceSnippet))
+                        .Where(p => !p.ToolTipText.StartsWith("\r\n\r\n"))// unknown define
                         .ToList();
 
                         while (finded.Count >= 31)//max listed func
@@ -564,7 +565,7 @@ namespace FastColoredTextBoxNS
                 if (tb.HotkeysMapping.ContainsKey(e.KeyData) && tb.HotkeysMapping[e.KeyData] == FCTBAction.AutocompleteMenu)
                 {
                     onlyShowToopTip = true;
-                       DoAutocomplete();
+                    DoAutocomplete();
                     e.Handled = true;
                 }
                 else
@@ -636,7 +637,7 @@ namespace FastColoredTextBoxNS
 
         private void ToolTip_Popup(object sender, PopupEventArgs e)
         {
-       ScriptCommunityPack.ToolTip_Popup(sender,e);
+            ScriptCommunityPack.ToolTip_Popup(sender, e);
         }
     }
 
