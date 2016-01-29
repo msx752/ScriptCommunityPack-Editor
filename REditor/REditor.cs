@@ -774,86 +774,12 @@ namespace SphereScp
 
         private void ToolTip_Draw(object sender, DrawToolTipEventArgs e)
         {
-            ToolTip tp = sender as ToolTip;
-
-            string str = e.ToolTipText;
-            string[] texti = str.Split(new string[] { "\r\n" }, StringSplitOptions.None);
-            if (texti.Length == 3)
-            {
-                if (texti[1] == "" & texti[2] == "")
-                    return;
-            }
-            if (texti.Length > 1)
-            {
-                Graphics g = e.Graphics;
-                SolidBrush b = new SolidBrush(Color.FromArgb(240, 255, 255));
-                Rectangle rct = e.Bounds;
-                //rct.Height = 48;
-                g.FillRectangle(b, rct);
-
-                g.DrawString(texti[0], new Font(e.Font.FontFamily, 9f, FontStyle.Bold), Brushes.Black,
-                    new PointF(rct.X + 6, rct.Y + 2)); // top layer
-
-                SizeF stringSize = new SizeF();
-                stringSize = e.Graphics.MeasureString(texti[0], e.Font, 0);
-                g.DrawString(texti[1], new Font(e.Font.FontFamily, 8.5f, FontStyle.Regular), Brushes.Black,
-                    new PointF(rct.X + 4 + stringSize.Width, rct.Y + 3)); // mid layer
-
-                g.DrawString(texti[2], new Font(e.Font.FontFamily, 8.5f, FontStyle.Regular | FontStyle.Italic), Brushes.Green,
-                   new PointF(rct.X + 4, rct.Y + 16)); // bot layer
-
-                Font destinationFONT = new Font(e.Font.FontFamily, 7.5f, FontStyle.Regular);
-                if (texti.Length == 4)
-                {
-                    g.DrawString(texti[3], destinationFONT, Brushes.Blue, new PointF(rct.X + 4, rct.Y + 30)); // bot layer
-                }
-                else if (texti.Length > 4)
-                {
-                    for (int i = 3; i < texti.Length; i++)
-                    {
-                        if (i == texti.Length - 1)
-                            texti[i] = texti[i];
-
-                        g.DrawString(texti[i], destinationFONT, Brushes.Blue, new PointF(rct.X + 4, rct.Y + 30 + ((i - 3) * 15))); // bot layer
-                    }
-                }
-                g.Dispose();
-            }
+            ScriptCommunityPack.ToolTip_Draw(sender, e);
         }
 
         private void ToolTip_Popup(object sender, PopupEventArgs e)
         {
-            ToolTip tp = sender as ToolTip;
-            Size sz = e.ToolTipSize;
-            string[] title = tp.GetToolTip(e.AssociatedControl).Split(new string[] { "\r\n" }, StringSplitOptions.None);
-            if (title.Length == 3)
-            {
-                if (title[1] == "" & title[2] == "")
-                {
-                    sz.Width = 0;
-                    sz.Height = 0;
-                    e.ToolTipSize = sz;
-                    return;
-                }
-            }
-            if (title.Length > 1)
-            {
-                string[] it = new string[title.Length - 1];
-                it[0] = title[0] + " " + title[1];
-                for (int i = 1; i < it.Length; i++)
-                {
-                    it[i] = title[i + 1];
-                }
-                it = it.OrderBy(x => x.Length).ToArray();
-                sz.Width = (it[it.Length - 1].Length * 5) + 15;
-            }
-
-            if (title.Length <= 3)
-                sz.Height = 36;
-            else
-                sz.Height = 14 * title.Length;
-
-            e.ToolTipSize = sz;
+            ScriptCommunityPack.ToolTip_Popup(sender, e);
         }
 
         private void tsFiles_TabStripItemClosing(TabStripItemClosingEventArgs e)

@@ -18,6 +18,7 @@ namespace FastColoredTextBoxNS.Render
         private static string pathIndex = Path.Combine(Application.StartupPath, "scp_index");
 
         private static string pathScripts = Path.Combine(Application.StartupPath, "scripts");
+
         public static void LoadScpCmd()
         {
             bool bl = UpdateScpCmd();//if filechanged call
