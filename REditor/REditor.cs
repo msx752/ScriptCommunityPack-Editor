@@ -208,7 +208,7 @@ namespace SphereScp
             {
                 FastColoredTextBox tb = new FastColoredTextBox();
                 tb.Font = new Font("Consolas", 9.75f);
-                tb.BackColor = Color.Black;
+                tb.BackColor = Color.FromArgb(15,15,15);
                 tb.ForeColor = Color.White;
                 tb.ContextMenuStrip = cmMain;
                 tb.Dock = DockStyle.Fill;
