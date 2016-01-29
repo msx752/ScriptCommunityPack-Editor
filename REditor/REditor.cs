@@ -19,7 +19,7 @@ namespace SphereScp
     public partial class MAIN : Form
     {
         Color changedLineColor = Color.FromArgb(255, 230, 230, 255);
-        Language currentLang = Language.Scp;
+        public static Language currentLang = Language.Scp;
         Color currentLineColor = Color.FromArgb(100, 210, 210, 255);
         string[] declarationSnippets = {
                "public class ^\n{\n}", "private class ^\n{\n}", "internal class ^\n{\n}",
@@ -213,6 +213,7 @@ namespace SphereScp
                 tab.Tag = fileName;
                 if (fileName != null)
                     tb.OpenFile(fileName);
+                tb.Name = Path.GetFileName(fileName);
                 tb.ClearUndo();
                 tb.Tag = new PopupMenu();
                 tsFiles.AddTab(tab);
@@ -466,73 +467,6 @@ namespace SphereScp
             Close();
         }
 
-        //private void ReBuildObjectExplorer(string text)
-        //{
-        //    try
-        //    {
-        //        List<ExplorerItem> list = new List<ExplorerItem>();
-        //        int lastClassIndex = -1;
-        //        //find classes, methods and properties
-        //        Regex regex = new Regex(@"^(?<range>[\w\s]+\b(class|struct|enum|interface)\s+[\w<>,\s]+)|^\s*(public|private|internal|protected)[^\n]+(\n?\s*{|;)?", RegexOptions.Multiline);
-        //        foreach (Match r in regex.Matches(text))
-        //            try
-        //            {
-        //                string s = r.Value;
-        //                int i = s.IndexOfAny(new char[] { '=', '{', ';' });
-        //                if (i >= 0)
-        //                    s = s.Substring(0, i);
-        //                s = s.Trim();
-
-        //                var item = new ExplorerItem() { title = s, position = r.Index };
-        //                if (Regex.IsMatch(item.title, @"\b(class|struct|enum|interface)\b"))
-        //                {
-        //                    item.title = item.title.Substring(item.title.LastIndexOf(' ')).Trim();
-        //                    item.type = ExplorerItemType.Class;
-        //                    list.Sort(lastClassIndex + 1, list.Count - (lastClassIndex + 1), new ExplorerItemComparer());
-        //                    lastClassIndex = list.Count;
-        //                }
-        //                else if (item.title.Contains(" event "))
-        //                {
-        //                    int ii = item.title.LastIndexOf(' ');
-        //                    item.title = item.title.Substring(ii).Trim();
-        //                    item.type = ExplorerItemType.Event;
-        //                }
-        //                else if (item.title.Contains("("))
-        //                {
-        //                    var parts = item.title.Split('(');
-        //                    item.title = parts[0].Substring(parts[0].LastIndexOf(' ')).Trim() + "(" + parts[1];
-        //                    item.type = ExplorerItemType.Method;
-        //                }
-        //                else if (item.title.EndsWith("]"))
-        //                {
-        //                    var parts = item.title.Split('[');
-        //                    if (parts.Length < 2) continue;
-        //                    item.title = parts[0].Substring(parts[0].LastIndexOf(' ')).Trim() + "[" + parts[1];
-        //                    item.type = ExplorerItemType.Method;
-        //                }
-        //                else
-        //                {
-        //                    int ii = item.title.LastIndexOf(' ');
-        //                    item.title = item.title.Substring(ii).Trim();
-        //                    item.type = ExplorerItemType.Property;
-        //                }
-        //                list.Add(item);
-        //            }
-        //            catch {; }
-
-        //        list.Sort(lastClassIndex + 1, list.Count - (lastClassIndex + 1), new ExplorerItemComparer());
-
-        //        BeginInvoke(
-        //            new Action(() =>
-        //                {
-        //                    explorerList = list;
-        //                    dgvObjectExplorer.RowCount = explorerList.Count;
-        //                    dgvObjectExplorer.Invalidate();
-        //                })
-        //        );
-        //    }
-        //    catch {; }
-        //}
 
         private void ReBuildObjectExplorer(string text)
         {
@@ -541,66 +475,132 @@ namespace SphereScp
                 List<ExplorerItem> list = new List<ExplorerItem>();
                 int lastClassIndex = -1;
                 Regex regex = new Regex(@"(?<range>(\[\w+\s+\w+(\s+\w+)?\]))|(?<range>((\bon=@)([a-z]?)+))|(((?:[a-z][a-z]+))(=)((?:[a-z][a-z0-9_]*)))", RegexOptions.IgnoreCase | RegexOptions.Multiline);
-                foreach (Match r in regex.Matches(text))
+                bool isDefineValue = false;
+                if (currentLang == Language.Scp)
                 {
-                    try
+                    foreach (Match r in regex.Matches(text))
                     {
-                        string s = r.Value;
-                        s = s.Trim();
-                        ExplorerItem item = new ExplorerItem() { title = s, position = r.Index };
-                        if (item.title.ToLower().StartsWith("["))
+                        try
                         {
-                            string[] parts = item.title.Split(' ');
-                            if (parts.Length <= 2)
+                            string s = r.Value;
+                            s = s.Trim();
+                            ExplorerItem item = new ExplorerItem() { title = s, position = r.Index };
+                            if (item.title.ToLower().StartsWith("["))
                             {
-                                string tit = parts[0].ToUpper() + " ";
-
-                                for (int i = 1; i < parts.Length; i++)
-                                    tit = tit + parts[i] + " ";
-
-                                item.title = tit;
-                                lastClassIndex = list.Count;
-                                item.type = ExplorerItemType.Class;
-
-                                list.Add(item);
-                            }
-                        }
-                        else
-                        {
-                            if (item.title.ToLower().Contains("on=@"))
-                            {
-                                string[] parts = item.title.Split('@');
-                                if (parts[1].Length > 0)
+                                string[] parts = item.title.Split(' ');
+                                if (parts.Length <= 2)
                                 {
-                                    item.title = parts[0].ToUpper() + "@ " + parts[1];
-                                    item.type = ExplorerItemType.Event;
+                                    isDefineValue = true;
+                                    string tit = parts[0].ToUpper() + " ";
+
+                                    for (int i = 1; i < parts.Length; i++)
+                                        tit = tit + parts[i] + " ";
+
+                                    item.title = tit;
+                                    lastClassIndex = list.Count;
+                                    item.type = ExplorerItemType.Class;
+
                                     list.Add(item);
                                 }
                             }
                             else
                             {
-                                string[] parts = item.title.Split('=');
-                                if (parts.Length == 2)
+                                if (item.title.ToLower().Contains("on=@"))
                                 {
-                                    item.title = parts[0].ToUpper() + "= " + parts[1];
-                                    item.type = ExplorerItemType.Property;
-                                    list.Add(item);
+                                    string[] parts = item.title.Split('@');
+                                    if (parts[1].Length > 0)
+                                    {
+                                        isDefineValue = false;
+                                        item.title = parts[0].ToUpper() + "@ " + parts[1];
+                                        item.type = ExplorerItemType.Event;
+                                        list.Add(item);
+                                    }
+                                }
+                                else
+                                {
+                                    string[] parts = item.title.Split('=');
+                                    if (parts.Length == 2 && isDefineValue)//isDefineValue is only define's propertie not trigger's 
+                                    {
+                                        item.title = parts[0].ToUpper() + "= " + parts[1];
+                                        item.type = ExplorerItemType.Property;
+                                        list.Add(item);
+                                    }
                                 }
                             }
                         }
+                        catch (Exception e)
+                        {
+                        }
                     }
-                    catch (Exception e)
-                    {
-                    }
+                    BeginInvoke(
+                        new Action(() =>
+                        {
+                            explorerList = list;
+                            dgvObjectExplorer.RowCount = explorerList.Count;
+                            dgvObjectExplorer.Invalidate();
+                        })
+                    );
                 }
-                BeginInvoke(
-                    new Action(() =>
-                    {
-                        explorerList = list;
-                        dgvObjectExplorer.RowCount = explorerList.Count;
-                        dgvObjectExplorer.Invalidate();
-                    })
-                );
+                else
+                {
+                    Regex regex2 = new Regex(@"^(?<range>[\w\s]+\b(class|struct|enum|interface)\s+[\w<>,\s]+)|^\s*(public|private|internal|protected)[^\n]+(\n?\s*{|;)?", RegexOptions.Multiline);
+                    foreach (Match r in regex2.Matches(text))
+                        try
+                        {
+                            string s = r.Value;
+                            int i = s.IndexOfAny(new char[] { '=', '{', ';' });
+                            if (i >= 0)
+                                s = s.Substring(0, i);
+                            s = s.Trim();
+
+                            var item = new ExplorerItem() { title = s, position = r.Index };
+                            if (Regex.IsMatch(item.title, @"\b(class|struct|enum|interface)\b"))
+                            {
+                                item.title = item.title.Substring(item.title.LastIndexOf(' ')).Trim();
+                                item.type = ExplorerItemType.Class;
+                                list.Sort(lastClassIndex + 1, list.Count - (lastClassIndex + 1), new ExplorerItemComparer());
+                                lastClassIndex = list.Count;
+                            }
+                            else if (item.title.Contains(" event "))
+                            {
+                                int ii = item.title.LastIndexOf(' ');
+                                item.title = item.title.Substring(ii).Trim();
+                                item.type = ExplorerItemType.Event;
+                            }
+                            else if (item.title.Contains("("))
+                            {
+                                var parts = item.title.Split('(');
+                                item.title = parts[0].Substring(parts[0].LastIndexOf(' ')).Trim() + "(" + parts[1];
+                                item.type = ExplorerItemType.Method;
+                            }
+                            else if (item.title.EndsWith("]"))
+                            {
+                                var parts = item.title.Split('[');
+                                if (parts.Length < 2) continue;
+                                item.title = parts[0].Substring(parts[0].LastIndexOf(' ')).Trim() + "[" + parts[1];
+                                item.type = ExplorerItemType.Method;
+                            }
+                            else
+                            {
+                                int ii = item.title.LastIndexOf(' ');
+                                item.title = item.title.Substring(ii).Trim();
+                                item.type = ExplorerItemType.Property;
+                            }
+                            list.Add(item);
+                        }
+                        catch {; }
+
+                    list.Sort(lastClassIndex + 1, list.Count - (lastClassIndex + 1), new ExplorerItemComparer());
+
+                    BeginInvoke(
+                        new Action(() =>
+                            {
+                                explorerList = list;
+                                dgvObjectExplorer.RowCount = explorerList.Count;
+                                dgvObjectExplorer.Invalidate();
+                            })
+                    );
+                }
             }
             catch (Exception e)
             {
@@ -979,6 +979,17 @@ namespace SphereScp
             tsFiles.Enabled = false;
             ScriptCommunityPack.LoadKeywords();
             tsFiles.Enabled = true;
+        }
+
+        private void exportHTMLToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ExportToHTML export = new ExportToHTML();
+            string val = export.GetHtml(CurrentTB);
+            val = val.Replace(".fctbNone{", "body{background-color:" + CurrentTB.BackColor.Name + ";}.fctbNone{");
+            val = val.Replace("font-size: " + CurrentTB.Font.Size + "pt;", "font-size: 9pt;");
+            StreamWriter sw = new StreamWriter(Path.Combine(Application.StartupPath, CurrentTB.Name + ".html"), false, Encoding.UTF8);
+            sw.Write(val);
+            sw.Close();
         }
     }
 }

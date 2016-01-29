@@ -5,6 +5,7 @@ namespace FastColoredTextBoxNS.Render
     public class ScriptCommunityPack
     {
         public static List<MethodAuto> fileScpCommands = new List<MethodAuto>();
+
         public static List<PopupToolTip> keywordsInformation = new List<PopupToolTip>();
         
         public static T[] loadKwCommand<T>(PropertyTypes typ) where T : AutoCompleteItem
@@ -16,6 +17,7 @@ namespace FastColoredTextBoxNS.Render
                 mto[i] = ppti[i].GetACItem<T>();
             return mto;
         }
+
         public static T[] loadKwCommand<T>(bool ignore = true, params PropertyTypes[] ignoreList) where T : AutoCompleteItem
         {
             List<PopupToolTip> ppti = new List<PopupToolTip>();
@@ -731,24 +733,22 @@ namespace FastColoredTextBoxNS.Render
             #endregion TRIGGERS information
 
             #region declaration Information
-            keywordsInformation.Add(new PopupToolTip() { Name = "[AREADEF a_^]", Parameters = "", Comment = "", Properties = new List<PropertyTypes>() { PropertyTypes.DeclarationAuto } });
-            keywordsInformation.Add(new PopupToolTip() { Name = "[CHARDEF c_^]", Parameters = "", Comment = "", Properties = new List<PropertyTypes>() { PropertyTypes.DeclarationAuto } });
-            keywordsInformation.Add(new PopupToolTip() { Name = "[ROOMDEF a_^]", Parameters = "", Comment = "", Properties = new List<PropertyTypes>() { PropertyTypes.DeclarationAuto } });
-            keywordsInformation.Add(new PopupToolTip() { Name = "[SKILL ^]", Parameters = "", Comment = "", Properties = new List<PropertyTypes>() { PropertyTypes.DeclarationAuto } });
-            keywordsInformation.Add(new PopupToolTip() { Name = "[SKILLCLASS ^]", Parameters = "", Comment = "", Properties = new List<PropertyTypes>() { PropertyTypes.DeclarationAuto } });
-            keywordsInformation.Add(new PopupToolTip() { Name = "[DIALOG d_^]", Parameters = "", Comment = "", Properties = new List<PropertyTypes>() { PropertyTypes.DeclarationAuto } });
-            keywordsInformation.Add(new PopupToolTip() { Name = "[DIALOG d_^]", Parameters = "", Comment = "", Properties = new List<PropertyTypes>() { PropertyTypes.DeclarationAuto } });
-            keywordsInformation.Add(new PopupToolTip() { Name = "[EVENTS e_^]", Parameters = "", Comment = "", Properties = new List<PropertyTypes>() { PropertyTypes.DeclarationAuto } });
-            keywordsInformation.Add(new PopupToolTip() { Name = "[EVENTS e_^]", Parameters = "", Comment = "", Properties = new List<PropertyTypes>() { PropertyTypes.DeclarationAuto } });
-            keywordsInformation.Add(new PopupToolTip() { Name = "[ITEMDEF i_^]", Parameters = "", Comment = "", Properties = new List<PropertyTypes>() { PropertyTypes.DeclarationAuto } });
-            keywordsInformation.Add(new PopupToolTip() { Name = "[MENU m_^]", Parameters = "", Comment = "", Properties = new List<PropertyTypes>() { PropertyTypes.DeclarationAuto } });
-            keywordsInformation.Add(new PopupToolTip() { Name = "[REGIONTYPE r_^]", Parameters = "", Comment = "", Properties = new List<PropertyTypes>() { PropertyTypes.DeclarationAuto } });
-            keywordsInformation.Add(new PopupToolTip() { Name = "[SKILLMENU sm_^]", Parameters = "", Comment = "", Properties = new List<PropertyTypes>() { PropertyTypes.DeclarationAuto } });
-            keywordsInformation.Add(new PopupToolTip() { Name = "[SPAWN ^]", Parameters = "", Comment = "", Properties = new List<PropertyTypes>() { PropertyTypes.DeclarationAuto } });
-            keywordsInformation.Add(new PopupToolTip() { Name = "[SPELL ^]", Parameters = "", Comment = "", Properties = new List<PropertyTypes>() { PropertyTypes.DeclarationAuto } });
-            keywordsInformation.Add(new PopupToolTip() { Name = "[TYPEDEF t_^]", Parameters = "", Comment = "", Properties = new List<PropertyTypes>() { PropertyTypes.DeclarationAuto } });
-            keywordsInformation.Add(new PopupToolTip() { Name = "[FUNCTION f_^]", Parameters = "", Comment = "", Properties = new List<PropertyTypes>() { PropertyTypes.DeclarationAuto } });
-            keywordsInformation.Add(new PopupToolTip() { Name = "[EOF]^", Parameters = "", Comment = "", Properties = new List<PropertyTypes>() { PropertyTypes.DeclarationAuto } });
+            keywordsInformation.Add(new PopupToolTip() { Name = "AREADEF ad_^", Parameters = "", Comment = "", Properties = new List<PropertyTypes>() { PropertyTypes.DeclarationAuto } });
+            keywordsInformation.Add(new PopupToolTip() { Name = "CHARDEF c_^", Parameters = "", Comment = "", Properties = new List<PropertyTypes>() { PropertyTypes.DeclarationAuto } });
+            keywordsInformation.Add(new PopupToolTip() { Name = "ROOMDEF r_^", Parameters = "", Comment = "", Properties = new List<PropertyTypes>() { PropertyTypes.DeclarationAuto } });
+            keywordsInformation.Add(new PopupToolTip() { Name = "SKILL s_^", Parameters = "", Comment = "", Properties = new List<PropertyTypes>() { PropertyTypes.DeclarationAuto } });
+            keywordsInformation.Add(new PopupToolTip() { Name = "SKILLCLASS sc_^", Parameters = "", Comment = "", Properties = new List<PropertyTypes>() { PropertyTypes.DeclarationAuto } });
+            keywordsInformation.Add(new PopupToolTip() { Name = "DIALOG d_^", Parameters = "", Comment = "", Properties = new List<PropertyTypes>() { PropertyTypes.DeclarationAuto } });
+            keywordsInformation.Add(new PopupToolTip() { Name = "EVENTS e_^", Parameters = "", Comment = "", Properties = new List<PropertyTypes>() { PropertyTypes.DeclarationAuto } });
+            keywordsInformation.Add(new PopupToolTip() { Name = "ITEMDEF i_^", Parameters = "", Comment = "", Properties = new List<PropertyTypes>() { PropertyTypes.DeclarationAuto } });
+            keywordsInformation.Add(new PopupToolTip() { Name = "MENU m_^", Parameters = "", Comment = "", Properties = new List<PropertyTypes>() { PropertyTypes.DeclarationAuto } });
+            keywordsInformation.Add(new PopupToolTip() { Name = "REGIONTYPE rt_^", Parameters = "", Comment = "", Properties = new List<PropertyTypes>() { PropertyTypes.DeclarationAuto } });
+            keywordsInformation.Add(new PopupToolTip() { Name = "SKILLMENU sm_^", Parameters = "", Comment = "", Properties = new List<PropertyTypes>() { PropertyTypes.DeclarationAuto } });
+            keywordsInformation.Add(new PopupToolTip() { Name = "SPAWN sw_^", Parameters = "", Comment = "", Properties = new List<PropertyTypes>() { PropertyTypes.DeclarationAuto } });
+            keywordsInformation.Add(new PopupToolTip() { Name = "SPELL sp_^", Parameters = "", Comment = "", Properties = new List<PropertyTypes>() { PropertyTypes.DeclarationAuto } });
+            keywordsInformation.Add(new PopupToolTip() { Name = "TYPEDEF t_^", Parameters = "", Comment = "", Properties = new List<PropertyTypes>() { PropertyTypes.DeclarationAuto } });
+            keywordsInformation.Add(new PopupToolTip() { Name = "FUNCTION f_^", Parameters = "", Comment = "", Properties = new List<PropertyTypes>() { PropertyTypes.DeclarationAuto } });
+            keywordsInformation.Add(new PopupToolTip() { Name = "EOF^", Parameters = "", Comment = "", Properties = new List<PropertyTypes>() { PropertyTypes.DeclarationAuto } });
             #endregion
 
             #region snippet information
@@ -785,5 +785,6 @@ namespace FastColoredTextBoxNS.Render
             keywordsInformation.Add(new PopupToolTip() { Name = "strregex(^)", Parameters = "", Comment = "", Properties = new List<PropertyTypes>() { PropertyTypes.SnippetAuto } });
             #endregion
         }
+
     }
 }

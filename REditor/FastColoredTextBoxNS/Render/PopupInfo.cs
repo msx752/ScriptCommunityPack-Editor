@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace FastColoredTextBoxNS.Render
 {
@@ -14,7 +15,8 @@ namespace FastColoredTextBoxNS.Render
                 classType = new DeclarationAuto(Name) { ImageIndex = 1 };
             else if (Properties.Contains(PropertyTypes.TriggerAuto))
                 classType = new MethodAuto(Name) { ImageIndex = 2 };
-            else {
+            else
+            {
                 classType = new MethodAuto(this);
                 (classType as MethodAuto).ImageIndex = 2;
             }
@@ -22,23 +24,29 @@ namespace FastColoredTextBoxNS.Render
         }
 
         public string Comment { get; set; } = "none";
-        public string Name { get; set; } = "";
-        public String Parameters { get; set; } = "";
+        private string _name = "";
+        public string Name
+        {
+            get
+            {
+                if (Properties.Contains(PropertyTypes.DeclarationAuto))
+                    return "[" + _name + "]\n";
+                else if (Properties.Contains(PropertyTypes.TriggerAuto))
+                    return _name + "\n";
+                else
+                    return _name;
+            }
+            set
+            {
+                _name = value;
+            }
+        }
+        public string Parameters { get; set; } = "";
         public List<PropertyTypes> Properties { get; set; } = new List<PropertyTypes>();
         public override string ToString()
         {
-            string propList = "";
-            for (int i = 0; i < Properties.Count; i++)
-                propList += " , " + Properties[i].ToString();
-
-            string newName = Name;
-            if (newName.IndexOf("@") != -1)
-                newName += "\n";
-
-            if (propList.Length > 0)
-                propList = propList.Substring(3);
-
-            string valu = string.Format("{0}\r\n {{ {1} }}\r\n{2}\r\nProperties [ {3} ]", newName, Parameters.Replace(",", ", "), Comment, propList);
+            string propList = string.Join(",", Properties.ToArray()).Replace(" ", "").Replace(",", ", ");
+            string valu = string.Format("{0}\r\n {{ {1} }}\r\n{2}\r\nProperties [ {3} ]", Name, Parameters.Replace(" ","").Replace(",", ", "), Comment, propList);
             return valu;
         }
 
