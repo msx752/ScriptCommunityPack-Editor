@@ -159,203 +159,140 @@ namespace FastColoredTextBoxNS
         /// <param name="forced"></param>
         internal void DoAutocomplete(bool forced)
         {
-
             if (!Menu.Enabled)
             {
                 Menu.Close();
             }
             else
             {
-                if (MAIN.currentLang == Language.Scp)//LONG METHOD
+                visibleItems.Clear();
+                FocussedItemIndex = 0;
+                base.VerticalScroll.Value = 0;
+                Range fragment = tb.Selection.GetFragment(Menu.SearchPattern);
+                string text = fragment.Text;
+                Point position = tb.PlaceToPoint(fragment.End);
+                position.Offset(2, tb.CharHeight);
+                List<AutoCompleteItem> finded = new List<AutoCompleteItem>();
+                if (forced || (((text.Length >= Menu.MinFragmentLength) && (tb.Selection.Start == tb.Selection.End))) || text.EndsWith("<"))
                 {
-                    visibleItems.Clear();
-                    FocussedItemIndex = 0;
-                    base.VerticalScroll.Value = 0;
-                    Range fragment = tb.Selection.GetFragment(Menu.SearchPattern);
-                    string text = fragment.Text;
-                    Point position = tb.PlaceToPoint(fragment.End);
-                    position.Offset(2, tb.CharHeight);
-                    List<AutoCompleteItem> finded = new List<AutoCompleteItem>();
-                    if (forced || (((text.Length >= Menu.MinFragmentLength) && (tb.Selection.Start == tb.Selection.End))) || text.EndsWith("<"))
+                    Menu.Fragment = fragment;
+
+                    if (text.Length == 0)
+                        return;
+                    bool flag = false;
+                    sourceItems
+                        .ForEach(val => val.Parent = Menu);//all member sets parent
+                                                           ///NEED CHANGES THAT CODES I KNOW. BUT NOW OKAY
+                    CultureInfo eng = new CultureInfo("en-US");
+                    if (tb.GetLineText(Menu.Fragment.Start.iLine).Replace(" ", "").StartsWith("[") == false)
                     {
-                        Menu.Fragment = fragment;
+                        string[] splited = text.ToLower().Replace("ı", "i").Replace(" ", "").Split('.');//for sourcetree (notimplemented)
 
-                        if (text.Length == 0)
-                            return;
-                        bool flag = false;
-                        sourceItems
-                            .ForEach(val => val.Parent = Menu);//all member sets parent
-                        ///NEED CHANGES THAT CODES I KNOW. BUT NOW OKAY
-                        CultureInfo eng = new CultureInfo("en-US");
-                        if (tb.GetLineText(Menu.Fragment.Start.iLine).Replace(" ", "").StartsWith("[") == false)
+                        if (splited.Length == 1
+                            && (text.StartsWith("i_", true, eng)
+                            || text.StartsWith("c_", true, eng)
+                            || text.StartsWith("d_", true, eng)
+                            || text.StartsWith("e_", true, eng)
+                            || text.StartsWith("f_", true, eng)))
                         {
-                            string[] splited = text.ToLower().Replace("ı", "i").Replace(" ", "").Split('.');//for sourcetree (notimplemented)
+                            CmdDefType typ = CmdDefType.NONE;
+                            if (splited[0].StartsWith("i_", true, eng))
+                                typ = CmdDefType.ITEMDEF;
+                            else if (splited[0].StartsWith("c_", true, eng))
+                                typ = CmdDefType.CHARDEF;
+                            else if (splited[0].StartsWith("d_", true, eng))
+                                typ = CmdDefType.DIALOG;
+                            else if (splited[0].StartsWith("e_", true, eng))
+                                typ = CmdDefType.EVENTS;
+                            else if (splited[0].StartsWith("f_", true, eng))
+                                typ = CmdDefType.FUNCTION;
 
-                            if (splited.Length == 1
-                                && (text.StartsWith("i_", true, eng)
-                                || text.StartsWith("c_", true, eng)
-                                || text.StartsWith("d_", true, eng)
-                                || text.StartsWith("e_", true, eng)
-                                || text.StartsWith("f_", true, eng)))
-                            {
-                                CmdDefType typ = CmdDefType.NONE;
-                                if (splited[0].StartsWith("i_", true, eng))
-                                    typ = CmdDefType.ITEMDEF;
-                                else if (splited[0].StartsWith("c_", true, eng))
-                                    typ = CmdDefType.CHARDEF;
-                                else if (splited[0].StartsWith("d_", true, eng))
-                                    typ = CmdDefType.DIALOG;
-                                else if (splited[0].StartsWith("e_", true, eng))
-                                    typ = CmdDefType.EVENTS;
-                                else if (splited[0].StartsWith("f_", true, eng))
-                                    typ = CmdDefType.FUNCTION;
-
-                                //listing which are all
-                                finded = sourceItems
-                                   .Where(p => p.ToolTipTitle != null).ToList()
-                                   .Where(p => p.ToolTipTitle.IndexOf("[" + typ.ToString()) != -1)
-                                   .Where(p => p.Text.IndexOf("_") != -1)
-                                   .ToList();
-                            }
-                            else if (splited.Length == 1
-                                && text.StartsWith("on=", true, eng))
-                            {
-                                finded = sourceItems
-                                      .Where(p => p.Text.StartsWith("@", true, eng))
-                                      .ToList();
-                            }
-                            else if (splited.Length == 1
-                               && text.StartsWith("<", true, eng))
-                            {
-                                finded = sourceItems
-                                      .Where(p => p.Text.StartsWith(splited[0].Replace(">", ""), true, eng))
-                                      .ToList();
-                            }
-                            else if (splited.Length == 1
-                              && (text.StartsWith("if", true, eng) || text.StartsWith("str", true, eng) || text.StartsWith("do", true, eng) || text.StartsWith("be", true, eng) || text.StartsWith("wh", true, eng) || text.StartsWith("for", true, eng)))
-                            {
-                                finded = sourceItems
-                                      .Where(p => (p is SnippetAuto) && (p as SnippetAuto).Text.StartsWith(splited[0], true, eng))
-                                      .ToList();
-                            }
-                            else
-                            {
-                                //listing which are all
-                                finded = sourceItems
-                                   .Where(p => p.ToolTipTitle != null).ToList()
-                                   .Where(p => p.Text.StartsWith(splited[splited.Length - 1], true, eng))
-                                   .ToList();
-                            }
-                        }
-                        else if (text.IndexOf(".") == -1)//defane is cannot using DOT
-                        {
                             //listing which are all
                             finded = sourceItems
-                               .Where(p => p.Text.ToLower()
-                               .Replace("ı", "i")//turkish language fix
-                               .IndexOf("[" + text.ToLower()) != -1)
+                               .Where(p => p.ToolTipTitle != null).ToList()
+                               .Where(p => p.ToolTipTitle.IndexOf("[" + typ.ToString()) != -1)
+                               .Where(p => p.Text.IndexOf("_") != -1)
                                .ToList();
                         }
-
-                        if (finded.Count > 0)
+                        else if (splited.Length == 1
+                            && text.StartsWith("on=", true, eng))
                         {
-                            finded = finded.OrderBy(p => p.Text)
-                            .Where(p => !(p is InsertEnterSnippet) && !(p is InsertSpaceSnippet))
-                            .ToList();
-
-                            while (finded.Count >= 31)//max listed func
-                                finded.RemoveAt(30);
-                            visibleItems.AddRange(finded);
-
-                            flag = true;
-                            FocussedItemIndex = 0;
+                            finded = sourceItems
+                                  .Where(p => p.Text.StartsWith("@", true, eng))
+                                  .ToList();
                         }
-                        if (flag)
+                        else if (splited.Length == 1
+                           && text.StartsWith("<", true, eng))
                         {
-                            AdjustScroll();
-                            DoSelectedVisible();
+                            finded = sourceItems
+                                  .Where(p => p.Text.StartsWith(splited[0].Replace(">", ""), true, eng))
+                                  .ToList();
                         }
-                    }
-                    if (Count > 0)
-                    {
-                        if (!Menu.Visible)
+                        else if (splited.Length == 1
+                          && (text.StartsWith("if", true, eng) || text.StartsWith("str", true, eng) || text.StartsWith("do", true, eng) || text.StartsWith("be", true, eng) || text.StartsWith("wh", true, eng) || text.StartsWith("for", true, eng)))
                         {
-                            CancelEventArgs args = new CancelEventArgs();
-                            Menu.OnOpening(args);
-                            if (!args.Cancel)
-                            {
-                                Menu.Show(tb, position);
-                            }
+                            finded = sourceItems
+                                  .Where(p => (p is SnippetAuto) && (p as SnippetAuto).Text.StartsWith(splited[0], true, eng))
+                                  .ToList();
                         }
                         else
                         {
-                            base.Invalidate();
+                            //listing which are all
+                            finded = sourceItems
+                               .Where(p => p.ToolTipTitle != null).ToList()
+                               .Where(p => p.Text.StartsWith(splited[splited.Length - 1], true, eng))
+                               .ToList();
+                        }
+                    }
+                    else if (text.IndexOf(".") == -1)//defane is cannot using DOT
+                    {
+                        //listing which are all
+                        finded = sourceItems
+                           .Where(p => p.Text.ToLower()
+                           .Replace("ı", "i")//turkish language fix
+                           .IndexOf("[" + text.ToLower()) != -1)
+                           .ToList();
+                    }
+
+                    if (finded.Count > 0)
+                    {
+                        finded = finded.OrderBy(p => p.Text)
+                        .Where(p => !(p is InsertEnterSnippet) && !(p is InsertSpaceSnippet))
+                        .ToList();
+
+                        while (finded.Count >= 31)//max listed func
+                            finded.RemoveAt(30);
+                        visibleItems.AddRange(finded);
+
+                        flag = true;
+                        FocussedItemIndex = 0;
+                    }
+                    if (flag)
+                    {
+                        AdjustScroll();
+                        DoSelectedVisible();
+                    }
+                }
+                if (Count > 0)
+                {
+                    if (!Menu.Visible)
+                    {
+                        CancelEventArgs args = new CancelEventArgs();
+                        Menu.OnOpening(args);
+                        if (!args.Cancel)
+                        {
+                            Menu.Show(tb, position);
                         }
                     }
                     else
                     {
-                        Menu.Close();
+                        base.Invalidate();
                     }
                 }
                 else
                 {
-                    visibleItems.Clear();
-                    FocussedItemIndex = 0;
-                    VerticalScroll.Value = 0;
-                    //some magic for update scrolls
-                    AutoScrollMinSize -= new Size(1, 0);
-                    AutoScrollMinSize += new Size(1, 0);
-                    //get fragment around caret
-                    Range fragment = tb.Selection.GetFragment(Menu.SearchPattern);
-                    string text = fragment.Text;
-                    //calc screen point for popup menu
-                    Point point = tb.PlaceToPoint(fragment.End);
-                    point.Offset(2, tb.CharHeight);
-                    //
-                    if (forced || (text.Length >= Menu.MinFragmentLength
-                        && tb.Selection.IsEmpty /*pops up only if selected range is empty*/
-                        && (tb.Selection.Start > fragment.Start || text.Length == 0/*pops up only if caret is after first letter*/)))
-                    {
-                        Menu.Fragment = fragment;
-                        bool foundSelected = false;
-                        //build popup menu
-                        foreach (var item in sourceItems)
-                        {
-                            item.Parent = Menu;
-                            CompareResult res = item.Compare(text);
-                            if (res != CompareResult.Hidden)
-                                visibleItems.Add(item);
-                            if (res == CompareResult.VisibleAndSelected && !foundSelected)
-                            {
-                                foundSelected = true;
-                                FocussedItemIndex = visibleItems.Count - 1;
-                            }
-                        }
-
-                        if (foundSelected)
-                        {
-                            AdjustScroll();
-                            DoSelectedVisible();
-                        }
-                    }
-
-                    //show popup menu
-                    if (Count > 0)
-                    {
-                        if (!Menu.Visible)
-                        {
-                            CancelEventArgs args = new CancelEventArgs();
-                            Menu.OnOpening(args);
-                            if (!args.Cancel)
-                                Menu.Show(tb, point);
-                        }
-                        else
-                            Invalidate();
-                    }
-                    else
-                        Menu.Close();
+                    Menu.Close();
                 }
-
             }
         }
 
@@ -510,14 +447,16 @@ namespace FastColoredTextBoxNS
             }
             else
             {
-                if (newText.StartsWith("["))
+                if (newText.StartsWith("["))//defname auto control
                     tb.Selection.Start = new Place(fragment.Start.iChar - 1, fragment.Start.iLine);
+                else if (ScriptCommunityPack.keywordsInformation.FindIndex(p => p.Name == newText && p.Properties.Contains(PropertyTypes.SnippetAuto)) != -1)//snippet auto control
+                    tb.Selection.Start = fragment.Start;
                 else
-                    tb.Selection.Start = new Place(tb.Selection.Start.iChar - 1, tb.Selection.Start.iLine);
+                    tb.Selection.Start = new Place(tb.Selection.Start.iChar - 1, tb.Selection.Start.iLine);//KEYWORD auto CONTROL
 
                 tb.Selection.End = fragment.End;
-                if (newText.ToLower().StartsWith(".@"))//.On=@ (DOT bug fixed)
-                    newText = newText.Replace(".@","=@");
+                if (newText.ToLower().StartsWith(".@"))//.On=@ (DOT bug fixed) || TRİGGER AUTO CONTROL
+                    newText = newText.Replace(".@", "=@");
             }
             tb.InsertText(newText);
             tb.TextSource.Manager.ExecuteCommand(new SelectCommand(tb.TextSource));

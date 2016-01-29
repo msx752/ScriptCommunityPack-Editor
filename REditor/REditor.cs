@@ -147,6 +147,7 @@ namespace SphereScp
             items.Add(new InsertEnterSnippet());
 
             //set as autocomplete source
+            popupMenu.AllowTabKey = true;
             popupMenu.Items.SetAutocompleteItems(items);
             popupMenu.SearchPattern = @"[\w\.@:=!<>]";
         }
@@ -196,6 +197,11 @@ namespace SphereScp
             if (ScriptCommunityPack.keywordsInformation.Count == 0)
             {
                 MessageBox.Show("primarily load keywords");
+                return;
+            }
+            if (currentLang != Language.Scp)
+            {
+                MessageBox.Show("this editor working with Language.Scp format. please dont change it");
                 return;
             }
             try
@@ -468,7 +474,7 @@ namespace SphereScp
         {
             Close();
         }
-        
+
         private void ReBuildObjectExplorer(string text)
         {
             try
@@ -477,131 +483,68 @@ namespace SphereScp
                 int lastClassIndex = -1;
                 Regex regex = new Regex(@"(?<range>(\[\w+\s+\w+(\s+\w+)?\]))|(?<range>((\bon=@)([a-z]?)+))|(((?:[a-z][a-z]+))(=)((?:[a-z][a-z0-9_]*)))", RegexOptions.IgnoreCase | RegexOptions.Multiline);
                 bool isDefineValue = false;
-                if (currentLang == Language.Scp)
+                foreach (Match r in regex.Matches(text))
                 {
-                    foreach (Match r in regex.Matches(text))
+                    try
                     {
-                        try
+                        string s = r.Value;
+                        s = s.Trim();
+                        ExplorerItem item = new ExplorerItem() { title = s, position = r.Index };
+                        if (item.title.ToLower().StartsWith("["))
                         {
-                            string s = r.Value;
-                            s = s.Trim();
-                            ExplorerItem item = new ExplorerItem() { title = s, position = r.Index };
-                            if (item.title.ToLower().StartsWith("["))
+                            string[] parts = item.title.Split(' ');
+                            if (parts.Length <= 2)
                             {
-                                string[] parts = item.title.Split(' ');
-                                if (parts.Length <= 2)
+                                isDefineValue = true;
+                                string tit = parts[0].ToUpper() + " ";
+
+                                for (int i = 1; i < parts.Length; i++)
+                                    tit = tit + parts[i] + " ";
+
+                                item.title = tit;
+                                lastClassIndex = list.Count;
+                                item.type = ExplorerItemType.Class;
+
+                                list.Add(item);
+                            }
+                        }
+                        else
+                        {
+                            if (item.title.ToLower().Contains("on=@"))
+                            {
+                                string[] parts = item.title.Split('@');
+                                if (parts[1].Length > 0)
                                 {
-                                    isDefineValue = true;
-                                    string tit = parts[0].ToUpper() + " ";
-
-                                    for (int i = 1; i < parts.Length; i++)
-                                        tit = tit + parts[i] + " ";
-
-                                    item.title = tit;
-                                    lastClassIndex = list.Count;
-                                    item.type = ExplorerItemType.Class;
-
+                                    isDefineValue = false;
+                                    item.title = parts[0].ToUpper() + "@ " + parts[1];
+                                    item.type = ExplorerItemType.Event;
                                     list.Add(item);
                                 }
                             }
                             else
                             {
-                                if (item.title.ToLower().Contains("on=@"))
+                                string[] parts = item.title.Split('=');
+                                if (parts.Length == 2 && isDefineValue)//isDefineValue is only define's propertie not trigger's 
                                 {
-                                    string[] parts = item.title.Split('@');
-                                    if (parts[1].Length > 0)
-                                    {
-                                        isDefineValue = false;
-                                        item.title = parts[0].ToUpper() + "@ " + parts[1];
-                                        item.type = ExplorerItemType.Event;
-                                        list.Add(item);
-                                    }
-                                }
-                                else
-                                {
-                                    string[] parts = item.title.Split('=');
-                                    if (parts.Length == 2 && isDefineValue)//isDefineValue is only define's propertie not trigger's 
-                                    {
-                                        item.title = parts[0].ToUpper() + "= " + parts[1];
-                                        item.type = ExplorerItemType.Property;
-                                        list.Add(item);
-                                    }
+                                    item.title = parts[0].ToUpper() + "= " + parts[1];
+                                    item.type = ExplorerItemType.Property;
+                                    list.Add(item);
                                 }
                             }
-                        }
-                        catch (Exception e)
-                        {
                         }
                     }
-                    BeginInvoke(
-                        new Action(() =>
-                        {
-                            explorerList = list;
-                            dgvObjectExplorer.RowCount = explorerList.Count;
-                            dgvObjectExplorer.Invalidate();
-                        })
-                    );
+                    catch (Exception e)
+                    {
+                    }
                 }
-                else
-                {
-                    Regex regex2 = new Regex(@"^(?<range>[\w\s]+\b(class|struct|enum|interface)\s+[\w<>,\s]+)|^\s*(public|private|internal|protected)[^\n]+(\n?\s*{|;)?", RegexOptions.Multiline);
-                    foreach (Match r in regex2.Matches(text))
-                        try
-                        {
-                            string s = r.Value;
-                            int i = s.IndexOfAny(new char[] { '=', '{', ';' });
-                            if (i >= 0)
-                                s = s.Substring(0, i);
-                            s = s.Trim();
-
-                            var item = new ExplorerItem() { title = s, position = r.Index };
-                            if (Regex.IsMatch(item.title, @"\b(class|struct|enum|interface)\b"))
-                            {
-                                item.title = item.title.Substring(item.title.LastIndexOf(' ')).Trim();
-                                item.type = ExplorerItemType.Class;
-                                list.Sort(lastClassIndex + 1, list.Count - (lastClassIndex + 1), new ExplorerItemComparer());
-                                lastClassIndex = list.Count;
-                            }
-                            else if (item.title.Contains(" event "))
-                            {
-                                int ii = item.title.LastIndexOf(' ');
-                                item.title = item.title.Substring(ii).Trim();
-                                item.type = ExplorerItemType.Event;
-                            }
-                            else if (item.title.Contains("("))
-                            {
-                                var parts = item.title.Split('(');
-                                item.title = parts[0].Substring(parts[0].LastIndexOf(' ')).Trim() + "(" + parts[1];
-                                item.type = ExplorerItemType.Method;
-                            }
-                            else if (item.title.EndsWith("]"))
-                            {
-                                var parts = item.title.Split('[');
-                                if (parts.Length < 2) continue;
-                                item.title = parts[0].Substring(parts[0].LastIndexOf(' ')).Trim() + "[" + parts[1];
-                                item.type = ExplorerItemType.Method;
-                            }
-                            else
-                            {
-                                int ii = item.title.LastIndexOf(' ');
-                                item.title = item.title.Substring(ii).Trim();
-                                item.type = ExplorerItemType.Property;
-                            }
-                            list.Add(item);
-                        }
-                        catch {; }
-
-                    list.Sort(lastClassIndex + 1, list.Count - (lastClassIndex + 1), new ExplorerItemComparer());
-
-                    BeginInvoke(
-                        new Action(() =>
-                            {
-                                explorerList = list;
-                                dgvObjectExplorer.RowCount = explorerList.Count;
-                                dgvObjectExplorer.Invalidate();
-                            })
-                    );
-                }
+                BeginInvoke(
+                    new Action(() =>
+                    {
+                        explorerList = list;
+                        dgvObjectExplorer.RowCount = explorerList.Count;
+                        dgvObjectExplorer.Invalidate();
+                    })
+                );
             }
             catch (Exception e)
             {
