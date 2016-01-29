@@ -208,7 +208,7 @@ namespace SphereScp
             {
                 FastColoredTextBox tb = new FastColoredTextBox();
                 tb.Font = new Font("Consolas", 9.75f);
-                tb.BackColor = Color.FromArgb(15,15,15);
+                tb.BackColor = Color.FromArgb(15, 15, 15);
                 tb.ForeColor = Color.White;
                 tb.ContextMenuStrip = cmMain;
                 tb.Dock = DockStyle.Fill;
@@ -224,6 +224,7 @@ namespace SphereScp
                 tb.ClearUndo();
                 tb.Tag = new PopupMenu();
                 tsFiles.AddTab(tab);
+                tsFiles.TabStripItemSelectionChanged += TsFiles_TabStripItemSelectionChanged;
                 tsFiles.SelectedItem = tab;
                 tb.Focus();
                 tb.DelayedTextChangedInterval = 500;
@@ -255,7 +256,15 @@ namespace SphereScp
                     CreateTab(fileName);
             }
         }
-
+        private void TsFiles_TabStripItemSelectionChanged(TabStripItemChangedEventArgs e)
+        {
+            if (e.ChangeType == FATabStripItemChangeTypes.SelectionChanged)
+            {
+                FastColoredTextBox ftb = e.Item.Controls[0] as FastColoredTextBox;
+                documentMap1.Target = ftb;
+                RefreshObjectExplorer(ftb);
+            }
+        }
         private void cutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CurrentTB.Cut();
@@ -297,7 +306,10 @@ namespace SphereScp
                             return;
                     }
             }
-            catch {; }
+            catch
+            {
+
+            }
         }
 
         private void findToolStripMenuItem_Click(object sender, EventArgs e)
@@ -553,6 +565,7 @@ namespace SphereScp
 
         private void REditor_Load(object sender, EventArgs e)
         {
+
         }
 
         private void redoToolStripMenuItem_Click(object sender, EventArgs e)
@@ -685,17 +698,14 @@ namespace SphereScp
 
         private void tb_TextChangedDelayed(object sender, TextChangedEventArgs e)
         {
-            //FastColoredTextBox tb = (sender as FastColoredTextBox);
-            ////rebuild object explorer
-            //string text = (sender as FastColoredTextBox).Text;
-            //ThreadPool.QueueUserWorkItem(
-            //    (o) => ReBuildObjectExplorer(text)
-            //);
-            ThreadPool.QueueUserWorkItem((o) => ReBuildObjectExplorer((sender as FastColoredTextBox).Text));//rebuild object explorer
+            RefreshObjectExplorer((sender as FastColoredTextBox));
             //show invisible chars
             HighlightInvisibleChars(e.ChangedRange);
         }
-
+        public void RefreshObjectExplorer(FastColoredTextBox ftp)
+        {
+            ThreadPool.QueueUserWorkItem((o) => ReBuildObjectExplorer(ftp.Text));//rebuild object explorer
+        }
         private void tb_ToolTipNeeded(object sender, ToolTipNeededEventArgs e)
         {
             if (!string.IsNullOrEmpty(e.HoveredWord))
