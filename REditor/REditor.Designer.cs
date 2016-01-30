@@ -66,11 +66,18 @@ namespace SphereScp
             this.toolStripMenuItem8 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem7 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsFiles = new FarsiLibrary.Win.FATabStrip();
             this.treeView3 = new System.Windows.Forms.TreeView();
-            this.splitter2 = new System.Windows.Forms.Splitter();
-            this.splitter1 = new System.Windows.Forms.Splitter();
-            this.tsMain = new System.Windows.Forms.ToolStrip();
+            this.msMain = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportHTMLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadSphereScriptsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadKeywordsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.openToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.saveToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -94,23 +101,14 @@ namespace SphereScp
             this.bookmarkPlusButton = new System.Windows.Forms.ToolStripButton();
             this.bookmarkMinusButton = new System.Windows.Forms.ToolStripButton();
             this.gotoButton = new System.Windows.Forms.ToolStripDropDownButton();
-            this.msMain = new System.Windows.Forms.MenuStrip();
-            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exportHTMLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.loadSphereScriptsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.loadKeywordsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsMain = new System.Windows.Forms.ToolStrip();
+            this.tsFiles = new FarsiLibrary.Win.FATabStrip();
             this.documentMap1 = new FastColoredTextBoxNS.DocumentMap();
             this.cmMain.SuspendLayout();
             this.ssMain.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tsFiles)).BeginInit();
-            this.tsMain.SuspendLayout();
             this.msMain.SuspendLayout();
+            this.tsMain.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tsFiles)).BeginInit();
             this.SuspendLayout();
             // 
             // toolStripSeparator
@@ -314,6 +312,7 @@ namespace SphereScp
             // lbWordUnderMouse
             // 
             this.lbWordUnderMouse.AutoSize = false;
+            this.lbWordUnderMouse.Font = new System.Drawing.Font("Consolas", 9F);
             this.lbWordUnderMouse.ForeColor = System.Drawing.Color.Gray;
             this.lbWordUnderMouse.Name = "lbWordUnderMouse";
             this.lbWordUnderMouse.Size = new System.Drawing.Size(1004, 17);
@@ -322,6 +321,7 @@ namespace SphereScp
             // 
             // ssMain
             // 
+            this.ssMain.BackgroundImage = global::SphereScp.Properties.Resources.bg1;
             this.ssMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lbWordUnderMouse,
             this.btZoom});
@@ -395,17 +395,6 @@ namespace SphereScp
             this.toolStripMenuItem6.Text = "25%";
             this.toolStripMenuItem6.Click += new System.EventHandler(this.Zoom_click);
             // 
-            // tsFiles
-            // 
-            this.tsFiles.AutoScroll = true;
-            this.tsFiles.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tsFiles.Font = new System.Drawing.Font("Tahoma", 8.25F);
-            this.tsFiles.Location = new System.Drawing.Point(193, 49);
-            this.tsFiles.Name = "tsFiles";
-            this.tsFiles.Size = new System.Drawing.Size(731, 549);
-            this.tsFiles.TabIndex = 13;
-            this.tsFiles.Text = "faTabStrip1";
-            // 
             // treeView3
             // 
             this.treeView3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
@@ -419,72 +408,155 @@ namespace SphereScp
             this.treeView3.Margin = new System.Windows.Forms.Padding(0);
             this.treeView3.Name = "treeView3";
             this.treeView3.ShowLines = false;
-            this.treeView3.ShowNodeToolTips = true;
             this.treeView3.ShowPlusMinus = false;
             this.treeView3.ShowRootLines = false;
             this.treeView3.Size = new System.Drawing.Size(190, 549);
             this.treeView3.TabIndex = 14;
+            this.treeView3.TabStop = false;
             // 
-            // splitter2
+            // msMain
             // 
-            this.splitter2.Dock = System.Windows.Forms.DockStyle.Right;
-            this.splitter2.Location = new System.Drawing.Point(924, 49);
-            this.splitter2.Margin = new System.Windows.Forms.Padding(0);
-            this.splitter2.Name = "splitter2";
-            this.splitter2.Size = new System.Drawing.Size(3, 549);
-            this.splitter2.TabIndex = 17;
-            this.splitter2.TabStop = false;
+            this.msMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
+            this.msMain.BackgroundImage = global::SphereScp.Properties.Resources.bg1;
+            this.msMain.GripMargin = new System.Windows.Forms.Padding(0);
+            this.msMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem,
+            this.loadSphereScriptsToolStripMenuItem});
+            this.msMain.Location = new System.Drawing.Point(0, 0);
+            this.msMain.Name = "msMain";
+            this.msMain.Size = new System.Drawing.Size(1074, 24);
+            this.msMain.TabIndex = 0;
+            this.msMain.Text = "menuStrip1";
             // 
-            // splitter1
+            // fileToolStripMenuItem
             // 
-            this.splitter1.Location = new System.Drawing.Point(190, 49);
-            this.splitter1.Margin = new System.Windows.Forms.Padding(0);
-            this.splitter1.Name = "splitter1";
-            this.splitter1.Size = new System.Drawing.Size(3, 549);
-            this.splitter1.TabIndex = 18;
-            this.splitter1.TabStop = false;
+            this.fileToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.newToolStripMenuItem,
+            this.openToolStripMenuItem,
+            this.saveToolStripMenuItem,
+            this.saveAsToolStripMenuItem,
+            this.exportHTMLToolStripMenuItem,
+            this.quitToolStripMenuItem});
+            this.fileToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.fileToolStripMenuItem.Image = global::SphereScp.Properties.Resources.arrow_inf;
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(53, 20);
+            this.fileToolStripMenuItem.Text = "File";
+            this.fileToolStripMenuItem.MouseLeave += new System.EventHandler(this.fileToolStripMenuItem_MouseLeave);
+            this.fileToolStripMenuItem.MouseHover += new System.EventHandler(this.fileToolStripMenuItem_MouseHover);
             // 
-            // tsMain
+            // newToolStripMenuItem
             // 
-            this.tsMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
-            this.tsMain.BackgroundImage = global::SphereScp.Properties.Resources.bg1;
-            this.tsMain.GripMargin = new System.Windows.Forms.Padding(0);
-            this.tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-            this.tsMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.newToolStripButton,
-            this.openToolStripButton,
-            this.saveToolStripButton,
-            this.printToolStripButton,
-            this.toolStripSeparator3,
-            this.cutToolStripButton,
-            this.copyToolStripButton,
-            this.pasteToolStripButton,
-            this.btInvisibleChars,
-            this.btHighlightCurrentLine,
-            this.btShowFoldingLines,
-            this.toolStripSeparator4,
-            this.undoStripButton,
-            this.redoStripButton,
-            this.toolStripSeparator5,
-            this.backStripButton,
-            this.forwardStripButton,
-            this.tbFind,
-            this.toolStripLabel1,
-            this.toolStripSeparator6,
-            this.bookmarkPlusButton,
-            this.bookmarkMinusButton,
-            this.gotoButton});
-            this.tsMain.Location = new System.Drawing.Point(0, 24);
-            this.tsMain.Name = "tsMain";
-            this.tsMain.Padding = new System.Windows.Forms.Padding(0);
-            this.tsMain.Size = new System.Drawing.Size(1074, 25);
-            this.tsMain.TabIndex = 3;
-            this.tsMain.Text = "toolStrip1";
+            this.newToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
+            this.newToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.newToolStripMenuItem.Image = global::SphereScp.Properties.Resources.appbar_page_new;
+            this.newToolStripMenuItem.Name = "newToolStripMenuItem";
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.newToolStripMenuItem.Text = "New";
+            this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
+            this.newToolStripMenuItem.MouseLeave += new System.EventHandler(this.fileToolStripMenuItem_MouseLeave);
+            this.newToolStripMenuItem.MouseHover += new System.EventHandler(this.fileToolStripMenuItem_MouseHover);
+            // 
+            // openToolStripMenuItem
+            // 
+            this.openToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
+            this.openToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.openToolStripMenuItem.Image = global::SphereScp.Properties.Resources.appbar_folder_open;
+            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.openToolStripMenuItem.Text = "Open";
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+            this.openToolStripMenuItem.MouseLeave += new System.EventHandler(this.fileToolStripMenuItem_MouseLeave);
+            this.openToolStripMenuItem.MouseHover += new System.EventHandler(this.fileToolStripMenuItem_MouseHover);
+            // 
+            // saveToolStripMenuItem
+            // 
+            this.saveToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
+            this.saveToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.saveToolStripMenuItem.Image = global::SphereScp.Properties.Resources.appbar_save;
+            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.saveToolStripMenuItem.Text = "Save";
+            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
+            this.saveToolStripMenuItem.MouseLeave += new System.EventHandler(this.fileToolStripMenuItem_MouseLeave);
+            this.saveToolStripMenuItem.MouseHover += new System.EventHandler(this.fileToolStripMenuItem_MouseHover);
+            // 
+            // saveAsToolStripMenuItem
+            // 
+            this.saveAsToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
+            this.saveAsToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.saveAsToolStripMenuItem.Image = global::SphereScp.Properties.Resources.appbar_save;
+            this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.saveAsToolStripMenuItem.Text = "Save as ...";
+            this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
+            this.saveAsToolStripMenuItem.MouseLeave += new System.EventHandler(this.fileToolStripMenuItem_MouseLeave);
+            this.saveAsToolStripMenuItem.MouseHover += new System.EventHandler(this.fileToolStripMenuItem_MouseHover);
+            // 
+            // exportHTMLToolStripMenuItem
+            // 
+            this.exportHTMLToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
+            this.exportHTMLToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.exportHTMLToolStripMenuItem.Image = global::SphereScp.Properties.Resources.backward0_16x16;
+            this.exportHTMLToolStripMenuItem.Name = "exportHTMLToolStripMenuItem";
+            this.exportHTMLToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.exportHTMLToolStripMenuItem.Text = "Export HTML";
+            this.exportHTMLToolStripMenuItem.Click += new System.EventHandler(this.exportHTMLToolStripMenuItem_Click);
+            this.exportHTMLToolStripMenuItem.MouseLeave += new System.EventHandler(this.fileToolStripMenuItem_MouseLeave);
+            this.exportHTMLToolStripMenuItem.MouseHover += new System.EventHandler(this.fileToolStripMenuItem_MouseHover);
+            // 
+            // quitToolStripMenuItem
+            // 
+            this.quitToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
+            this.quitToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
+            this.quitToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.quitToolStripMenuItem.Text = "Quit";
+            this.quitToolStripMenuItem.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
+            this.quitToolStripMenuItem.MouseLeave += new System.EventHandler(this.fileToolStripMenuItem_MouseLeave);
+            this.quitToolStripMenuItem.MouseHover += new System.EventHandler(this.fileToolStripMenuItem_MouseHover);
+            // 
+            // loadSphereScriptsToolStripMenuItem
+            // 
+            this.loadSphereScriptsToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
+            this.loadSphereScriptsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.loadKeywordsToolStripMenuItem,
+            this.loadToolStripMenuItem});
+            this.loadSphereScriptsToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.loadSphereScriptsToolStripMenuItem.Image = global::SphereScp.Properties.Resources.arrow_inf;
+            this.loadSphereScriptsToolStripMenuItem.Name = "loadSphereScriptsToolStripMenuItem";
+            this.loadSphereScriptsToolStripMenuItem.Size = new System.Drawing.Size(136, 20);
+            this.loadSphereScriptsToolStripMenuItem.Text = "Sphere Commands";
+            this.loadSphereScriptsToolStripMenuItem.MouseLeave += new System.EventHandler(this.fileToolStripMenuItem_MouseLeave);
+            this.loadSphereScriptsToolStripMenuItem.MouseHover += new System.EventHandler(this.fileToolStripMenuItem_MouseHover);
+            // 
+            // loadKeywordsToolStripMenuItem
+            // 
+            this.loadKeywordsToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
+            this.loadKeywordsToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.loadKeywordsToolStripMenuItem.Name = "loadKeywordsToolStripMenuItem";
+            this.loadKeywordsToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.loadKeywordsToolStripMenuItem.Text = "Load Keywords";
+            this.loadKeywordsToolStripMenuItem.Click += new System.EventHandler(this.loadKeywordsToolStripMenuItem_Click);
+            this.loadKeywordsToolStripMenuItem.MouseLeave += new System.EventHandler(this.fileToolStripMenuItem_MouseLeave);
+            this.loadKeywordsToolStripMenuItem.MouseHover += new System.EventHandler(this.fileToolStripMenuItem_MouseHover);
+            // 
+            // loadToolStripMenuItem
+            // 
+            this.loadToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
+            this.loadToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
+            this.loadToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.loadToolStripMenuItem.Text = "Load SCP Scripts";
+            this.loadToolStripMenuItem.Click += new System.EventHandler(this.loadToolStripMenuItem_Click);
+            this.loadToolStripMenuItem.MouseLeave += new System.EventHandler(this.fileToolStripMenuItem_MouseLeave);
+            this.loadToolStripMenuItem.MouseHover += new System.EventHandler(this.fileToolStripMenuItem_MouseHover);
             // 
             // newToolStripButton
             // 
             this.newToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.newToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("newToolStripButton.Image")));
+            this.newToolStripButton.Image = global::SphereScp.Properties.Resources.appbar_page_new;
             this.newToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.newToolStripButton.Name = "newToolStripButton";
             this.newToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -494,7 +566,7 @@ namespace SphereScp
             // openToolStripButton
             // 
             this.openToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.openToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("openToolStripButton.Image")));
+            this.openToolStripButton.Image = global::SphereScp.Properties.Resources.appbar_folder_open;
             this.openToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.openToolStripButton.Name = "openToolStripButton";
             this.openToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -504,7 +576,7 @@ namespace SphereScp
             // saveToolStripButton
             // 
             this.saveToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.saveToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("saveToolStripButton.Image")));
+            this.saveToolStripButton.Image = global::SphereScp.Properties.Resources.appbar_save;
             this.saveToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.saveToolStripButton.Name = "saveToolStripButton";
             this.saveToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -514,7 +586,7 @@ namespace SphereScp
             // printToolStripButton
             // 
             this.printToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.printToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("printToolStripButton.Image")));
+            this.printToolStripButton.Image = global::SphereScp.Properties.Resources.appbar_printer;
             this.printToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.printToolStripButton.Name = "printToolStripButton";
             this.printToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -529,7 +601,7 @@ namespace SphereScp
             // cutToolStripButton
             // 
             this.cutToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.cutToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("cutToolStripButton.Image")));
+            this.cutToolStripButton.Image = global::SphereScp.Properties.Resources.appbar_scissor;
             this.cutToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.cutToolStripButton.Name = "cutToolStripButton";
             this.cutToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -539,7 +611,7 @@ namespace SphereScp
             // copyToolStripButton
             // 
             this.copyToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.copyToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("copyToolStripButton.Image")));
+            this.copyToolStripButton.Image = global::SphereScp.Properties.Resources.appbar_page_copy;
             this.copyToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.copyToolStripButton.Name = "copyToolStripButton";
             this.copyToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -586,7 +658,7 @@ namespace SphereScp
             this.btShowFoldingLines.CheckOnClick = true;
             this.btShowFoldingLines.CheckState = System.Windows.Forms.CheckState.Checked;
             this.btShowFoldingLines.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btShowFoldingLines.Image = ((System.Drawing.Image)(resources.GetObject("btShowFoldingLines.Image")));
+            this.btShowFoldingLines.Image = global::SphereScp.Properties.Resources.appbar_lines_horizontal_4;
             this.btShowFoldingLines.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btShowFoldingLines.Name = "btShowFoldingLines";
             this.btShowFoldingLines.Size = new System.Drawing.Size(23, 22);
@@ -691,147 +763,62 @@ namespace SphereScp
             this.gotoButton.Image = ((System.Drawing.Image)(resources.GetObject("gotoButton.Image")));
             this.gotoButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.gotoButton.Name = "gotoButton";
-            this.gotoButton.Size = new System.Drawing.Size(55, 22);
-            this.gotoButton.Text = "Goto...";
+            this.gotoButton.Size = new System.Drawing.Size(79, 22);
+            this.gotoButton.Text = "Go to mark";
             this.gotoButton.DropDownOpening += new System.EventHandler(this.gotoButton_DropDownOpening);
             // 
-            // msMain
+            // tsMain
             // 
-            this.msMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
-            this.msMain.BackgroundImage = global::SphereScp.Properties.Resources.bg1;
-            this.msMain.GripMargin = new System.Windows.Forms.Padding(0);
-            this.msMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem,
-            this.loadSphereScriptsToolStripMenuItem});
-            this.msMain.Location = new System.Drawing.Point(0, 0);
-            this.msMain.Name = "msMain";
-            this.msMain.Size = new System.Drawing.Size(1074, 24);
-            this.msMain.TabIndex = 0;
-            this.msMain.Text = "menuStrip1";
+            this.tsMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
+            this.tsMain.BackgroundImage = global::SphereScp.Properties.Resources.bg1;
+            this.tsMain.GripMargin = new System.Windows.Forms.Padding(0);
+            this.tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.tsMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.newToolStripButton,
+            this.openToolStripButton,
+            this.saveToolStripButton,
+            this.printToolStripButton,
+            this.toolStripSeparator3,
+            this.cutToolStripButton,
+            this.copyToolStripButton,
+            this.pasteToolStripButton,
+            this.btInvisibleChars,
+            this.btHighlightCurrentLine,
+            this.btShowFoldingLines,
+            this.toolStripSeparator4,
+            this.undoStripButton,
+            this.redoStripButton,
+            this.toolStripSeparator5,
+            this.backStripButton,
+            this.forwardStripButton,
+            this.tbFind,
+            this.toolStripLabel1,
+            this.toolStripSeparator6,
+            this.bookmarkPlusButton,
+            this.bookmarkMinusButton,
+            this.gotoButton});
+            this.tsMain.Location = new System.Drawing.Point(0, 24);
+            this.tsMain.Name = "tsMain";
+            this.tsMain.Padding = new System.Windows.Forms.Padding(0);
+            this.tsMain.Size = new System.Drawing.Size(1074, 25);
+            this.tsMain.TabIndex = 3;
+            this.tsMain.Text = "toolStrip1";
             // 
-            // fileToolStripMenuItem
+            // tsFiles
             // 
-            this.fileToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
-            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.newToolStripMenuItem,
-            this.openToolStripMenuItem,
-            this.saveToolStripMenuItem,
-            this.saveAsToolStripMenuItem,
-            this.exportHTMLToolStripMenuItem,
-            this.quitToolStripMenuItem});
-            this.fileToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.fileToolStripMenuItem.Image = global::SphereScp.Properties.Resources.arrow_inf;
-            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(53, 20);
-            this.fileToolStripMenuItem.Text = "File";
-            this.fileToolStripMenuItem.MouseLeave += new System.EventHandler(this.fileToolStripMenuItem_MouseLeave);
-            this.fileToolStripMenuItem.MouseHover += new System.EventHandler(this.fileToolStripMenuItem_MouseHover);
-            // 
-            // newToolStripMenuItem
-            // 
-            this.newToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
-            this.newToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.newToolStripMenuItem.Text = "New";
-            this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
-            this.newToolStripMenuItem.MouseLeave += new System.EventHandler(this.fileToolStripMenuItem_MouseLeave);
-            this.newToolStripMenuItem.MouseHover += new System.EventHandler(this.fileToolStripMenuItem_MouseHover);
-            // 
-            // openToolStripMenuItem
-            // 
-            this.openToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
-            this.openToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.openToolStripMenuItem.Text = "Open";
-            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
-            this.openToolStripMenuItem.MouseLeave += new System.EventHandler(this.fileToolStripMenuItem_MouseLeave);
-            this.openToolStripMenuItem.MouseHover += new System.EventHandler(this.fileToolStripMenuItem_MouseHover);
-            // 
-            // saveToolStripMenuItem
-            // 
-            this.saveToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
-            this.saveToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.saveToolStripMenuItem.Text = "Save";
-            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
-            this.saveToolStripMenuItem.MouseLeave += new System.EventHandler(this.fileToolStripMenuItem_MouseLeave);
-            this.saveToolStripMenuItem.MouseHover += new System.EventHandler(this.fileToolStripMenuItem_MouseHover);
-            // 
-            // saveAsToolStripMenuItem
-            // 
-            this.saveAsToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
-            this.saveAsToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.saveAsToolStripMenuItem.Text = "Save as ...";
-            this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
-            this.saveAsToolStripMenuItem.MouseLeave += new System.EventHandler(this.fileToolStripMenuItem_MouseLeave);
-            this.saveAsToolStripMenuItem.MouseHover += new System.EventHandler(this.fileToolStripMenuItem_MouseHover);
-            // 
-            // exportHTMLToolStripMenuItem
-            // 
-            this.exportHTMLToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
-            this.exportHTMLToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.exportHTMLToolStripMenuItem.Name = "exportHTMLToolStripMenuItem";
-            this.exportHTMLToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.exportHTMLToolStripMenuItem.Text = "Export HTML";
-            this.exportHTMLToolStripMenuItem.Click += new System.EventHandler(this.exportHTMLToolStripMenuItem_Click);
-            this.exportHTMLToolStripMenuItem.MouseLeave += new System.EventHandler(this.fileToolStripMenuItem_MouseLeave);
-            this.exportHTMLToolStripMenuItem.MouseHover += new System.EventHandler(this.fileToolStripMenuItem_MouseHover);
-            // 
-            // quitToolStripMenuItem
-            // 
-            this.quitToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
-            this.quitToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
-            this.quitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.quitToolStripMenuItem.Text = "Quit";
-            this.quitToolStripMenuItem.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
-            this.quitToolStripMenuItem.MouseLeave += new System.EventHandler(this.fileToolStripMenuItem_MouseLeave);
-            this.quitToolStripMenuItem.MouseHover += new System.EventHandler(this.fileToolStripMenuItem_MouseHover);
-            // 
-            // loadSphereScriptsToolStripMenuItem
-            // 
-            this.loadSphereScriptsToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
-            this.loadSphereScriptsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.loadKeywordsToolStripMenuItem,
-            this.loadToolStripMenuItem});
-            this.loadSphereScriptsToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.loadSphereScriptsToolStripMenuItem.Image = global::SphereScp.Properties.Resources.arrow_inf;
-            this.loadSphereScriptsToolStripMenuItem.Name = "loadSphereScriptsToolStripMenuItem";
-            this.loadSphereScriptsToolStripMenuItem.Size = new System.Drawing.Size(136, 20);
-            this.loadSphereScriptsToolStripMenuItem.Text = "Sphere Commands";
-            this.loadSphereScriptsToolStripMenuItem.MouseLeave += new System.EventHandler(this.fileToolStripMenuItem_MouseLeave);
-            this.loadSphereScriptsToolStripMenuItem.MouseHover += new System.EventHandler(this.fileToolStripMenuItem_MouseHover);
-            // 
-            // loadKeywordsToolStripMenuItem
-            // 
-            this.loadKeywordsToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
-            this.loadKeywordsToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.loadKeywordsToolStripMenuItem.Name = "loadKeywordsToolStripMenuItem";
-            this.loadKeywordsToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
-            this.loadKeywordsToolStripMenuItem.Text = "Load Keywords";
-            this.loadKeywordsToolStripMenuItem.Click += new System.EventHandler(this.loadKeywordsToolStripMenuItem_Click);
-            this.loadKeywordsToolStripMenuItem.MouseLeave += new System.EventHandler(this.fileToolStripMenuItem_MouseLeave);
-            this.loadKeywordsToolStripMenuItem.MouseHover += new System.EventHandler(this.fileToolStripMenuItem_MouseHover);
-            // 
-            // loadToolStripMenuItem
-            // 
-            this.loadToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
-            this.loadToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            this.loadToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
-            this.loadToolStripMenuItem.Text = "Load SCP Scripts";
-            this.loadToolStripMenuItem.Click += new System.EventHandler(this.loadToolStripMenuItem_Click);
-            this.loadToolStripMenuItem.MouseLeave += new System.EventHandler(this.fileToolStripMenuItem_MouseLeave);
-            this.loadToolStripMenuItem.MouseHover += new System.EventHandler(this.fileToolStripMenuItem_MouseHover);
+            this.tsFiles.AutoScroll = true;
+            this.tsFiles.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tsFiles.Font = new System.Drawing.Font("Tahoma", 8.25F);
+            this.tsFiles.Location = new System.Drawing.Point(190, 49);
+            this.tsFiles.Name = "tsFiles";
+            this.tsFiles.Size = new System.Drawing.Size(737, 549);
+            this.tsFiles.TabIndex = 13;
+            this.tsFiles.Text = "faTabStrip1";
             // 
             // documentMap1
             // 
             this.documentMap1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
+            this.documentMap1.BackgroundImage = global::SphereScp.Properties.Resources.bg1;
             this.documentMap1.Dock = System.Windows.Forms.DockStyle.Right;
             this.documentMap1.ForeColor = System.Drawing.Color.Maroon;
             this.documentMap1.Location = new System.Drawing.Point(927, 49);
@@ -847,11 +834,10 @@ namespace SphereScp
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
+            this.BackgroundImage = global::SphereScp.Properties.Resources.bg1;
             this.ClientSize = new System.Drawing.Size(1074, 620);
             this.Controls.Add(this.tsFiles);
-            this.Controls.Add(this.splitter2);
             this.Controls.Add(this.documentMap1);
-            this.Controls.Add(this.splitter1);
             this.Controls.Add(this.treeView3);
             this.Controls.Add(this.tsMain);
             this.Controls.Add(this.msMain);
@@ -859,17 +845,18 @@ namespace SphereScp
             this.ForeColor = System.Drawing.Color.White;
             this.MainMenuStrip = this.msMain;
             this.Name = "MAIN";
+            this.Opacity = 0.99D;
             this.Text = "REditor";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PowerfulCSharpEditor_FormClosing);
             this.Load += new System.EventHandler(this.REditor_Load);
             this.cmMain.ResumeLayout(false);
             this.ssMain.ResumeLayout(false);
             this.ssMain.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tsFiles)).EndInit();
-            this.tsMain.ResumeLayout(false);
-            this.tsMain.PerformLayout();
             this.msMain.ResumeLayout(false);
             this.msMain.PerformLayout();
+            this.tsMain.ResumeLayout(false);
+            this.tsMain.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tsFiles)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -883,7 +870,6 @@ namespace SphereScp
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem quitToolStripMenuItem;
-        private System.Windows.Forms.ToolStrip tsMain;
         private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
         private System.Windows.Forms.SaveFileDialog sfdMain;
         private System.Windows.Forms.OpenFileDialog ofdMain;
@@ -896,42 +882,19 @@ namespace SphereScp
         private System.Windows.Forms.ToolStripMenuItem undoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem redoToolStripMenuItem;
         private System.Windows.Forms.Timer tmUpdateInterface;
-        private System.Windows.Forms.ToolStripButton newToolStripButton;
-        private System.Windows.Forms.ToolStripButton openToolStripButton;
-        private System.Windows.Forms.ToolStripButton saveToolStripButton;
-        private System.Windows.Forms.ToolStripButton printToolStripButton;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator;
-        private System.Windows.Forms.ToolStripButton cutToolStripButton;
-        private System.Windows.Forms.ToolStripButton copyToolStripButton;
-        private System.Windows.Forms.ToolStripButton pasteToolStripButton;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripButton undoStripButton;
-        private System.Windows.Forms.ToolStripButton redoStripButton;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.ToolStripTextBox tbFind;
-        private System.Windows.Forms.ToolStripLabel toolStripLabel1;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
         private System.Windows.Forms.ToolStripMenuItem findToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem replaceToolStripMenuItem;
-        private System.Windows.Forms.ToolStripButton backStripButton;
-        private System.Windows.Forms.ToolStripButton forwardStripButton;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ImageList ilAutocomplete;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
         private System.Windows.Forms.ToolStripMenuItem autoIndentSelectedTextToolStripMenuItem;
-        private System.Windows.Forms.ToolStripButton btInvisibleChars;
-        private System.Windows.Forms.ToolStripButton btHighlightCurrentLine;
         private System.Windows.Forms.ToolStripMenuItem commentSelectedToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem uncommentSelectedToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cloneLinesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cloneLinesAndCommentToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
-        private System.Windows.Forms.ToolStripButton bookmarkPlusButton;
-        private System.Windows.Forms.ToolStripButton bookmarkMinusButton;
-        private System.Windows.Forms.ToolStripDropDownButton gotoButton;
-        private System.Windows.Forms.ToolStripButton btShowFoldingLines;
         private System.Windows.Forms.ToolStripStatusLabel lbWordUnderMouse;
         private System.Windows.Forms.ToolStripSplitButton btZoom;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem11;
@@ -943,14 +906,36 @@ namespace SphereScp
         private System.Windows.Forms.StatusStrip ssMain;
         private System.Windows.Forms.DataGridViewImageColumn clImage;
         private System.Windows.Forms.DataGridViewTextBoxColumn clName;
-        private FarsiLibrary.Win.FATabStrip tsFiles;
         private System.Windows.Forms.ToolStripMenuItem loadSphereScriptsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadKeywordsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportHTMLToolStripMenuItem;
         private System.Windows.Forms.TreeView treeView3;
+        private System.Windows.Forms.ToolStripButton newToolStripButton;
+        private System.Windows.Forms.ToolStripButton openToolStripButton;
+        private System.Windows.Forms.ToolStripButton saveToolStripButton;
+        private System.Windows.Forms.ToolStripButton printToolStripButton;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripButton cutToolStripButton;
+        private System.Windows.Forms.ToolStripButton copyToolStripButton;
+        private System.Windows.Forms.ToolStripButton pasteToolStripButton;
+        private System.Windows.Forms.ToolStripButton btInvisibleChars;
+        private System.Windows.Forms.ToolStripButton btHighlightCurrentLine;
+        private System.Windows.Forms.ToolStripButton btShowFoldingLines;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripButton undoStripButton;
+        private System.Windows.Forms.ToolStripButton redoStripButton;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+        private System.Windows.Forms.ToolStripButton backStripButton;
+        private System.Windows.Forms.ToolStripButton forwardStripButton;
+        private System.Windows.Forms.ToolStripTextBox tbFind;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel1;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
+        private System.Windows.Forms.ToolStripButton bookmarkPlusButton;
+        private System.Windows.Forms.ToolStripButton bookmarkMinusButton;
+        private System.Windows.Forms.ToolStripDropDownButton gotoButton;
+        private System.Windows.Forms.ToolStrip tsMain;
         private FastColoredTextBoxNS.DocumentMap documentMap1;
-        private System.Windows.Forms.Splitter splitter2;
-        private System.Windows.Forms.Splitter splitter1;
+        private FarsiLibrary.Win.FATabStrip tsFiles;
     }
 }

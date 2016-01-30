@@ -20,7 +20,7 @@ namespace SphereScp
     {
         public static Language currentLang = Language.Scp;
         Color changedLineColor = Color.FromArgb(255, 230, 230, 255);
-        Color currentLineColor = Color.FromArgb(100, 210, 210, 255);
+        Color currentLineColor = Color.FromArgb(215, 0, 0, 0);
 
 
         //List<ExplorerItem> explorerList = new List<ExplorerItem>();
@@ -891,16 +891,20 @@ namespace SphereScp
             if (CurrentTB != null)
                 CurrentTB.Zoom = int.Parse((sender as ToolStripItem).Tag.ToString());
         }
-        
+
 
         private void fileToolStripMenuItem_MouseLeave(object sender, EventArgs e)
         {
-            (sender as ToolStripMenuItem).ForeColor = Color.White;
+            if (sender is ToolStripMenuItem)
+                (sender as ToolStripMenuItem).ForeColor = Color.White;
+
         }
 
         private void fileToolStripMenuItem_MouseHover(object sender, EventArgs e)
         {
-            (sender as ToolStripMenuItem).ForeColor = Color.Black;
+            if (sender is ToolStripMenuItem)
+                (sender as ToolStripMenuItem).ForeColor = Color.Black;
+
         }
 
     }

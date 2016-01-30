@@ -68,7 +68,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Optimize>false</Optimize>
@@ -284,6 +284,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="FastColoredTextBoxNS\FastColoredTextBox.csproj" />
+    <None Include="Resources\appbar.lines.horizontal.4.png" />
+    <None Include="Resources\appbar.scissor.png" />
+    <None Include="Resources\appbar.clipboard.paste.png" />
+    <None Include="Resources\appbar.page.copy.png" />
+    <None Include="Resources\appbar.printer.png" />
+    <None Include="Resources\appbar.folder.open.png" />
+    <None Include="Resources\appbar.page.new.png" />
+    <None Include="Resources\appbar.save.png" />
     <None Include="Resources\arrow.inf.png" />
     <None Include="Resources\bg1.png" />
     <None Include="Resources\appbar.debug.stop2.png" />
