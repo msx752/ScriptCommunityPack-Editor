@@ -536,7 +536,7 @@ namespace SphereScp
             this.loadKeywordsToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
             this.loadKeywordsToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.loadKeywordsToolStripMenuItem.Name = "loadKeywordsToolStripMenuItem";
-            this.loadKeywordsToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.loadKeywordsToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
             this.loadKeywordsToolStripMenuItem.Text = "Load Keywords";
             this.loadKeywordsToolStripMenuItem.Click += new System.EventHandler(this.loadKeywordsToolStripMenuItem_Click);
             this.loadKeywordsToolStripMenuItem.MouseLeave += new System.EventHandler(this.fileToolStripMenuItem_MouseLeave);
@@ -547,8 +547,8 @@ namespace SphereScp
             this.loadToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
             this.loadToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            this.loadToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
-            this.loadToolStripMenuItem.Text = "Load SCP Scripts";
+            this.loadToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.loadToolStripMenuItem.Text = "Load Spheresever Scripts";
             this.loadToolStripMenuItem.Click += new System.EventHandler(this.loadToolStripMenuItem_Click);
             this.loadToolStripMenuItem.MouseLeave += new System.EventHandler(this.fileToolStripMenuItem_MouseLeave);
             this.loadToolStripMenuItem.MouseHover += new System.EventHandler(this.fileToolStripMenuItem_MouseHover);
@@ -845,7 +845,6 @@ namespace SphereScp
             this.ForeColor = System.Drawing.Color.White;
             this.MainMenuStrip = this.msMain;
             this.Name = "MAIN";
-            this.Opacity = 0.99D;
             this.Text = "REditor";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PowerfulCSharpEditor_FormClosing);
             this.Load += new System.EventHandler(this.REditor_Load);
