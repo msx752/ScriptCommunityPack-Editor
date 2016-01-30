@@ -246,5 +246,12 @@ namespace FastColoredTextBoxNS
             }
             base.Dispose(disposing);
         }
+
+        private void InitializeComponent()
+        {
+            this.SuspendLayout();
+            this.ResumeLayout(false);
+
+        }
     }
 }

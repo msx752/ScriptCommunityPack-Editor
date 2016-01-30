@@ -1,4 +1,5 @@
-﻿namespace SphereScp
+﻿
+namespace SphereScp
 {
     partial class MAIN
     {
@@ -43,7 +44,6 @@
             this.loadSphereScriptsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadKeywordsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsMain = new System.Windows.Forms.ToolStrip();
             this.newToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.openToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -71,7 +71,6 @@
             this.toolStripSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.splitter1 = new System.Windows.Forms.Splitter();
             this.sfdMain = new System.Windows.Forms.SaveFileDialog();
             this.ofdMain = new System.Windows.Forms.OpenFileDialog();
             this.cmMain = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -92,11 +91,9 @@
             this.cloneLinesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cloneLinesAndCommentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tmUpdateInterface = new System.Windows.Forms.Timer(this.components);
-            this.dgvObjectExplorer = new System.Windows.Forms.DataGridView();
             this.clImage = new System.Windows.Forms.DataGridViewImageColumn();
             this.clName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ilAutocomplete = new System.Windows.Forms.ImageList(this.components);
-            this.splitter2 = new System.Windows.Forms.Splitter();
             this.lbWordUnderMouse = new System.Windows.Forms.ToolStripStatusLabel();
             this.ssMain = new System.Windows.Forms.StatusStrip();
             this.btZoom = new System.Windows.Forms.ToolStripSplitButton();
@@ -107,21 +104,23 @@
             this.toolStripMenuItem7 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripMenuItem();
             this.tsFiles = new FarsiLibrary.Win.FATabStrip();
+            this.treeView3 = new System.Windows.Forms.TreeView();
+            this.splitter2 = new System.Windows.Forms.Splitter();
+            this.splitter1 = new System.Windows.Forms.Splitter();
             this.documentMap1 = new FastColoredTextBoxNS.DocumentMap();
             this.msMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.cmMain.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvObjectExplorer)).BeginInit();
             this.ssMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tsFiles)).BeginInit();
             this.SuspendLayout();
             // 
             // msMain
             // 
+            this.msMain.BackColor = System.Drawing.SystemColors.Control;
             this.msMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.loadSphereScriptsToolStripMenuItem,
-            this.aboutToolStripMenuItem});
+            this.loadSphereScriptsToolStripMenuItem});
             this.msMain.Location = new System.Drawing.Point(0, 0);
             this.msMain.Name = "msMain";
             this.msMain.Size = new System.Drawing.Size(1074, 24);
@@ -217,12 +216,6 @@
             this.loadToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
             this.loadToolStripMenuItem.Text = "Load SCP Scripts";
             this.loadToolStripMenuItem.Click += new System.EventHandler(this.loadToolStripMenuItem_Click);
-            // 
-            // aboutToolStripMenuItem
-            // 
-            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
-            this.aboutToolStripMenuItem.Text = "About";
             // 
             // tsMain
             // 
@@ -484,14 +477,6 @@
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
-            // splitter1
-            // 
-            this.splitter1.Location = new System.Drawing.Point(190, 49);
-            this.splitter1.Name = "splitter1";
-            this.splitter1.Size = new System.Drawing.Size(3, 549);
-            this.splitter1.TabIndex = 5;
-            this.splitter1.TabStop = false;
-            // 
             // sfdMain
             // 
             this.sfdMain.DefaultExt = "cs";
@@ -638,38 +623,6 @@
             this.tmUpdateInterface.Interval = 400;
             this.tmUpdateInterface.Tick += new System.EventHandler(this.tmUpdateInterface_Tick);
             // 
-            // dgvObjectExplorer
-            // 
-            this.dgvObjectExplorer.AllowUserToAddRows = false;
-            this.dgvObjectExplorer.AllowUserToDeleteRows = false;
-            this.dgvObjectExplorer.AllowUserToResizeColumns = false;
-            this.dgvObjectExplorer.AllowUserToResizeRows = false;
-            this.dgvObjectExplorer.BackgroundColor = System.Drawing.Color.White;
-            this.dgvObjectExplorer.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.dgvObjectExplorer.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvObjectExplorer.ColumnHeadersVisible = false;
-            this.dgvObjectExplorer.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.clImage,
-            this.clName});
-            this.dgvObjectExplorer.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.dgvObjectExplorer.Dock = System.Windows.Forms.DockStyle.Left;
-            this.dgvObjectExplorer.GridColor = System.Drawing.Color.White;
-            this.dgvObjectExplorer.Location = new System.Drawing.Point(0, 49);
-            this.dgvObjectExplorer.MultiSelect = false;
-            this.dgvObjectExplorer.Name = "dgvObjectExplorer";
-            this.dgvObjectExplorer.ReadOnly = true;
-            this.dgvObjectExplorer.RowHeadersVisible = false;
-            this.dgvObjectExplorer.RowTemplate.DefaultCellStyle.ForeColor = System.Drawing.Color.Black;
-            this.dgvObjectExplorer.RowTemplate.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.White;
-            this.dgvObjectExplorer.RowTemplate.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.Green;
-            this.dgvObjectExplorer.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.dgvObjectExplorer.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvObjectExplorer.Size = new System.Drawing.Size(190, 549);
-            this.dgvObjectExplorer.TabIndex = 6;
-            this.dgvObjectExplorer.VirtualMode = true;
-            this.dgvObjectExplorer.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvObjectExplorer_CellMouseDoubleClick);
-            this.dgvObjectExplorer.CellValueNeeded += new System.Windows.Forms.DataGridViewCellValueEventHandler(this.dgvObjectExplorer_CellValueNeeded);
-            // 
             // clImage
             // 
             this.clImage.HeaderText = "Column2";
@@ -689,18 +642,14 @@
             // 
             this.ilAutocomplete.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ilAutocomplete.ImageStream")));
             this.ilAutocomplete.TransparentColor = System.Drawing.Color.Transparent;
-            this.ilAutocomplete.Images.SetKeyName(0, "script_16x16.png");
-            this.ilAutocomplete.Images.SetKeyName(1, "app_16x16.png");
-            this.ilAutocomplete.Images.SetKeyName(2, "1302166543_virtualbox.png");
-            // 
-            // splitter2
-            // 
-            this.splitter2.Dock = System.Windows.Forms.DockStyle.Right;
-            this.splitter2.Location = new System.Drawing.Point(921, 49);
-            this.splitter2.Name = "splitter2";
-            this.splitter2.Size = new System.Drawing.Size(3, 549);
-            this.splitter2.TabIndex = 10;
-            this.splitter2.TabStop = false;
+            this.ilAutocomplete.Images.SetKeyName(0, "appbar.card.png");
+            this.ilAutocomplete.Images.SetKeyName(1, "appbar.cog.png");
+            this.ilAutocomplete.Images.SetKeyName(2, "appbar.debug.stop.png");
+            this.ilAutocomplete.Images.SetKeyName(3, "appbar.layer.png");
+            this.ilAutocomplete.Images.SetKeyName(4, "arrow.down.png");
+            this.ilAutocomplete.Images.SetKeyName(5, "arrow.up.png");
+            this.ilAutocomplete.Images.SetKeyName(6, "book.list.png");
+            this.ilAutocomplete.Images.SetKeyName(7, "camera.flash.png");
             // 
             // lbWordUnderMouse
             // 
@@ -788,25 +737,59 @@
             // 
             // tsFiles
             // 
+            this.tsFiles.AutoScroll = true;
             this.tsFiles.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tsFiles.Font = new System.Drawing.Font("Tahoma", 8.25F);
             this.tsFiles.Location = new System.Drawing.Point(193, 49);
             this.tsFiles.Name = "tsFiles";
-            this.tsFiles.Size = new System.Drawing.Size(728, 549);
+            this.tsFiles.Size = new System.Drawing.Size(731, 549);
             this.tsFiles.TabIndex = 13;
             this.tsFiles.Text = "faTabStrip1";
+            // 
+            // treeView3
+            // 
+            this.treeView3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
+            this.treeView3.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.treeView3.Dock = System.Windows.Forms.DockStyle.Left;
+            this.treeView3.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.treeView3.ForeColor = System.Drawing.Color.Silver;
+            this.treeView3.FullRowSelect = true;
+            this.treeView3.HideSelection = false;
+            this.treeView3.Location = new System.Drawing.Point(0, 49);
+            this.treeView3.Name = "treeView3";
+            this.treeView3.ShowLines = false;
+            this.treeView3.ShowNodeToolTips = true;
+            this.treeView3.ShowPlusMinus = false;
+            this.treeView3.ShowRootLines = false;
+            this.treeView3.Size = new System.Drawing.Size(190, 549);
+            this.treeView3.TabIndex = 14;
+            // 
+            // splitter2
+            // 
+            this.splitter2.Dock = System.Windows.Forms.DockStyle.Right;
+            this.splitter2.Location = new System.Drawing.Point(924, 49);
+            this.splitter2.Name = "splitter2";
+            this.splitter2.Size = new System.Drawing.Size(3, 549);
+            this.splitter2.TabIndex = 17;
+            this.splitter2.TabStop = false;
+            // 
+            // splitter1
+            // 
+            this.splitter1.Location = new System.Drawing.Point(190, 49);
+            this.splitter1.Name = "splitter1";
+            this.splitter1.Size = new System.Drawing.Size(3, 549);
+            this.splitter1.TabIndex = 18;
+            this.splitter1.TabStop = false;
             // 
             // documentMap1
             // 
             this.documentMap1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
             this.documentMap1.Dock = System.Windows.Forms.DockStyle.Right;
             this.documentMap1.ForeColor = System.Drawing.Color.Maroon;
-            this.documentMap1.Location = new System.Drawing.Point(924, 49);
-            this.documentMap1.MaximumSize = new System.Drawing.Size(150, 0);
-            this.documentMap1.MinimumSize = new System.Drawing.Size(150, 0);
+            this.documentMap1.Location = new System.Drawing.Point(927, 49);
             this.documentMap1.Name = "documentMap1";
-            this.documentMap1.Size = new System.Drawing.Size(150, 549);
-            this.documentMap1.TabIndex = 9;
+            this.documentMap1.Size = new System.Drawing.Size(147, 549);
+            this.documentMap1.TabIndex = 15;
             this.documentMap1.Target = null;
             this.documentMap1.Text = "documentMap1";
             // 
@@ -814,12 +797,13 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1074, 620);
             this.Controls.Add(this.tsFiles);
             this.Controls.Add(this.splitter2);
             this.Controls.Add(this.documentMap1);
             this.Controls.Add(this.splitter1);
-            this.Controls.Add(this.dgvObjectExplorer);
+            this.Controls.Add(this.treeView3);
             this.Controls.Add(this.tsMain);
             this.Controls.Add(this.msMain);
             this.Controls.Add(this.ssMain);
@@ -833,7 +817,6 @@
             this.tsMain.ResumeLayout(false);
             this.tsMain.PerformLayout();
             this.cmMain.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvObjectExplorer)).EndInit();
             this.ssMain.ResumeLayout(false);
             this.ssMain.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tsFiles)).EndInit();
@@ -853,7 +836,6 @@
         private System.Windows.Forms.ToolStripMenuItem quitToolStripMenuItem;
         private System.Windows.Forms.ToolStrip tsMain;
         private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
-        private System.Windows.Forms.Splitter splitter1;
         private System.Windows.Forms.SaveFileDialog sfdMain;
         private System.Windows.Forms.OpenFileDialog ofdMain;
         private System.Windows.Forms.ContextMenuStrip cmMain;
@@ -882,7 +864,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
         private System.Windows.Forms.ToolStripMenuItem findToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem replaceToolStripMenuItem;
-        private System.Windows.Forms.DataGridView dgvObjectExplorer;
         private System.Windows.Forms.ToolStripButton backStripButton;
         private System.Windows.Forms.ToolStripButton forwardStripButton;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
@@ -902,8 +883,6 @@
         private System.Windows.Forms.ToolStripButton bookmarkMinusButton;
         private System.Windows.Forms.ToolStripDropDownButton gotoButton;
         private System.Windows.Forms.ToolStripButton btShowFoldingLines;
-        private FastColoredTextBoxNS.DocumentMap documentMap1;
-        private System.Windows.Forms.Splitter splitter2;
         private System.Windows.Forms.ToolStripStatusLabel lbWordUnderMouse;
         private System.Windows.Forms.ToolStripSplitButton btZoom;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem11;
@@ -918,9 +897,12 @@
         private FarsiLibrary.Win.FATabStrip tsFiles;
         private System.Windows.Forms.ToolStripMenuItem loadSphereScriptsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadKeywordsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportHTMLToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem5;
+        private System.Windows.Forms.TreeView treeView3;
+        private FastColoredTextBoxNS.DocumentMap documentMap1;
+        private System.Windows.Forms.Splitter splitter2;
+        private System.Windows.Forms.Splitter splitter1;
     }
 }

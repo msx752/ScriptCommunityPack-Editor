@@ -18,23 +18,15 @@ namespace SphereScp
 {
     public partial class MAIN : Form
     {
-        Color changedLineColor = Color.FromArgb(255, 230, 230, 255);
         public static Language currentLang = Language.Scp;
+        Color changedLineColor = Color.FromArgb(255, 230, 230, 255);
         Color currentLineColor = Color.FromArgb(100, 210, 210, 255);
-        string[] declarationSnippets = {
-               "public class ^\n{\n}", "private class ^\n{\n}", "internal class ^\n{\n}",
-               "public struct ^\n{\n;\n}", "private struct ^\n{\n;\n}", "internal struct ^\n{\n;\n}",
-               "public void ^()\n{\n;\n}", "private void ^()\n{\n;\n}", "internal void ^()\n{\n;\n}", "protected void ^()\n{\n;\n}",
-               "public ^{ get; set; }", "private ^{ get; set; }", "internal ^{ get; set; }", "protected ^{ get; set; }"
-               };
 
-        List<ExplorerItem> explorerList = new List<ExplorerItem>();
+
+        //List<ExplorerItem> explorerList = new List<ExplorerItem>();
         Style invisibleCharsStyle = new InvisibleCharsRenderer(Pens.Gray);
-        string[] keywords = { "abstract", "as", "base", "bool", "break", "byte", "case", "catch", "char", "checked", "class", "const", "continue", "decimal", "default", "delegate", "do", "double", "else", "enum", "event", "explicit", "extern", "false", "finally", "fixed", "float", "for", "foreach", "goto", "if", "implicit", "in", "int", "interface", "internal", "is", "lock", "long", "namespace", "new", "null", "object", "operator", "out", "override", "params", "private", "protected", "public", "readonly", "ref", "return", "sbyte", "sealed", "short", "sizeof", "stackalloc", "static", "string", "struct", "switch", "this", "throw", "true", "try", "typeof", "uint", "ulong", "unchecked", "unsafe", "ushort", "using", "virtual", "void", "volatile", "while", "add", "alias", "ascending", "descending", "dynamic", "from", "get", "global", "group", "into", "join", "let", "orderby", "partial", "remove", "select", "set", "value", "var", "where", "yield" };
         DateTime lastNavigatedDateTime = DateTime.Now;
-        string[] methods = { "Equals()", "GetHashCode()", "GetType()", "ToString()" };
         MarkerStyle sameWordsStyle = new MarkerStyle(new SolidBrush(Color.FromArgb(50, Color.Gray)));
-        string[] snippets = { "if(^)\n{\n;\n}", "if(^)\n{\n;\n}\nelse\n{\n;\n}", "for(^;;)\n{\n;\n}", "while(^)\n{\n;\n}", "do\n{\n^;\n}while();", "switch(^)\n{\ncase : break;\n}" };
         bool tbFindChanged = false;
 
         public MAIN()
@@ -63,6 +55,11 @@ namespace SphereScp
                 tsFiles.SelectedItem = (value.Parent as FATabStripItem);
                 value.Focus();
             }
+        }
+
+        public void RefreshObjectExplorer(FastColoredTextBox ftp)
+        {
+            ThreadPool.QueueUserWorkItem((o) => ReBuildObjectExplorer(ftp.Text));//rebuild object explorer
         }
 
         private void autoIndentSelectedTextToolStripMenuItem_Click(object sender, EventArgs e)
@@ -121,26 +118,11 @@ namespace SphereScp
         private void BuildAutocompleteMenu(AutocompleteMenu popupMenu)
         {
             List<AutoCompleteItem> items = new List<AutoCompleteItem>();
-
-            if (currentLang != Language.Scp)
-            {
-                foreach (var item in snippets)
-                    items.Add(new SnippetAuto(item) { ImageIndex = 1 });
-                foreach (var item in declarationSnippets)
-                    items.Add(new DeclarationAuto(item) { ImageIndex = 0 });
-                foreach (var item in methods)
-                    items.Add(new MethodAuto(item) { ImageIndex = 2 });
-                foreach (var item in keywords)
-                    items.Add(new AutoCompleteItem(item));
-            }
-            else
-            {
-                items.AddRange(ScriptCommunityPack.loadKwCommand<MethodAuto>(PropertyTypes.TriggerAuto));//improved
-                items.AddRange(ScriptCommunityPack.loadKwCommand<DeclarationAuto>(PropertyTypes.DeclarationAuto));//improved
-                items.AddRange(ScriptCommunityPack.loadKwCommand<SnippetAuto>(PropertyTypes.SnippetAuto));//improved
-                items.AddRange(ScriptCommunityPack.loadKwCommand<MethodAuto>(true, PropertyTypes.SnippetAuto, PropertyTypes.DeclarationAuto, PropertyTypes.TriggerAuto));//improved
-                items.AddRange(ScriptCommunityPack.fileScpCommands);//NEW scp commands
-            }
+            items.AddRange(ScriptCommunityPack.loadKwCommand<MethodAuto>(PropertyTypes.TriggerAuto));//improved
+            items.AddRange(ScriptCommunityPack.loadKwCommand<DeclarationAuto>(PropertyTypes.DeclarationAuto));//improved
+            items.AddRange(ScriptCommunityPack.loadKwCommand<SnippetAuto>(PropertyTypes.SnippetAuto));//improved
+            items.AddRange(ScriptCommunityPack.loadKwCommand<MethodAuto>(true, PropertyTypes.SnippetAuto, PropertyTypes.DeclarationAuto, PropertyTypes.TriggerAuto));//improved
+            items.AddRange(ScriptCommunityPack.fileScpCommands);//NEW scp commands
 
             items.Add(new InsertSpaceSnippet());
             items.Add(new InsertSpaceSnippet(@"^(\w+)([=<>!:]+)(\w+)$"));
@@ -210,10 +192,12 @@ namespace SphereScp
                 tb.Font = new Font("Consolas", 9.75f);
                 tb.BackColor = Color.FromArgb(15, 15, 15);
                 tb.ForeColor = Color.White;
+                tb.LineNumberColor = Color.Gray;
+                tb.IndentBackColor = tb.BackColor;
                 tb.ContextMenuStrip = cmMain;
                 tb.Dock = DockStyle.Fill;
                 tb.BorderStyle = BorderStyle.Fixed3D;
-                tb.LeftPadding = 13;
+                tb.LeftPadding = 5;
                 tb.Language = currentLang;
                 tb.AddStyle(new MarkerStyle(new SolidBrush(Color.FromArgb(50, Color.Gray))));//same words style
                 FATabStripItem tab = new FATabStripItem(fileName != null ? Path.GetFileName(fileName) : "[new]", tb);
@@ -256,60 +240,20 @@ namespace SphereScp
                     CreateTab(fileName);
             }
         }
-        private void TsFiles_TabStripItemSelectionChanged(TabStripItemChangedEventArgs e)
-        {
-            if (e.ChangeType == FATabStripItemChangeTypes.SelectionChanged)
-            {
-                FastColoredTextBox ftb = e.Item.Controls[0] as FastColoredTextBox;
-                documentMap1.Target = ftb;
-                RefreshObjectExplorer(ftb);
-            }
-        }
         private void cutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CurrentTB.Cut();
         }
 
-        private void dgvObjectExplorer_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        private void exportHTMLToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (CurrentTB != null)
-            {
-                var item = explorerList[e.RowIndex];
-                CurrentTB.GoEnd();
-                CurrentTB.SelectionStart = item.position;
-                CurrentTB.DoSelectionVisible();
-                CurrentTB.Focus();
-            }
-        }
-
-        private void dgvObjectExplorer_CellValueNeeded(object sender, DataGridViewCellValueEventArgs e)
-        {
-            try
-            {
-                ExplorerItem item = explorerList[e.RowIndex];
-                if (e.ColumnIndex == 1)
-                    e.Value = item.title;
-                else
-                    switch (item.type)
-                    {
-                        case ExplorerItemType.Class:
-                            e.Value = global::SphereScp.Properties.Resources.class_libraries;
-                            return;
-                        case ExplorerItemType.Method:
-                            e.Value = global::SphereScp.Properties.Resources.box;
-                            return;
-                        case ExplorerItemType.Event:
-                            e.Value = global::SphereScp.Properties.Resources.lightning;
-                            return;
-                        case ExplorerItemType.Property:
-                            e.Value = global::SphereScp.Properties.Resources.property;
-                            return;
-                    }
-            }
-            catch
-            {
-
-            }
+            ExportToHTML export = new ExportToHTML();
+            string val = export.GetHtml(CurrentTB);
+            val = val.Replace(".fctbNone{", "body{background-color:" + CurrentTB.BackColor.Name + ";}.fctbNone{");
+            val = val.Replace("font-size: " + CurrentTB.Font.Size + "pt;", "font-size: 9pt;");
+            StreamWriter sw = new StreamWriter(Path.Combine(Application.StartupPath, CurrentTB.Name + ".html"), false, Encoding.UTF8);
+            sw.Write(val);
+            sw.Close();
         }
 
         private void findToolStripMenuItem_Click(object sender, EventArgs e)
@@ -317,11 +261,39 @@ namespace SphereScp
             CurrentTB.ShowFindDialog();
         }
 
+        //    }
+        //}
         private void forwardStripButton_Click(object sender, EventArgs e)
         {
             NavigateForward();
         }
 
+        //private void dgvObjectExplorer_CellValueNeeded(object sender, DataGridViewCellValueEventArgs e)
+        //{
+        //    try
+        //    {
+        //        ExplorerItem item = explorerList[e.RowIndex];
+        //        if (e.ColumnIndex == 1)
+        //            e.Value = item.title;
+        //        else
+        //            switch (item.type)
+        //            {
+        //                case ExplorerItemType.Class:
+        //                    e.Value = global::SphereScp.Properties.Resources.class_libraries;
+        //                    return;
+        //                case ExplorerItemType.Method:
+        //                    e.Value = global::SphereScp.Properties.Resources.appbar_cog;
+        //                    return;
+        //                case ExplorerItemType.Event:
+        //                    e.Value = global::SphereScp.Properties.Resources.lightning;
+        //                    return;
+        //                case ExplorerItemType.Property:
+        //                    e.Value = global::SphereScp.Properties.Resources.property;
+        //                    return;
+        //            }
+        //    }
+        //    catch
+        //    {
         private void gotoButton_DropDownOpening(object sender, EventArgs e)
         {
             gotoButton.DropDownItems.Clear();
@@ -350,11 +322,41 @@ namespace SphereScp
             }
         }
 
+        //private void dgvObjectExplorer_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        //{
+        //    if (CurrentTB != null)
+        //    {
+        //        var item = explorerList[e.RowIndex];
+        //        CurrentTB.GoEnd();
+        //        CurrentTB.SelectionStart = item.position;
+        //        CurrentTB.DoSelectionVisible();
+        //        CurrentTB.Focus();
+        //    }
+        //}
         private void HighlightInvisibleChars(Range range)
         {
             range.ClearStyle(invisibleCharsStyle);
             if (btInvisibleChars.Checked)
                 range.SetStyle(invisibleCharsStyle, @".$|.\r\n|\s");
+        }
+
+        private void loadKeywordsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            tsFiles.Enabled = false;
+            ScriptCommunityPack.LoadKeywords();
+            tsFiles.Enabled = true;
+        }
+
+        private void loadToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (ScriptCommunityPack.keywordsInformation.Count == 0)
+            {
+                MessageBox.Show("primarily load keywords");
+                return;
+            }
+            tsFiles.Enabled = false;
+            ScpIndexer.LoadScpCmd();
+            tsFiles.Enabled = true;
         }
 
         private bool NavigateBackward()
@@ -491,56 +493,51 @@ namespace SphereScp
         {
             try
             {
-                List<ExplorerItem> list = new List<ExplorerItem>();
+                List<TreeNode> newNodes = new List<TreeNode>();
                 int lastClassIndex = -1;
                 Regex regex = new Regex(@"(?<range>(\[\w+\s+\w+(\s+\w+)?\]))|(?<range>((\bon=@)([a-z]?)+))|(((?:[a-z][a-z]+))(=)((?:[a-z][a-z0-9_]*)))", RegexOptions.IgnoreCase | RegexOptions.Multiline);
-                bool isDefineValue = false;
+                bool isDefineValue = true;
+                TreeNode newNode = null;
                 foreach (Match r in regex.Matches(text))
                 {
                     try
                     {
                         string s = r.Value;
                         s = s.Trim();
-                        ExplorerItem item = new ExplorerItem() { title = s, position = r.Index };
-                        if (item.title.ToLower().StartsWith("["))
+
+                        if (s.ToLower().StartsWith("["))
                         {
-                            string[] parts = item.title.Split(' ');
+                            string[] parts = s.Split(' ');
                             if (parts.Length <= 2)
                             {
                                 isDefineValue = true;
-                                string tit = parts[0].ToUpper() + " ";
+                                string tit = parts[0].ToUpper().Replace("İ", "I") + " ";
 
                                 for (int i = 1; i < parts.Length; i++)
                                     tit = tit + parts[i] + " ";
-
-                                item.title = tit;
-                                lastClassIndex = list.Count;
-                                item.type = ExplorerItemType.Class;
-
-                                list.Add(item);
+                                newNode = new TreeNode(tit) { ImageIndex = 0, Tag = r.Index };
+                                newNodes.Add(newNode);
                             }
                         }
                         else
                         {
-                            if (item.title.ToLower().Contains("on=@"))
+                            if (s.ToLower().Contains("on=@"))
                             {
-                                string[] parts = item.title.Split('@');
+                                string[] parts = s.Split('@');
                                 if (parts[1].Length > 0)
                                 {
                                     isDefineValue = false;
-                                    item.title = parts[0].ToUpper() + "@ " + parts[1];
-                                    item.type = ExplorerItemType.Event;
-                                    list.Add(item);
+                                    TreeNode newTrigger = new TreeNode(parts[0].ToUpper() + "@ " + parts[1]) { ImageIndex = 7, Tag = r.Index };
+                                    newNodes[newNodes.Count - 1].Nodes.Add(newTrigger);
                                 }
                             }
                             else
                             {
-                                string[] parts = item.title.Split('=');
+                                string[] parts = s.Split('=');
                                 if (parts.Length == 2 && isDefineValue)//isDefineValue is only define's propertie not trigger's 
                                 {
-                                    item.title = parts[0].ToUpper() + "= " + parts[1];
-                                    item.type = ExplorerItemType.Property;
-                                    list.Add(item);
+                                    TreeNode newProperty = new TreeNode(parts[0].ToUpper() + "= " + parts[1]) { ImageIndex = 1, Tag = r.Index };
+                                    newNodes[newNodes.Count - 1].Nodes.Add(newProperty);
                                 }
                             }
                         }
@@ -552,9 +549,10 @@ namespace SphereScp
                 BeginInvoke(
                     new Action(() =>
                     {
-                        explorerList = list;
-                        dgvObjectExplorer.RowCount = explorerList.Count;
-                        dgvObjectExplorer.Invalidate();
+                        treeView3.Nodes.Clear();
+                        treeView3.Nodes.Add(new TreeNode("EXPAND ALL") { BackColor = Color.Black, ForeColor = Color.Red, ImageIndex = 4 });
+                        treeView3.Nodes.AddRange(newNodes.ToArray());
+                        treeView3.CollapseAll();
                     })
                 );
             }
@@ -565,7 +563,32 @@ namespace SphereScp
 
         private void REditor_Load(object sender, EventArgs e)
         {
+            treeView3.ImageList = ilAutocomplete;
+            treeView3.AfterSelect += TreeView1_AfterSelect;
+            treeView3.NodeMouseClick += TreeView1_NodeMouseClick;
+            treeView3.NodeMouseDoubleClick += TreeView3_NodeMouseDoubleClick;
+        }
 
+        private void TreeView3_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                if (e.Node == treeView3.Nodes[0])
+                {
+                    if (e.Node.Text.ToLower() == "collapse all")
+                    {
+                        e.Node.SelectedImageIndex = 4;
+                        treeView3.CollapseAll();
+                        e.Node.Text = "EXPAND ALL";
+                    }
+                    else
+                    {
+                        e.Node.SelectedImageIndex = 5;
+                        treeView3.ExpandAll();
+                        e.Node.Text = "COLLAPSE ALL";
+                    }
+                }
+            }
         }
 
         private void redoToolStripMenuItem_Click(object sender, EventArgs e)
@@ -702,10 +725,7 @@ namespace SphereScp
             //show invisible chars
             HighlightInvisibleChars(e.ChangedRange);
         }
-        public void RefreshObjectExplorer(FastColoredTextBox ftp)
-        {
-            ThreadPool.QueueUserWorkItem((o) => ReBuildObjectExplorer(ftp.Text));//rebuild object explorer
-        }
+
         private void tb_ToolTipNeeded(object sender, ToolTipNeededEventArgs e)
         {
             if (!string.IsNullOrEmpty(e.HoveredWord))
@@ -773,7 +793,7 @@ namespace SphereScp
                     printToolStripButton.Enabled = false;
                     undoStripButton.Enabled = undoToolStripMenuItem.Enabled = false;
                     redoStripButton.Enabled = redoToolStripMenuItem.Enabled = false;
-                    dgvObjectExplorer.RowCount = 0;
+                    //dgvObjectExplorer.RowCount = 0;
                 }
             }
             catch (Exception ex)
@@ -790,6 +810,28 @@ namespace SphereScp
         private void ToolTip_Popup(object sender, PopupEventArgs e)
         {
             ScriptCommunityPack.ToolTip_Popup(sender, e);
+        }
+        private void TreeView1_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            treeView3.SelectedImageIndex = treeView3.SelectedNode.ImageIndex;
+        }
+
+        private void TreeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                if (e.Node == treeView3.Nodes[0])
+                    return;
+                int line = int.Parse(e.Node.Tag.ToString());
+                CurrentTB.GoEnd();
+                CurrentTB.SelectionStart = line;
+                CurrentTB.DoSelectionVisible();
+                CurrentTB.Focus();
+                treeView3.SelectedNode = e.Node;
+            }
+            else
+            {
+            }
         }
 
         private void tsFiles_TabStripItemClosing(TabStripItemClosingEventArgs e)
@@ -821,6 +863,15 @@ namespace SphereScp
             }
         }
 
+        private void TsFiles_TabStripItemSelectionChanged(TabStripItemChangedEventArgs e)
+        {
+            if (e.ChangeType == FATabStripItemChangeTypes.SelectionChanged)
+            {
+                FastColoredTextBox ftb = e.Item.Controls[0] as FastColoredTextBox;
+                documentMap1.Target = ftb;
+                RefreshObjectExplorer(ftb);
+            }
+        }
         private void uncommentSelectedToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CurrentTB.RemoveLinePrefix("//");
@@ -836,36 +887,6 @@ namespace SphereScp
         {
             if (CurrentTB != null)
                 CurrentTB.Zoom = int.Parse((sender as ToolStripItem).Tag.ToString());
-        }
-
-        private void loadToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (ScriptCommunityPack.keywordsInformation.Count == 0)
-            {
-                MessageBox.Show("primarily load keywords");
-                return;
-            }
-            tsFiles.Enabled = false;
-            ScpIndexer.LoadScpCmd();
-            tsFiles.Enabled = true;
-        }
-
-        private void loadKeywordsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            tsFiles.Enabled = false;
-            ScriptCommunityPack.LoadKeywords();
-            tsFiles.Enabled = true;
-        }
-
-        private void exportHTMLToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ExportToHTML export = new ExportToHTML();
-            string val = export.GetHtml(CurrentTB);
-            val = val.Replace(".fctbNone{", "body{background-color:" + CurrentTB.BackColor.Name + ";}.fctbNone{");
-            val = val.Replace("font-size: " + CurrentTB.Font.Size + "pt;", "font-size: 9pt;");
-            StreamWriter sw = new StreamWriter(Path.Combine(Application.StartupPath, CurrentTB.Name + ".html"), false, Encoding.UTF8);
-            sw.Write(val);
-            sw.Close();
         }
     }
 }
