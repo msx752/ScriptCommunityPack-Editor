@@ -174,7 +174,7 @@ namespace FastColoredTextBoxNS
 
             e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
 
-            using (var brush = new SolidBrush(Color.FromArgb(50, ForeColor)))
+            using (var brush = new SolidBrush(Color.FromArgb(40, ForeColor)))
             using (var pen = new Pen(brush, 1 / zoom))
             {
                 var rect = new Rectangle(0, y1, (int)((ClientSize.Width - 1) / zoom), y2 - y1);

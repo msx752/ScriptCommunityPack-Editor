@@ -10,15 +10,15 @@ namespace FastColoredTextBoxNS.Render
         {
             object classType = new object();
             if (Properties.Contains(PropertyTypes.SnippetAuto))
-                classType = new SnippetAuto(Name) { ImageIndex = 1 };
+                classType = new SnippetAuto(Name) { ImageIndex =3 };
             else if (Properties.Contains(PropertyTypes.DeclarationAuto))
-                classType = new DeclarationAuto(Name) { ImageIndex = 1 };
+                classType = new DeclarationAuto(Name) { ImageIndex = 2 };
             else if (Properties.Contains(PropertyTypes.TriggerAuto))
-                classType = new MethodAuto(Name) { ImageIndex = 2 };
+                classType = new MethodAuto(Name) { ImageIndex = 7 };
             else
             {
                 classType = new MethodAuto(this);
-                (classType as MethodAuto).ImageIndex = 2;
+                (classType as MethodAuto).ImageIndex = 9;
             }
             return classType as T;
         }

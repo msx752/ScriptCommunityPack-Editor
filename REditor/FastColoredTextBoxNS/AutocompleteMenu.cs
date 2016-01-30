@@ -256,10 +256,10 @@ namespace FastColoredTextBoxNS
 
                     if (finded.Count > 0)
                     {
-                        finded = finded.OrderBy(p => p.Text)
-                        .Where(p => !(p is InsertEnterSnippet) && !(p is InsertSpaceSnippet))
-                        .Where(p => !p.ToolTipText.StartsWith("\r\n\r\n"))// unknown define
-                        .ToList();
+                    //    finded = finded.OrderBy(p => p.Text)
+                    //    .Where(p => !(p is InsertEnterSnippet) && !(p is InsertSpaceSnippet))
+                    //    .Where(p => !p.ToolTipText.StartsWith("\r\n\r\n"))// unknown define
+                    //    .ToList();
 
                         while (finded.Count >= 31)//max listed func
                             finded.RemoveAt(30);

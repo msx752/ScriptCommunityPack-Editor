@@ -81,7 +81,7 @@ namespace FastColoredTextBoxNS.Render
                             string define = string.Format("[{0} {1}]", valuedef.CmdType.ToString(), valuedef.Cmd);
                             if (valuedef is ObjectDef)
                             {
-                                newScpCmd.ImageIndex = 1;
+                                newScpCmd.ImageIndex = 8;
                                 newScpCmd.ToolTipTitle = define;
                                 string children = "";
                                 foreach (ObjectDef item2 in (valuedef as ObjectDef).Child)

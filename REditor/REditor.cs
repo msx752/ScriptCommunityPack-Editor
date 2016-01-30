@@ -189,6 +189,8 @@ namespace SphereScp
             try
             {
                 FastColoredTextBox tb = new FastColoredTextBox();
+                tb.AutoScroll = true;
+                tb.BorderStyle = BorderStyle.None;
                 tb.Font = new Font("Consolas", 9.75f);
                 tb.BackColor = Color.FromArgb(15, 15, 15);
                 tb.ForeColor = Color.White;
@@ -201,6 +203,7 @@ namespace SphereScp
                 tb.Language = currentLang;
                 tb.AddStyle(new MarkerStyle(new SolidBrush(Color.FromArgb(50, Color.Gray))));//same words style
                 FATabStripItem tab = new FATabStripItem(fileName != null ? Path.GetFileName(fileName) : "[new]", tb);
+                tab.ForeColor = Color.Black;
                 tab.Tag = fileName;
                 if (fileName != null)
                     tb.OpenFile(fileName);
@@ -210,6 +213,7 @@ namespace SphereScp
                 tsFiles.AddTab(tab);
                 tsFiles.TabStripItemSelectionChanged += TsFiles_TabStripItemSelectionChanged;
                 tsFiles.SelectedItem = tab;
+                tsFiles.ForeColor = Color.Black;
                 tb.Focus();
                 tb.DelayedTextChangedInterval = 500;
                 tb.DelayedEventsInterval = 500;
@@ -494,7 +498,6 @@ namespace SphereScp
             try
             {
                 List<TreeNode> newNodes = new List<TreeNode>();
-                int lastClassIndex = -1;
                 Regex regex = new Regex(@"(?<range>(\[\w+\s+\w+(\s+\w+)?\]))|(?<range>((\bon=@)([a-z]?)+))|(((?:[a-z][a-z]+))(=)((?:[a-z][a-z0-9_]*)))", RegexOptions.IgnoreCase | RegexOptions.Multiline);
                 bool isDefineValue = true;
                 TreeNode newNode = null;
@@ -536,7 +539,7 @@ namespace SphereScp
                                 string[] parts = s.Split('=');
                                 if (parts.Length == 2 && isDefineValue)//isDefineValue is only define's propertie not trigger's 
                                 {
-                                    TreeNode newProperty = new TreeNode(parts[0].ToUpper() + "= " + parts[1]) { ImageIndex = 1, Tag = r.Index };
+                                    TreeNode newProperty = new TreeNode(parts[0].ToUpper() + "= " + parts[1]) { ImageIndex = 6, Tag = r.Index };
                                     newNodes[newNodes.Count - 1].Nodes.Add(newProperty);
                                 }
                             }
@@ -888,5 +891,17 @@ namespace SphereScp
             if (CurrentTB != null)
                 CurrentTB.Zoom = int.Parse((sender as ToolStripItem).Tag.ToString());
         }
+        
+
+        private void fileToolStripMenuItem_MouseLeave(object sender, EventArgs e)
+        {
+            (sender as ToolStripMenuItem).ForeColor = Color.White;
+        }
+
+        private void fileToolStripMenuItem_MouseHover(object sender, EventArgs e)
+        {
+            (sender as ToolStripMenuItem).ForeColor = Color.Black;
+        }
+
     }
 }
