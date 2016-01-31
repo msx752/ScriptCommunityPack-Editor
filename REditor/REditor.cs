@@ -192,7 +192,7 @@ namespace SphereScp
                 tb.AutoScroll = true;
                 tb.BorderStyle = BorderStyle.None;
                 tb.Font = new Font("Consolas", 9.75f);
-                tb.BackColor = Color.FromArgb(15, 15, 15);
+                tb.BackColor = Color.FromArgb(16,12,16);
                 tb.ForeColor = Color.White;
                 tb.LineNumberColor = Color.Gray;
                 tb.IndentBackColor = tb.BackColor;
@@ -215,7 +215,7 @@ namespace SphereScp
                 tsFiles.SelectedItem = tab;
                 tsFiles.ForeColor = Color.Black;
                 tb.Focus();
-                tb.DelayedTextChangedInterval = 500;
+                tb.DelayedTextChangedInterval = 1;
                 tb.DelayedEventsInterval = 500;
                 tb.TextChangedDelayed += new EventHandler<TextChangedEventArgs>(tb_TextChangedDelayed);
                 tb.SelectionChangedDelayed += new EventHandler(tb_SelectionChangedDelayed);
@@ -237,6 +237,7 @@ namespace SphereScp
                 tb.ToolTip.Popup += ToolTip_Popup;
                 documentMap1.Target = tb;
                 documentMap1.BackColor = tb.BackColor;
+                tsFiles.TabStripItemClosed += TsFiles_TabStripItemClosed;
             }
             catch (Exception ex)
             {
@@ -244,6 +245,17 @@ namespace SphereScp
                     CreateTab(fileName);
             }
         }
+
+        private void TsFiles_TabStripItemClosed(object sender, EventArgs e)
+        {
+            if (tsFiles.Controls.Count == 0)
+            {
+                ExpandedList.Clear();
+                treeView3.Nodes.Clear();
+                documentMap1.Target = null;
+            }
+        }
+
         private void cutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CurrentTB.Cut();
@@ -271,33 +283,6 @@ namespace SphereScp
         {
             NavigateForward();
         }
-
-        //private void dgvObjectExplorer_CellValueNeeded(object sender, DataGridViewCellValueEventArgs e)
-        //{
-        //    try
-        //    {
-        //        ExplorerItem item = explorerList[e.RowIndex];
-        //        if (e.ColumnIndex == 1)
-        //            e.Value = item.title;
-        //        else
-        //            switch (item.type)
-        //            {
-        //                case ExplorerItemType.Class:
-        //                    e.Value = global::SphereScp.Properties.Resources.class_libraries;
-        //                    return;
-        //                case ExplorerItemType.Method:
-        //                    e.Value = global::SphereScp.Properties.Resources.appbar_cog;
-        //                    return;
-        //                case ExplorerItemType.Event:
-        //                    e.Value = global::SphereScp.Properties.Resources.lightning;
-        //                    return;
-        //                case ExplorerItemType.Property:
-        //                    e.Value = global::SphereScp.Properties.Resources.property;
-        //                    return;
-        //            }
-        //    }
-        //    catch
-        //    {
         private void gotoButton_DropDownOpening(object sender, EventArgs e)
         {
             gotoButton.DropDownItems.Clear();
@@ -325,18 +310,6 @@ namespace SphereScp
                 }
             }
         }
-
-        //private void dgvObjectExplorer_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
-        //{
-        //    if (CurrentTB != null)
-        //    {
-        //        var item = explorerList[e.RowIndex];
-        //        CurrentTB.GoEnd();
-        //        CurrentTB.SelectionStart = item.position;
-        //        CurrentTB.DoSelectionVisible();
-        //        CurrentTB.Focus();
-        //    }
-        //}
         private void HighlightInvisibleChars(Range range)
         {
             range.ClearStyle(invisibleCharsStyle);
@@ -552,10 +525,13 @@ namespace SphereScp
                 BeginInvoke(
                     new Action(() =>
                     {
+                        if (treeView3.Nodes.Count == 0)
+                            CurrentTB.DelayedTextChangedInterval = 2000;
                         treeView3.Nodes.Clear();
                         treeView3.Nodes.Add(new TreeNode("EXPAND ALL") { BackColor = Color.Black, ForeColor = Color.Red, ImageIndex = 4 });
                         treeView3.Nodes.AddRange(newNodes.ToArray());
-                        treeView3.CollapseAll();
+                        for (int i = 0; i < ExpandedList.Count; i++)
+                            treeView3.Nodes[ExpandedList[i]].Expand();
                     })
                 );
             }
@@ -567,19 +543,51 @@ namespace SphereScp
         private void REditor_Load(object sender, EventArgs e)
         {
             treeView3.ImageList = ilAutocomplete;
-            treeView3.AfterSelect += TreeView1_AfterSelect;
+            treeView3.BeforeSelect += TreeView3_BeforeSelect;
             treeView3.NodeMouseClick += TreeView1_NodeMouseClick;
             treeView3.NodeMouseDoubleClick += TreeView3_NodeMouseDoubleClick;
+            treeView3.BeforeCollapse += TreeView3_BeforeCollapse;
+            treeView3.BeforeExpand += TreeView3_BeforeExpand;
         }
 
+        private void TreeView3_BeforeExpand(object sender, TreeViewCancelEventArgs e)
+        {
+            if (!ExpandedList.Contains(e.Node.Index))
+                ExpandedList.Add(e.Node.Index);
+        }
+
+        bool canCancel = true;
+        private void TreeView3_BeforeCollapse(object sender, TreeViewCancelEventArgs e)
+        {
+            if (canCollapse == null)
+                e.Cancel = canCancel;
+            else if (canCollapse == e.Node)
+                e.Cancel = false;
+
+            int index = ExpandedList.FindIndex(p => p == e.Node.Index);
+            if (index != -1)
+                ExpandedList.RemoveAt(index);
+        }
+
+        private void TreeView3_BeforeSelect(object sender, TreeViewCancelEventArgs e)
+        {
+            if (e.Action == TreeViewAction.Unknown)
+                e.Cancel = canCancel;
+            else if (e.Action == TreeViewAction.ByMouse)
+                e.Cancel = canCancel;
+        }
+        TreeNode canCollapse;
         private void TreeView3_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
                 if (e.Node == treeView3.Nodes[0])
                 {
+                    canCollapse = null;
+                    canCancel = false;
                     if (e.Node.Text.ToLower() == "collapse all")
                     {
+                        ExpandedList.Clear();
                         e.Node.SelectedImageIndex = 4;
                         treeView3.CollapseAll();
                         e.Node.Text = "EXPAND ALL";
@@ -590,6 +598,10 @@ namespace SphereScp
                         treeView3.ExpandAll();
                         e.Node.Text = "COLLAPSE ALL";
                     }
+                }
+                else
+                {
+                    canCollapse = e.Node;
                 }
             }
         }
@@ -814,10 +826,8 @@ namespace SphereScp
         {
             ScriptCommunityPack.ToolTip_Popup(sender, e);
         }
-        private void TreeView1_AfterSelect(object sender, TreeViewEventArgs e)
-        {
-            treeView3.SelectedImageIndex = treeView3.SelectedNode.ImageIndex;
-        }
+
+        List<int> ExpandedList = new List<int>();
 
         private void TreeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
@@ -825,15 +835,18 @@ namespace SphereScp
             {
                 if (e.Node == treeView3.Nodes[0])
                     return;
+
                 int line = int.Parse(e.Node.Tag.ToString());
                 CurrentTB.GoEnd();
                 CurrentTB.SelectionStart = line;
                 CurrentTB.DoSelectionVisible();
                 CurrentTB.Focus();
+                canCancel = true;
                 treeView3.SelectedNode = e.Node;
             }
             else
             {
+                canCancel = true;
             }
         }
 
