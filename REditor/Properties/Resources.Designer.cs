@@ -263,9 +263,29 @@ namespace SphereScp.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap btnBg {
+            get {
+                object obj = ResourceManager.GetObject("btnBg", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap camera_flash {
             get {
                 object obj = ResourceManager.GetObject("camera_flash", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap closePage {
+            get {
+                object obj = ResourceManager.GetObject("closePage", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -316,6 +336,16 @@ namespace SphereScp.Properties {
         internal static System.Drawing.Bitmap redo_16x16 {
             get {
                 object obj = ResourceManager.GetObject("redo_16x16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap SwitchPage {
+            get {
+                object obj = ResourceManager.GetObject("SwitchPage", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -188,6 +188,24 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="FastColoredTextBoxNS\VisualMarker.cs" />
+    <Compile Include="TabTest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TabTest.Designer.cs">
+      <DependentUpon>TabTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MSATabControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="MSATabControl.Designer.cs">
+      <DependentUpon>MSATabControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MSATabPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="MSATabPage.Designer.cs">
+      <DependentUpon>MSATabPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="REditor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -213,6 +231,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FastColoredTextBoxNS\ReplaceForm.resx">
       <DependentUpon>ReplaceForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TabTest.resx">
+      <DependentUpon>TabTest.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="REditor.resx">
       <DependentUpon>REditor.cs</DependentUpon>
@@ -284,6 +305,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="FastColoredTextBoxNS\FastColoredTextBox.csproj" />
+    <None Include="Resources\closePage.png" />
+    <None Include="Resources\SwitchPage.png" />
+    <None Include="Resources\btnBg.png" />
     <None Include="Resources\appbar.lines.horizontal.4.png" />
     <None Include="Resources\appbar.scissor.png" />
     <None Include="Resources\appbar.clipboard.paste.png" />
