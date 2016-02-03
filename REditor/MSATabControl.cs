@@ -168,7 +168,7 @@ namespace SphereScp
             bPage.FlatAppearance.BorderSize = 0;
             bPage.AutoSize = true;
             bPage.Name = "btn" + page.Name;
-            bPage.BackColor = otherPageColor;
+            bPage.BackgroundImage = Properties.Resources.btnBg;
             bPage.ImageAlign = ContentAlignment.MiddleCenter;
             bPage.BackgroundImageLayout = ImageLayout.Stretch;
             bPage.Text = (page as MSATabPage).PageTitle;
