@@ -14,7 +14,7 @@ namespace SphereScp
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new TabTest());
+            Application.Run(new MAIN());
         }
     }
 }

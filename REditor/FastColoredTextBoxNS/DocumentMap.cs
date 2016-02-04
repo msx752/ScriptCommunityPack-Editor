@@ -12,6 +12,7 @@ namespace FastColoredTextBoxNS
     /// <summary>
     /// Shows document map of FCTB
     /// </summary>
+    [Browsable(false)]
     public class DocumentMap : Control
     {
         public EventHandler TargetChanged;

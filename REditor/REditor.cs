@@ -6,13 +6,13 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using FarsiLibrary.Win;
 using FastColoredTextBoxNS;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Drawing.Drawing2D;
 using FastColoredTextBoxNS.Render;
+using FarsiLibrary.Win;
 
 namespace SphereScp
 {
@@ -45,14 +45,14 @@ namespace SphereScp
         {
             get
             {
-                if (tsFiles.SelectedItem == null)
+                if (msaTabControl1.SelectedPage == null)
                     return null;
-                return (tsFiles.SelectedItem.Controls[0] as FastColoredTextBox);
+                return msaTabControl1.SelectedPage.Controls[0] as FastColoredTextBox;
             }
 
             set
             {
-                tsFiles.SelectedItem = (value.Parent as FATabStripItem);
+                msaTabControl1.SelectedPage = value.Parent as MSATabPage;
                 value.Focus();
             }
         }
@@ -88,7 +88,7 @@ namespace SphereScp
 
         private void btHighlightCurrentLine_Click(object sender, EventArgs e)
         {
-            foreach (FATabStripItem tab in tsFiles.Items)
+            foreach (MSATabPage tab in msaTabControl1.Pages)
             {
                 if (btHighlightCurrentLine.Checked)
                     (tab.Controls[0] as FastColoredTextBox).CurrentLineColor = currentLineColor;
@@ -101,16 +101,18 @@ namespace SphereScp
 
         private void btInvisibleChars_Click(object sender, EventArgs e)
         {
-            foreach (FATabStripItem tab in tsFiles.Items)
+            foreach (MSATabPage tab in msaTabControl1.Pages)
                 HighlightInvisibleChars((tab.Controls[0] as FastColoredTextBox).Range);
+
             if (CurrentTB != null)
                 CurrentTB.Invalidate();
         }
 
         private void btShowFoldingLines_Click(object sender, EventArgs e)
         {
-            foreach (FATabStripItem tab in tsFiles.Items)
+            foreach (MSATabPage tab in msaTabControl1.Pages)
                 (tab.Controls[0] as FastColoredTextBox).ShowFoldingLines = btShowFoldingLines.Checked;
+
             if (CurrentTB != null)
                 CurrentTB.Invalidate();
         }
@@ -189,31 +191,24 @@ namespace SphereScp
             try
             {
                 FastColoredTextBox tb = new FastColoredTextBox();
+                tb.Paddings = new Padding(0, 0, 0, 21);
                 tb.AutoScroll = true;
                 tb.BorderStyle = BorderStyle.None;
                 tb.Font = new Font("Consolas", 9.75f);
-                tb.BackColor = Color.FromArgb(16,12,16);
+                tb.BackgroundImage = Properties.Resources.bg1;
                 tb.ForeColor = Color.White;
-                tb.LineNumberColor = Color.Gray;
-                tb.IndentBackColor = tb.BackColor;
+                tb.LineNumberColor = Color.Black;
+                tb.IndentBackColor = Color.Gray;
                 tb.ContextMenuStrip = cmMain;
                 tb.Dock = DockStyle.Fill;
-                tb.BorderStyle = BorderStyle.Fixed3D;
                 tb.LeftPadding = 5;
                 tb.Language = currentLang;
                 tb.AddStyle(new MarkerStyle(new SolidBrush(Color.FromArgb(50, Color.Gray))));//same words style
-                FATabStripItem tab = new FATabStripItem(fileName != null ? Path.GetFileName(fileName) : "[new]", tb);
-                tab.ForeColor = Color.Black;
-                tab.Tag = fileName;
                 if (fileName != null)
                     tb.OpenFile(fileName);
                 tb.Name = Path.GetFileName(fileName);
                 tb.ClearUndo();
                 tb.Tag = new PopupMenu();
-                tsFiles.AddTab(tab);
-                tsFiles.TabStripItemSelectionChanged += TsFiles_TabStripItemSelectionChanged;
-                tsFiles.SelectedItem = tab;
-                tsFiles.ForeColor = Color.Black;
                 tb.Focus();
                 tb.DelayedTextChangedInterval = 1;
                 tb.DelayedEventsInterval = 500;
@@ -235,9 +230,12 @@ namespace SphereScp
                 tb.ToolTip.OwnerDraw = true;
                 tb.ToolTip.Draw += ToolTip_Draw;
                 tb.ToolTip.Popup += ToolTip_Popup;
-                documentMap1.Target = tb;
-                documentMap1.BackColor = tb.BackColor;
-                tsFiles.TabStripItemClosed += TsFiles_TabStripItemClosed;
+                MSATabPage newPagem = new MSATabPage(tb, fileName != null ? Path.GetFileName(fileName) : "[new]");
+                newPagem.Tag = fileName;
+                msaTabControl1.MSATabPageClosed += msaTabControl1_MSATabPageClosed;
+                msaTabControl1.SelectedPageChanged += MsaTabControl1_SelectedPageChanged;
+                msaTabControl1.AddPage(newPagem);
+                documentMap1.BackgroundImage = tb.BackgroundImage;
             }
             catch (Exception ex)
             {
@@ -246,9 +244,9 @@ namespace SphereScp
             }
         }
 
-        private void TsFiles_TabStripItemClosed(object sender, EventArgs e)
+        private void msaTabControl1_MSATabPageClosed(object sender, ControlEventArgs e)
         {
-            if (tsFiles.Controls.Count == 0)
+            if (msaTabControl1.Pages.Count() == 0)
             {
                 ExpandedList.Clear();
                 treeView3.Nodes.Clear();
@@ -256,6 +254,18 @@ namespace SphereScp
             }
         }
 
+        private void MsaTabControl1_SelectedPageChanged(object sender, ControlEventArgs e)
+        {
+            if (CurrentTB != null)
+            {
+                CurrentTB.Focus();
+                string text = CurrentTB.Text;
+                ThreadPool.QueueUserWorkItem(
+                    (o) => ReBuildObjectExplorer(text)
+                );
+                documentMap1.Target = CurrentTB;
+            }
+        }
         private void cutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CurrentTB.Cut();
@@ -276,9 +286,6 @@ namespace SphereScp
         {
             CurrentTB.ShowFindDialog();
         }
-
-        //    }
-        //}
         private void forwardStripButton_Click(object sender, EventArgs e)
         {
             NavigateForward();
@@ -286,7 +293,8 @@ namespace SphereScp
         private void gotoButton_DropDownOpening(object sender, EventArgs e)
         {
             gotoButton.DropDownItems.Clear();
-            foreach (Control tab in tsFiles.Items)
+
+            foreach (Control tab in msaTabControl1.Pages)
             {
                 FastColoredTextBox tb = tab.Controls[0] as FastColoredTextBox;
                 foreach (var bookmark in tb.Bookmarks)
@@ -319,9 +327,7 @@ namespace SphereScp
 
         private void loadKeywordsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            tsFiles.Enabled = false;
             ScriptCommunityPack.LoadKeywords();
-            tsFiles.Enabled = true;
         }
 
         private void loadToolStripMenuItem_Click(object sender, EventArgs e)
@@ -331,9 +337,7 @@ namespace SphereScp
                 MessageBox.Show("primarily load keywords");
                 return;
             }
-            tsFiles.Enabled = false;
             ScpIndexer.LoadScpCmd();
-            tsFiles.Enabled = true;
         }
 
         private bool NavigateBackward()
@@ -341,9 +345,10 @@ namespace SphereScp
             DateTime max = new DateTime();
             int iLine = -1;
             FastColoredTextBox tb = null;
-            for (int iTab = 0; iTab < tsFiles.Items.Count; iTab++)
+
+            for (int iTab = 0; iTab < msaTabControl1.Pages.Count(); iTab++)
             {
-                var t = (tsFiles.Items[iTab].Controls[0] as FastColoredTextBox);
+                var t = (msaTabControl1.Pages[iTab].Controls[0] as FastColoredTextBox);
                 for (int i = 0; i < t.LinesCount; i++)
                     if (t[i].LastVisit < lastNavigatedDateTime && t[i].LastVisit > max)
                     {
@@ -354,7 +359,7 @@ namespace SphereScp
             }
             if (iLine >= 0)
             {
-                tsFiles.SelectedItem = (tb.Parent as FATabStripItem);
+                msaTabControl1.SelectedPage = (tb.Parent as MSATabPage);
                 tb.Navigate(iLine);
                 lastNavigatedDateTime = tb[iLine].LastVisit;
                 Console.WriteLine("Backward: " + lastNavigatedDateTime);
@@ -371,9 +376,9 @@ namespace SphereScp
             DateTime min = DateTime.Now;
             int iLine = -1;
             FastColoredTextBox tb = null;
-            for (int iTab = 0; iTab < tsFiles.Items.Count; iTab++)
+            for (int iTab = 0; iTab < msaTabControl1.Pages.Count(); iTab++)
             {
-                var t = (tsFiles.Items[iTab].Controls[0] as FastColoredTextBox);
+                var t = (msaTabControl1.Pages[iTab].Controls[0] as FastColoredTextBox);
                 for (int i = 0; i < t.LinesCount; i++)
                     if (t[i].LastVisit > lastNavigatedDateTime && t[i].LastVisit < min)
                     {
@@ -384,7 +389,7 @@ namespace SphereScp
             }
             if (iLine >= 0)
             {
-                tsFiles.SelectedItem = (tb.Parent as FATabStripItem);
+                msaTabControl1.SelectedPage = (tb.Parent as MSATabPage);
                 tb.Navigate(iLine);
                 lastNavigatedDateTime = tb[iLine].LastVisit;
                 Console.WriteLine("Forward: " + lastNavigatedDateTime);
@@ -433,19 +438,29 @@ namespace SphereScp
 
         private void PowerfulCSharpEditor_FormClosing(object sender, FormClosingEventArgs e)
         {
-            List<FATabStripItem> list = new List<FATabStripItem>();
-            foreach (FATabStripItem tab in tsFiles.Items)
-                list.Add(tab);
-            foreach (var tab in list)
+            List<MSATabPage> list = new List<MSATabPage>();
+            try
             {
-                TabStripItemClosingEventArgs args = new TabStripItemClosingEventArgs(tab);
-                tsFiles_TabStripItemClosing(args);
-                if (args.Cancel)
+                foreach (MSATabPage tab in msaTabControl1.Pages)
+                    list.Add(tab);
+                foreach (MSATabPage tab in list)
                 {
-                    e.Cancel = true;
-                    return;
+                    MSATabPageClosingEventArgs args = new MSATabPageClosingEventArgs(e.CloseReason, e.Cancel, tab);
+                    tsFiles_TabStripItemClosing(args);
+                    if (args.Cancel)
+                    {
+                        e.Cancel = true;
+                        return;
+                    }
+                    else
+                    {
+                        msaTabControl1.RemovePage(tab);
+                    }
                 }
-                tsFiles.RemoveTab(tab);
+            }
+            catch (Exception ef)
+            {
+
             }
         }
 
@@ -454,7 +469,7 @@ namespace SphereScp
             if (CurrentTB != null)
             {
                 var settings = new PrintDialogSettings();
-                settings.Title = tsFiles.SelectedItem.Title;
+                settings.Title = msaTabControl1.SelectedPage.PageTitle;
                 settings.Header = "&b&w&b";
                 settings.Footer = "&b&p";
                 CurrentTB.Print(settings);
@@ -548,6 +563,7 @@ namespace SphereScp
             treeView3.NodeMouseDoubleClick += TreeView3_NodeMouseDoubleClick;
             treeView3.BeforeCollapse += TreeView3_BeforeCollapse;
             treeView3.BeforeExpand += TreeView3_BeforeExpand;
+            msaTabControl1.BackgroundImage = Properties.Resources.bg1;
         }
 
         private void TreeView3_BeforeExpand(object sender, TreeViewCancelEventArgs e)
@@ -617,14 +633,14 @@ namespace SphereScp
             CurrentTB.ShowReplaceDialog();
         }
 
-        private bool Save(FATabStripItem tab)
+        private bool Save(MSATabPage tab)
         {
             var tb = (tab.Controls[0] as FastColoredTextBox);
             if (tab.Tag == null)
             {
                 if (sfdMain.ShowDialog() != System.Windows.Forms.DialogResult.OK)
                     return false;
-                tab.Title = Path.GetFileName(sfdMain.FileName);
+                tab.PageTitle = Path.GetFileName(sfdMain.FileName);
                 tab.Tag = sfdMain.FileName;
             }
 
@@ -648,23 +664,23 @@ namespace SphereScp
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (tsFiles.SelectedItem != null)
+            if (msaTabControl1.SelectedPage != null)
             {
-                string oldFile = tsFiles.SelectedItem.Tag as string;
-                tsFiles.SelectedItem.Tag = null;
-                if (!Save(tsFiles.SelectedItem))
+                string oldFile = msaTabControl1.SelectedPage.Tag as string;
+                msaTabControl1.SelectedPage.Tag = null;
+                if (!Save(msaTabControl1.SelectedPage))
                     if (oldFile != null)
                     {
-                        tsFiles.SelectedItem.Tag = oldFile;
-                        tsFiles.SelectedItem.Title = Path.GetFileName(oldFile);
+                        msaTabControl1.SelectedPage.Tag = oldFile;
+                        msaTabControl1.SelectedPage.PageTitle = Path.GetFileName(oldFile);
                     }
             }
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (tsFiles.SelectedItem != null)
-                Save(tsFiles.SelectedItem);
+            if (msaTabControl1.SelectedPage != null)
+                Save(msaTabControl1.SelectedPage);
         }
 
         private void selectAllToolStripMenuItem_Click(object sender, EventArgs e)
@@ -786,7 +802,7 @@ namespace SphereScp
         {
             try
             {
-                if (CurrentTB != null && tsFiles.Items.Count > 0)
+                if (CurrentTB != null && msaTabControl1.Pages.Count() > 0)
                 {
                     var tb = CurrentTB;
                     undoStripButton.Enabled = undoToolStripMenuItem.Enabled = tb.UndoEnabled;
@@ -797,6 +813,7 @@ namespace SphereScp
                     cutToolStripButton.Enabled = cutToolStripMenuItem.Enabled =
                     copyToolStripButton.Enabled = copyToolStripMenuItem.Enabled = !tb.Selection.IsEmpty;
                     printToolStripButton.Enabled = true;
+                    msaTabControl1.SelectedPage.isNeedSave = tb.IsChanged;
                 }
                 else
                 {
@@ -808,6 +825,7 @@ namespace SphereScp
                     printToolStripButton.Enabled = false;
                     undoStripButton.Enabled = undoToolStripMenuItem.Enabled = false;
                     redoStripButton.Enabled = redoToolStripMenuItem.Enabled = false;
+                    msaTabControl1.SelectedPage.isNeedSave = false;
                     //dgvObjectExplorer.RowCount = 0;
                 }
             }
@@ -850,14 +868,14 @@ namespace SphereScp
             }
         }
 
-        private void tsFiles_TabStripItemClosing(TabStripItemClosingEventArgs e)
+        private void tsFiles_TabStripItemClosing(MSATabPageClosingEventArgs e)
         {
-            if ((e.Item.Controls[0] as FastColoredTextBox).IsChanged)
+            if ((e.Control.Controls[0] as FastColoredTextBox).IsChanged)
             {
-                switch (MessageBox.Show("Do you want save " + e.Item.Title + " ?", "Save", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information))
+                switch (MessageBox.Show("Do you want save " + (e.Control as MSATabPage).PageTitle + " ?", "Save", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information))
                 {
                     case System.Windows.Forms.DialogResult.Yes:
-                        if (!Save(e.Item))
+                        if (!Save(e.Control as MSATabPage))
                             e.Cancel = true;
                         break;
                     case DialogResult.Cancel:
@@ -867,27 +885,6 @@ namespace SphereScp
             }
         }
 
-        private void tsFiles_TabStripItemSelectionChanged(TabStripItemChangedEventArgs e)
-        {
-            if (CurrentTB != null)
-            {
-                CurrentTB.Focus();
-                string text = CurrentTB.Text;
-                ThreadPool.QueueUserWorkItem(
-                    (o) => ReBuildObjectExplorer(text)
-                );
-            }
-        }
-
-        private void TsFiles_TabStripItemSelectionChanged(TabStripItemChangedEventArgs e)
-        {
-            if (e.ChangeType == FATabStripItemChangeTypes.SelectionChanged)
-            {
-                FastColoredTextBox ftb = e.Item.Controls[0] as FastColoredTextBox;
-                documentMap1.Target = ftb;
-                RefreshObjectExplorer(ftb);
-            }
-        }
         private void uncommentSelectedToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CurrentTB.RemoveLinePrefix("//");

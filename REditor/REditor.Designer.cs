@@ -102,13 +102,12 @@ namespace SphereScp
             this.bookmarkMinusButton = new System.Windows.Forms.ToolStripButton();
             this.gotoButton = new System.Windows.Forms.ToolStripDropDownButton();
             this.tsMain = new System.Windows.Forms.ToolStrip();
-            this.tsFiles = new FarsiLibrary.Win.FATabStrip();
             this.documentMap1 = new FastColoredTextBoxNS.DocumentMap();
+            this.msaTabControl1 = new SphereScp.MSATabControl();
             this.cmMain.SuspendLayout();
             this.ssMain.SuspendLayout();
             this.msMain.SuspendLayout();
             this.tsMain.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tsFiles)).BeginInit();
             this.SuspendLayout();
             // 
             // toolStripSeparator
@@ -316,7 +315,7 @@ namespace SphereScp
             this.lbWordUnderMouse.ForeColor = System.Drawing.Color.Gray;
             this.lbWordUnderMouse.Image = global::SphereScp.Properties.Resources.bg1;
             this.lbWordUnderMouse.Name = "lbWordUnderMouse";
-            this.lbWordUnderMouse.Size = new System.Drawing.Size(657, 17);
+            this.lbWordUnderMouse.Size = new System.Drawing.Size(973, 17);
             this.lbWordUnderMouse.Spring = true;
             this.lbWordUnderMouse.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -326,9 +325,9 @@ namespace SphereScp
             this.ssMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lbWordUnderMouse,
             this.btZoom});
-            this.ssMain.Location = new System.Drawing.Point(200, 598);
+            this.ssMain.Location = new System.Drawing.Point(0, 598);
             this.ssMain.Name = "ssMain";
-            this.ssMain.Size = new System.Drawing.Size(727, 22);
+            this.ssMain.Size = new System.Drawing.Size(1074, 22);
             this.ssMain.TabIndex = 2;
             this.ssMain.Text = "statusStrip1";
             // 
@@ -411,7 +410,7 @@ namespace SphereScp
             this.treeView3.ShowLines = false;
             this.treeView3.ShowPlusMinus = false;
             this.treeView3.ShowRootLines = false;
-            this.treeView3.Size = new System.Drawing.Size(200, 571);
+            this.treeView3.Size = new System.Drawing.Size(200, 549);
             this.treeView3.TabIndex = 14;
             this.treeView3.TabStop = false;
             // 
@@ -803,17 +802,6 @@ namespace SphereScp
             this.tsMain.TabIndex = 3;
             this.tsMain.Text = "toolStrip1";
             // 
-            // tsFiles
-            // 
-            this.tsFiles.AutoScroll = true;
-            this.tsFiles.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tsFiles.Font = new System.Drawing.Font("Tahoma", 8.25F);
-            this.tsFiles.Location = new System.Drawing.Point(200, 49);
-            this.tsFiles.Name = "tsFiles";
-            this.tsFiles.Size = new System.Drawing.Size(727, 549);
-            this.tsFiles.TabIndex = 13;
-            this.tsFiles.Text = "faTabStrip1";
-            // 
             // documentMap1
             // 
             this.documentMap1.BackColor = System.Drawing.SystemColors.Control;
@@ -823,10 +811,22 @@ namespace SphereScp
             this.documentMap1.Location = new System.Drawing.Point(927, 49);
             this.documentMap1.Margin = new System.Windows.Forms.Padding(0);
             this.documentMap1.Name = "documentMap1";
-            this.documentMap1.Size = new System.Drawing.Size(147, 571);
+            this.documentMap1.Size = new System.Drawing.Size(147, 549);
             this.documentMap1.TabIndex = 15;
             this.documentMap1.Target = null;
             this.documentMap1.Text = "documentMap1";
+            // 
+            // msaTabControl1
+            // 
+            this.msaTabControl1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("msaTabControl1.BackgroundImage")));
+            this.msaTabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.msaTabControl1.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.msaTabControl1.Location = new System.Drawing.Point(200, 49);
+            this.msaTabControl1.Margin = new System.Windows.Forms.Padding(0);
+            this.msaTabControl1.Name = "msaTabControl1";
+            this.msaTabControl1.Size = new System.Drawing.Size(727, 549);
+            this.msaTabControl1.TabIndex = 16;
+            this.msaTabControl1.Text = "msaTabControl1";
             // 
             // MAIN
             // 
@@ -835,12 +835,12 @@ namespace SphereScp
             this.BackColor = System.Drawing.SystemColors.Control;
             this.BackgroundImage = global::SphereScp.Properties.Resources.bg1;
             this.ClientSize = new System.Drawing.Size(1074, 620);
-            this.Controls.Add(this.tsFiles);
-            this.Controls.Add(this.ssMain);
+            this.Controls.Add(this.msaTabControl1);
             this.Controls.Add(this.documentMap1);
             this.Controls.Add(this.treeView3);
             this.Controls.Add(this.tsMain);
             this.Controls.Add(this.msMain);
+            this.Controls.Add(this.ssMain);
             this.ForeColor = System.Drawing.Color.White;
             this.MainMenuStrip = this.msMain;
             this.Name = "MAIN";
@@ -854,7 +854,6 @@ namespace SphereScp
             this.msMain.PerformLayout();
             this.tsMain.ResumeLayout(false);
             this.tsMain.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tsFiles)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -934,6 +933,6 @@ namespace SphereScp
         private System.Windows.Forms.ToolStripDropDownButton gotoButton;
         private System.Windows.Forms.ToolStrip tsMain;
         private FastColoredTextBoxNS.DocumentMap documentMap1;
-        private FarsiLibrary.Win.FATabStrip tsFiles;
+        private MSATabControl msaTabControl1;
     }
 }

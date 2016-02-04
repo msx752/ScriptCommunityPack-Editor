@@ -16,14 +16,20 @@ namespace SphereScp
     [Browsable(false)]
     public partial class MSATabControl : Control
     {
-        Color activePageColor = Color.FromArgb(45, 45, 45);
-        Color otherPageColor = Color.FromArgb(16, 12, 16);
+        public event EventHandler<ControlEventArgs> MSATabPageClosed;
+        public event EventHandler<ControlEventArgs> MSATabPageOpened;
+        public event EventHandler<ControlEventArgs> SelectedPageChanged;
+
+        //private MSATabPage _currpage;
+        private int _Pagecounter = 0;
+        private Color activePageButtonColor = Color.FromArgb(45, 45, 45);
+        private Color otherPageButtonColor = Color.FromArgb(16, 12, 16);
+        private List<string> PageButtonLineUp = new List<string>();
+        private ContextMenuStrip SwitchMenu = new ContextMenuStrip();
         public MSATabControl()
         {
             InitializeComponent();
-            //ContextMenuStrip stp = new ContextMenuStrip();
-            //stp.Name = "cntMSATabControl";
-
+            BackgroundImage = Properties.Resources.bg1;
             Button btClose = new Button();
             btClose.Name = "btcClose";
             btClose.BackgroundImage = Properties.Resources.closePage;
@@ -40,6 +46,8 @@ namespace SphereScp
             btClose.MouseClick += btClose_MouseClick;
             Controls.Add(btClose);
 
+            SwitchMenu.Name = "switchToolStripMenu";
+            SwitchMenu.ShowImageMargin = false;
             Button btSlose = new Button();
             btSlose.Name = "btsSwitch";
             btSlose.BackgroundImage = Properties.Resources.SwitchPage;
@@ -53,38 +61,49 @@ namespace SphereScp
             btSlose.Location = new Point(-20, 0);
             btSlose.ImageAlign = ContentAlignment.MiddleCenter;
             btSlose.BackgroundImageLayout = ImageLayout.Stretch;
+            btSlose.MouseClick += BtSlose_MouseClick;
             Controls.Add(btSlose);
         }
 
-        private void btClose_MouseClick(object sender, MouseEventArgs e)
-        {
-            if (CurrentPage != null)
-                RemovePage(CurrentPage);
-        }
-
-        private int _Pagecounter = 0;//for page unique ID
-        private MSATabPage _currpage;
-        public MSATabPage CurrentPage//current visible page
+        string _selectedPage = "";
+        //for page unique ID
+        public MSATabPage SelectedPage//current visible page
         {
             get
             {
-                if (Pages.Count() != 0)
-                    return _currpage;
+                if (Pages.Count() > 0)
+                    return Controls[_selectedPage] as MSATabPage;
                 else
                     return null;
             }
-            private set
+            set
             {
-                _currpage = value;
+                _selectedPage = value.Name;
+
+                //_currpage = value;
+                if (SelectedPageChanged != null)
+                    SelectedPageChanged.Invoke(this, new ControlEventArgs(Controls[_selectedPage]));
+
                 for (int i = 0; i < Controls.Count; i++)
                 {
                     if (Controls[i] is MSATabPage)
                     {
-                        if (Controls[i] != _currpage)
+                        if (Controls[i] != Controls[_selectedPage])
+                        {
                             Controls[i].Visible = false;
+                            Controls[i].Enabled = false;
+                        }
                         else
+                        {
                             Controls[i].Visible = true;
+                            Controls[i].Enabled = true;
+                        }
                     }
+                }
+                if (_selectedPage != "")
+                {
+                    refreshButtons();
+                    refreshPages();
                 }
             }
         }
@@ -126,11 +145,18 @@ namespace SphereScp
             }
         }
 
-        public void AddPage(MSATabPage newPage, ContextMenuStrip menuStrip)//you mustn't use like "Control.Add(MSATablePage)"
+        public void AddPage(MSATabPage newPage)//you mustn't use like "Control.Add(MSATablePage)"
         {
+            ContextMenuStrip menuStrip = new ContextMenuStrip();
+            menuStrip.Name = "cntMSATabPage" + _Pagecounter;
+            menuStrip.Items.Add(new ToolStripMenuItem() { Name = "kapatToolStripMenuItem" + _Pagecounter, Text = "Kapat" });
+
+            newPage.Name = ("MSATPage" + _Pagecounter);//unique ID
             Controls.Add(newPage);
             AddPageTitleButton(newPage, menuStrip);
+            _Pagecounter++;
         }
+
         public void RemovePage(Control removedPage)
         {
             Controls.Remove(removedPage);
@@ -143,20 +169,73 @@ namespace SphereScp
                     currentIndex = i;
                     if (currentIndex == PageButtons.Count())
                         currentIndex--;
+                    PageButtonLineUp.Remove(removedPage.Tag.ToString());
+                    refreshButtons();
                     break;
                 }
             }
             if (Pages.Count() == 1)
             {
-                CurrentPage = Pages[0] as MSATabPage;
+                SelectedPage = Pages[0] as MSATabPage;
             }
             else
             {
-                if (CurrentPage == removedPage && currentIndex != -1)
-                    CurrentPage = Pages[currentIndex] as MSATabPage;
+                if (SelectedPage == removedPage && currentIndex != -1)
+                    SelectedPage = Pages[currentIndex] as MSATabPage;
             }
-            refrestPages();
+            if (MSATabPageClosed != null)
+                MSATabPageClosed.Invoke(this, new ControlEventArgs(removedPage));
         }
+
+        public override string ToString()
+        {
+            return Name;
+        }
+        protected override void OnClientSizeChanged(EventArgs e)///auto resize MSATabPage
+        {
+            Rectangle tabcontrolloc = ClientRectangle;
+            Point newLoc = new Point(0, 25);
+            Size newSize = tabcontrolloc.Size;
+            foreach (Control item in Controls)
+            {
+                if (item is MSATabPage)
+                {
+                    if (item == SelectedPage)
+                    {
+                        item.Location = newLoc;
+                        item.Size = newSize;
+                    }
+                }
+            }
+            refreshButtons();
+            base.OnClientSizeChanged(e);
+        }
+
+        protected override void OnControlAdded(ControlEventArgs e)//location and size are configuring
+        {
+            if (e.Control is MSATabPage)
+            {
+                Rectangle tabcontrolloc = ClientRectangle;
+                Point newLoc = new Point(0, 25);
+                Size newSize = tabcontrolloc.Size;
+                e.Control.Location = newLoc;
+                e.Control.Size = newSize;
+                SelectedPage = e.Control as MSATabPage;
+                refreshButtons();
+                if (MSATabPageOpened != null)
+                    MSATabPageOpened.Invoke(this, new ControlEventArgs(SelectedPage));
+            }
+            else if (e.Control is Button && (e.Control.Name.StartsWith("btn")))
+            {
+                Control changeVisibility = Controls.Find(e.Control.Tag.ToString(), false).First();
+                e.Control.Visible = true;
+                Controls[changeVisibility.Name].Tag = e.Control.Name;
+                PageButtonLineUp.Add(e.Control.Name);
+                refreshButtons();
+            }
+            base.OnControlAdded(e);
+        }
+
         private void AddPageTitleButton(Control page, ContextMenuStrip menuStrip)
         {
             ToolStripItem tspKapat = menuStrip.Items[0];
@@ -181,62 +260,103 @@ namespace SphereScp
             bPage.Margin = new Padding(0);
             bPage.Padding = new Padding(0);
             bPage.FlatStyle = FlatStyle.Flat;
+            bPage.MouseClick += BPage_MouseClick;
             Controls.Add(bPage);
         }
 
-        private void TspKapat_Click(object sender, EventArgs e)
+        private void BPage_MouseClick(object sender, MouseEventArgs e)
         {
-            string MSATPage = (sender as ToolStripItem).Tag.ToString();
-            Control MSATPageClosed = Controls[MSATPage];
-            if (MSATPageClosed != null)
-                RemovePage(MSATPageClosed);
+            if (e.Button == MouseButtons.Left)
+            {
+                string MSATPage = (sender as Button).Tag.ToString();
+                SelectedPage = Controls[MSATPage] as MSATabPage;
+            }
         }
 
-        protected override void OnControlAdded(ControlEventArgs e)//location and size are configuring
+        private void btClose_MouseClick(object sender, MouseEventArgs e)
         {
-            if (e.Control is MSATabPage)
+            if (SelectedPage != null)
+                RemovePage(SelectedPage);
+        }
+
+        private void BtSlose_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
             {
-                Rectangle tabcontrolloc = ClientRectangle;
-                Point newLoc = new Point(0, 25);
-                Size newSize = tabcontrolloc.Size;
-                e.Control.Name = ("MSATPage" + _Pagecounter);//unique ID
-                e.Control.Location = newLoc;
-                e.Control.Size = newSize;
-                CurrentPage = e.Control as MSATabPage;
-                _Pagecounter++;
+                SwitchMenu.Items.Clear();
+                foreach (Button item in PageButtons)
+                {
+                    if (!item.Visible)
+                    {
+                        ToolStripMenuItem hiddenButton = new ToolStripMenuItem()
+                        {
+                            Name = "switch" + item.Name,
+                            Text = item.Text,
+                            Tag = item.Name,
+                            TextAlign = ContentAlignment.MiddleCenter,
+                            DisplayStyle = ToolStripItemDisplayStyle.Text
+                        };
+                        hiddenButton.Click += HiddenButton_Click;
+                        SwitchMenu.Items.Add(hiddenButton);
+                    }
+                }
+                if (SwitchMenu.Items.Count > 0)
+                {
+                    Button btn = sender as Button;
+                    Point menuLoc = new Point(0, btn.Height - 1);
+                    menuLoc = btn.PointToScreen(menuLoc);
+                    SwitchMenu.Show(menuLoc);
+                }
             }
-            else if (e.Control is Button && (e.Control.Name.StartsWith("btn")))
+        }
+
+        private void ButtonLineUpVisibleControl()
+        {
+            if (SelectedPage != null)
             {
-                Control changeVisibility = Controls.Find(e.Control.Tag.ToString(), false).First();
-                e.Control.Visible = true;
-                refreshButtons();
+                if (SelectedPage.ButtonName != "")
+                {
+                    if (!Controls[SelectedPage.ButtonName].Visible)
+                    {
+                        int OldSelectedindex = PageButtonLineUp.FindIndex(p => p == SelectedPage.ButtonName);
+                        string first_to_old = PageButtonLineUp[0];
+                        PageButtonLineUp[0] = SelectedPage.ButtonName;
+                        Controls[PageButtonLineUp[0]].Visible = true;
+                        PageButtonLineUp[OldSelectedindex] = first_to_old;
+                        Controls[PageButtonLineUp[OldSelectedindex]].Visible = false;
+                    }
+                }
             }
-            base.OnControlAdded(e);
+        }
+
+        private void HiddenButton_Click(object sender, EventArgs e)
+        {
+            string MSATPageTitleButton = (sender as ToolStripMenuItem).Tag.ToString();
+            string MSATPage = (Controls[MSATPageTitleButton] as Button).Tag.ToString();
+            SelectedPage = Controls[MSATPage] as MSATabPage;
         }
         private void refreshButtons()
         {
             int currentTabControlWidth = Width - 100;
             int currrentButtonWidth = 0;
-            for (int i = 0; i < PageButtons.Count(); i++)
+            ButtonLineUpVisibleControl();
+            for (int i = 0; i < PageButtonLineUp.Count; i++)
             {
-                if (currrentButtonWidth < currentTabControlWidth)
+                if (SelectedPage != null)
                 {
-                    int width = PageButtons[i].Width;
-                    PageButtons[i].Location = new Point(currrentButtonWidth, 0);
-                    currrentButtonWidth += width;
-                    PageButtons[i].Visible = true;
-                }
-                else
-                {
-                    PageButtons[i].Visible = false;
-                }
-                if (PageButtons[i].Tag.ToString() == CurrentPage.Name)
-                {
-                    PageButtons[i].BackColor = activePageColor;
-                }
-                else
-                {
-                    PageButtons[i].BackColor = otherPageColor;
+                    if (currrentButtonWidth < currentTabControlWidth)
+                    {
+                        int width = Controls[PageButtonLineUp[i]].Width;
+                        Controls[PageButtonLineUp[i]].Location = new Point(currrentButtonWidth, 0);
+                        currrentButtonWidth += width;
+                        Controls[PageButtonLineUp[i]].Visible = true;
+                    }
+                    else
+                        Controls[PageButtonLineUp[i]].Visible = false;
+                    if (Controls[PageButtonLineUp[i]].Tag.ToString() == SelectedPage.Name)
+                        Controls[PageButtonLineUp[i]].BackColor = activePageButtonColor;
+                    else
+                        Controls[PageButtonLineUp[i]].BackColor = otherPageButtonColor;
                 }
             }
             for (int i = 0; i < Controls.Count; i++)
@@ -246,9 +366,10 @@ namespace SphereScp
                 else if (Controls[i] is Button && (Controls[i].Name.StartsWith("bts")))
                     Controls[i].Location = new Point(this.Width - 46, 0);
             }
+            ButtonLineUpVisibleControl();
         }
 
-        private void refrestPages()
+        private void refreshPages()
         {
             for (int i = 0; i < Pages.Count(); i++)
             {
@@ -259,24 +380,28 @@ namespace SphereScp
                 Pages[i].Size = newSize;
             }
         }
-        protected override void OnClientSizeChanged(EventArgs e)///auto resize MSATabPage
+
+        private void TspKapat_Click(object sender, EventArgs e)
         {
-            Rectangle tabcontrolloc = ClientRectangle;
-            Point newLoc = new Point(0, 25);
-            Size newSize = tabcontrolloc.Size;
-            foreach (Control item in Controls)
-            {
-                if (item is MSATabPage)
-                {
-                    if (item == _currpage)
-                    {
-                        item.Location = newLoc;
-                        item.Size = newSize;
-                    }
-                }
-            }
-            refreshButtons();
-            base.OnClientSizeChanged(e);
+            string MSATPage = (sender as ToolStripItem).Tag.ToString();
+            Control MSATPageClosed = Controls[MSATPage];
+            if (MSATPageClosed != null)
+                RemovePage(MSATPageClosed);
+        }
+    }
+
+    public class MSATabPageClosingEventArgs : FormClosingEventArgs
+    {
+        private Control _ctrl;
+        public Control Control
+        {
+            get { return _ctrl; }
+            set { _ctrl = value; }
+        }
+
+        public MSATabPageClosingEventArgs(CloseReason closeReason, bool cancel, Control ctrl) : base(closeReason, cancel)
+        {
+            Control = ctrl;
         }
     }
 }

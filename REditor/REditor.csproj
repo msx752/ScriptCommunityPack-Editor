@@ -97,7 +97,6 @@
     <Reference Include="System.Xml" />
     <Reference Include="TabStrip">
       <HintPath>.\TabStrip.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
@@ -188,12 +187,6 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="FastColoredTextBoxNS\VisualMarker.cs" />
-    <Compile Include="TabTest.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TabTest.Designer.cs">
-      <DependentUpon>TabTest.cs</DependentUpon>
-    </Compile>
     <Compile Include="MSATabControl.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -231,9 +224,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FastColoredTextBoxNS\ReplaceForm.resx">
       <DependentUpon>ReplaceForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TabTest.resx">
-      <DependentUpon>TabTest.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="REditor.resx">
       <DependentUpon>REditor.cs</DependentUpon>
