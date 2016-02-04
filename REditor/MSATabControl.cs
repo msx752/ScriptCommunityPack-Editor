@@ -16,16 +16,19 @@ namespace SphereScp
     [Browsable(false)]
     public partial class MSATabControl : Control
     {
-        public event EventHandler<ControlEventArgs> MSATabPageClosed;
-        public event EventHandler<ControlEventArgs> MSATabPageOpened;
-        public event EventHandler<ControlEventArgs> SelectedPageChanged;
-
         //private MSATabPage _currpage;
         private int _Pagecounter = 0;
+
+        string _selectedPage = "";
+
         private Color activePageButtonColor = Color.FromArgb(45, 45, 45);
+
         private Color otherPageButtonColor = Color.FromArgb(16, 12, 16);
+
         private List<string> PageButtonLineUp = new List<string>();
+
         private ContextMenuStrip SwitchMenu = new ContextMenuStrip();
+
         public MSATabControl()
         {
             InitializeComponent();
@@ -65,49 +68,9 @@ namespace SphereScp
             Controls.Add(btSlose);
         }
 
-        string _selectedPage = "";
-        //for page unique ID
-        public MSATabPage SelectedPage//current visible page
-        {
-            get
-            {
-                if (Pages.Count() > 0)
-                    return Controls[_selectedPage] as MSATabPage;
-                else
-                    return null;
-            }
-            set
-            {
-                _selectedPage = value.Name;
-
-                //_currpage = value;
-                if (SelectedPageChanged != null)
-                    SelectedPageChanged.Invoke(this, new ControlEventArgs(Controls[_selectedPage]));
-
-                for (int i = 0; i < Controls.Count; i++)
-                {
-                    if (Controls[i] is MSATabPage)
-                    {
-                        if (Controls[i] != Controls[_selectedPage])
-                        {
-                            Controls[i].Visible = false;
-                            Controls[i].Enabled = false;
-                        }
-                        else
-                        {
-                            Controls[i].Visible = true;
-                            Controls[i].Enabled = true;
-                        }
-                    }
-                }
-                if (_selectedPage != "")
-                {
-                    refreshButtons();
-                    refreshPages();
-                }
-            }
-        }
-
+        public event EventHandler<ControlEventArgs> MSATabPageClosed;
+        public event EventHandler<ControlEventArgs> MSATabPageOpened;
+        public event EventHandler<ControlEventArgs> SelectedPageChanged;
         public Control[] PageButtons //BUTTON LIST
         {
             get
@@ -126,6 +89,7 @@ namespace SphereScp
                 return ctl;
             }
         }
+
         public Control[] Pages //BUTTON LIST
         {
             get
@@ -145,6 +109,51 @@ namespace SphereScp
             }
         }
 
+        //for page unique ID
+        public MSATabPage SelectedPage//current visible page
+        {
+            get
+            {
+                if (Pages.Count() > 0)
+                    return Controls[_selectedPage] as MSATabPage;
+                else
+                    return null;
+            }
+            set
+            {
+                if (value != null)
+                {
+                    _selectedPage = value.Name;
+
+                    //_currpage = value;
+                    if (SelectedPageChanged != null)
+                        SelectedPageChanged.Invoke(this, new ControlEventArgs(Controls[_selectedPage]));
+
+                    for (int i = 0; i < Controls.Count; i++)
+                    {
+                        if (Controls[i] is MSATabPage)
+                        {
+                            if (Controls[i] != Controls[_selectedPage])
+                            {
+                                Controls[i].Visible = false;
+                                Controls[i].Enabled = false;
+                            }
+                            else
+                            {
+                                Controls[i].Visible = true;
+                                Controls[i].Enabled = true;
+                            }
+                        }
+                    }
+                    if (_selectedPage != "")
+                    {
+                        refreshButtons();
+                        refreshPages();
+                    }
+                }
+
+            }
+        }
         public void AddPage(MSATabPage newPage)//you mustn't use like "Control.Add(MSATablePage)"
         {
             ContextMenuStrip menuStrip = new ContextMenuStrip();
@@ -356,7 +365,7 @@ namespace SphereScp
                         int width = 0;
                         try
                         {
-                             width = Controls[PageButtonLineUp[i]].Width;
+                            width = Controls[PageButtonLineUp[i]].Width;
                         }
                         catch (Exception e)
                         {
@@ -399,6 +408,7 @@ namespace SphereScp
                 Point newLoc = new Point(0, 25);
                 Size newSize = tabcontrolloc.Size;
                 Pages[i].Location = newLoc;
+                newSize.Height -= 25;
                 Pages[i].Size = newSize;
             }
         }
@@ -415,15 +425,15 @@ namespace SphereScp
     public class MSATabPageClosingEventArgs : FormClosingEventArgs
     {
         private Control _ctrl;
+        public MSATabPageClosingEventArgs(CloseReason closeReason, bool cancel, MSATabPage ctrl) : base(closeReason, cancel)
+        {
+            Control = ctrl;
+        }
+
         public Control Control
         {
             get { return _ctrl; }
             set { _ctrl = value; }
-        }
-
-        public MSATabPageClosingEventArgs(CloseReason closeReason, bool cancel, MSATabPage ctrl) : base(closeReason, cancel)
-        {
-            Control = ctrl;
         }
     }
 }

@@ -12,16 +12,18 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Drawing.Drawing2D;
 using FastColoredTextBoxNS.Render;
-using FarsiLibrary.Win;
-
 namespace SphereScp
 {
     public partial class MAIN : Form
     {
         public static Language currentLang = Language.Scp;
+        bool canCancel = true;
+        TreeNode canCollapse;
         Color changedLineColor = Color.FromArgb(255, 230, 230, 255);
         Color currentLineColor = Color.FromArgb(215, 0, 0, 0);
 
+
+        List<int> ExpandedList = new List<int>();
 
         //List<ExplorerItem> explorerList = new List<ExplorerItem>();
         Style invisibleCharsStyle = new InvisibleCharsRenderer(Pens.Gray);
@@ -194,7 +196,6 @@ namespace SphereScp
             try
             {
                 FastColoredTextBox tb = new FastColoredTextBox();
-                tb.Paddings = new Padding(0, 0, 0, 21);
                 tb.AutoScroll = true;
                 tb.BorderStyle = BorderStyle.None;
                 tb.Font = new Font("Consolas", 9.75f);
@@ -240,7 +241,7 @@ namespace SphereScp
                 msaTabControl1.SelectedPageChanged += MsaTabControl1_SelectedPageChanged;
                 msaTabControl1.AddPage(newPagem);
                 documentMap1.BackgroundImage = tb.BackgroundImage;
-                documentMap1.Target = CurrentTB;
+                documentMap1.Target = tb;
             }
             catch (Exception ex)
             {
@@ -252,46 +253,6 @@ namespace SphereScp
             msaTabControl1.SelectedPage.Tag = fileName;
         }
 
-        private void NewPagem_MSATabPageClosing(object sender, FormClosingEventArgs e)
-        {
-            if (CurrentTB == null)
-                return;
-            MSATabPageClosingEventArgs args = new MSATabPageClosingEventArgs(e.CloseReason, e.Cancel, sender as MSATabPage);
-            tsFiles_TabStripItemClosing(args);
-            if (args.Cancel)
-            {
-                e.Cancel = true;
-                return;
-            }
-            else
-            {
-                (sender as MSATabPage).isNeedSave = false;
-                msaTabControl1.RemovePage(sender as MSATabPage);
-            }
-        }
-
-        private void msaTabControl1_MSATabPageClosed(object sender, ControlEventArgs e)
-        {
-            if (CurrentTB != null)
-            {
-                ExpandedList.Clear();
-                treeView3.Nodes.Clear();
-                documentMap1.Target = null;
-            }
-        }
-
-        private void MsaTabControl1_SelectedPageChanged(object sender, ControlEventArgs e)
-        {
-            if (CurrentTB != null)
-            {
-                CurrentTB.Focus();
-                string text = CurrentTB.Text;
-                ThreadPool.QueueUserWorkItem(
-                    (o) => ReBuildObjectExplorer(text)
-                );
-                documentMap1.Target = CurrentTB;
-            }
-        }
         private void cutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CurrentTB.Cut();
@@ -308,14 +269,30 @@ namespace SphereScp
             sw.Close();
         }
 
+        private void fileToolStripMenuItem_MouseHover(object sender, EventArgs e)
+        {
+            if (sender is ToolStripMenuItem)
+                (sender as ToolStripMenuItem).ForeColor = Color.Black;
+
+        }
+
+        private void fileToolStripMenuItem_MouseLeave(object sender, EventArgs e)
+        {
+            if (sender is ToolStripMenuItem)
+                (sender as ToolStripMenuItem).ForeColor = Color.White;
+
+        }
+
         private void findToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CurrentTB.ShowFindDialog();
         }
+
         private void forwardStripButton_Click(object sender, EventArgs e)
         {
             NavigateForward();
         }
+
         private void gotoButton_DropDownOpening(object sender, EventArgs e)
         {
             gotoButton.DropDownItems.Clear();
@@ -344,6 +321,7 @@ namespace SphereScp
                 }
             }
         }
+
         private void HighlightInvisibleChars(Range range)
         {
             range.ClearStyle(invisibleCharsStyle);
@@ -364,6 +342,26 @@ namespace SphereScp
                 return;
             }
             ScpIndexer.LoadScpCmd();
+        }
+
+        private void msaTabControl1_MSATabPageClosed(object sender, ControlEventArgs e)
+        {
+            ExpandedList.Clear();
+            treeView3.Nodes.Clear();
+            documentMap1.Target = null;
+        }
+
+        private void MsaTabControl1_SelectedPageChanged(object sender, ControlEventArgs e)
+        {
+            if (CurrentTB != null)
+            {
+                CurrentTB.Focus();
+                string text = CurrentTB.Text;
+                ThreadPool.QueueUserWorkItem(
+                    (o) => ReBuildObjectExplorer(text)
+                );
+                documentMap1.Target = CurrentTB;
+            }
         }
 
         private bool NavigateBackward()
@@ -427,6 +425,23 @@ namespace SphereScp
                 return false;
         }
 
+        private void NewPagem_MSATabPageClosing(object sender, FormClosingEventArgs e)
+        {
+            if (CurrentTB == null)
+                return;
+            MSATabPageClosingEventArgs args = new MSATabPageClosingEventArgs(e.CloseReason, e.Cancel, sender as MSATabPage);
+            tsFiles_TabStripItemClosing(args);
+            if (args.Cancel)
+            {
+                e.Cancel = true;
+                return;
+            }
+            else
+            {
+                (sender as MSATabPage).isNeedSave = false;
+                msaTabControl1.RemovePage(sender as MSATabPage);
+            }
+        }
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CreateTab(null);
@@ -560,9 +575,9 @@ namespace SphereScp
                     {
                     }
                 }
-                //BeginInvoke(
-                //    new Action(() =>
-                //    {
+                BeginInvoke(
+                    new Action(() =>
+                    {
                         if (treeView3.Nodes.Count == 0)
                             CurrentTB.DelayedTextChangedInterval = 2000;
                         treeView3.Nodes.Clear();
@@ -570,8 +585,8 @@ namespace SphereScp
                         treeView3.Nodes.AddRange(newNodes.ToArray());
                         for (int i = 0; i < ExpandedList.Count; i++)
                             treeView3.Nodes[ExpandedList[i]].Expand();
-                    //})
-                //);
+                    })
+                );
             }
             catch (Exception e)
             {
@@ -587,62 +602,6 @@ namespace SphereScp
             treeView3.BeforeCollapse += TreeView3_BeforeCollapse;
             treeView3.BeforeExpand += TreeView3_BeforeExpand;
             msaTabControl1.BackgroundImage = Properties.Resources.bg1;
-        }
-
-        private void TreeView3_BeforeExpand(object sender, TreeViewCancelEventArgs e)
-        {
-            if (!ExpandedList.Contains(e.Node.Index))
-                ExpandedList.Add(e.Node.Index);
-        }
-
-        bool canCancel = true;
-        private void TreeView3_BeforeCollapse(object sender, TreeViewCancelEventArgs e)
-        {
-            if (canCollapse == null)
-                e.Cancel = canCancel;
-            else if (canCollapse == e.Node)
-                e.Cancel = false;
-
-            int index = ExpandedList.FindIndex(p => p == e.Node.Index);
-            if (index != -1)
-                ExpandedList.RemoveAt(index);
-        }
-
-        private void TreeView3_BeforeSelect(object sender, TreeViewCancelEventArgs e)
-        {
-            if (e.Action == TreeViewAction.Unknown)
-                e.Cancel = canCancel;
-            else if (e.Action == TreeViewAction.ByMouse)
-                e.Cancel = canCancel;
-        }
-        TreeNode canCollapse;
-        private void TreeView3_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                if (e.Node == treeView3.Nodes[0])
-                {
-                    canCollapse = null;
-                    canCancel = false;
-                    if (e.Node.Text.ToLower() == "collapse all")
-                    {
-                        ExpandedList.Clear();
-                        e.Node.SelectedImageIndex = 4;
-                        treeView3.CollapseAll();
-                        e.Node.Text = "EXPAND ALL";
-                    }
-                    else
-                    {
-                        e.Node.SelectedImageIndex = 5;
-                        treeView3.ExpandAll();
-                        e.Node.Text = "COLLAPSE ALL";
-                    }
-                }
-                else
-                {
-                    canCollapse = e.Node;
-                }
-            }
         }
 
         private void redoToolStripMenuItem_Click(object sender, EventArgs e)
@@ -875,8 +834,6 @@ namespace SphereScp
             ScriptCommunityPack.ToolTip_Popup(sender, e);
         }
 
-        List<int> ExpandedList = new List<int>();
-
         private void TreeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
@@ -898,6 +855,58 @@ namespace SphereScp
             }
         }
 
+        private void TreeView3_BeforeCollapse(object sender, TreeViewCancelEventArgs e)
+        {
+            if (canCollapse == null)
+                e.Cancel = canCancel;
+            else if (canCollapse == e.Node)
+                e.Cancel = false;
+
+            int index = ExpandedList.FindIndex(p => p == e.Node.Index);
+            if (index != -1)
+                ExpandedList.RemoveAt(index);
+        }
+
+        private void TreeView3_BeforeExpand(object sender, TreeViewCancelEventArgs e)
+        {
+            if (!ExpandedList.Contains(e.Node.Index))
+                ExpandedList.Add(e.Node.Index);
+        }
+        private void TreeView3_BeforeSelect(object sender, TreeViewCancelEventArgs e)
+        {
+            if (e.Action == TreeViewAction.Unknown)
+                e.Cancel = canCancel;
+            else if (e.Action == TreeViewAction.ByMouse)
+                e.Cancel = canCancel;
+        }
+        private void TreeView3_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                if (e.Node == treeView3.Nodes[0])
+                {
+                    canCollapse = null;
+                    canCancel = false;
+                    if (e.Node.Text.ToLower() == "collapse all")
+                    {
+                        ExpandedList.Clear();
+                        e.Node.SelectedImageIndex = 4;
+                        treeView3.CollapseAll();
+                        e.Node.Text = "EXPAND ALL";
+                    }
+                    else
+                    {
+                        e.Node.SelectedImageIndex = 5;
+                        treeView3.ExpandAll();
+                        e.Node.Text = "COLLAPSE ALL";
+                    }
+                }
+                else
+                {
+                    canCollapse = e.Node;
+                }
+            }
+        }
         private void tsFiles_TabStripItemClosing(MSATabPageClosingEventArgs e)
         {
             if ((e.Control.Controls[0] as FastColoredTextBox).IsChanged)
@@ -931,21 +940,5 @@ namespace SphereScp
             if (CurrentTB != null)
                 CurrentTB.Zoom = int.Parse((sender as ToolStripItem).Tag.ToString());
         }
-
-
-        private void fileToolStripMenuItem_MouseLeave(object sender, EventArgs e)
-        {
-            if (sender is ToolStripMenuItem)
-                (sender as ToolStripMenuItem).ForeColor = Color.White;
-
-        }
-
-        private void fileToolStripMenuItem_MouseHover(object sender, EventArgs e)
-        {
-            if (sender is ToolStripMenuItem)
-                (sender as ToolStripMenuItem).ForeColor = Color.Black;
-
-        }
-
     }
 }
