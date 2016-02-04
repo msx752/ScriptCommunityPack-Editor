@@ -159,32 +159,39 @@ namespace SphereScp
 
         public void RemovePage(Control removedPage)
         {
-            Controls.Remove(removedPage);
-            int currentIndex = 0;
-            for (int i = 0; i < PageButtons.Count(); i++)
+            if ((removedPage as MSATabPage).ClosePage())
             {
-                if (PageButtons[i].Tag.ToString() == removedPage.Name)
+                Controls.Remove(removedPage);
+                int currentIndex = 0;
+                for (int i = 0; i < PageButtons.Count(); i++)
                 {
-                    Controls.Remove(PageButtons[i]);
-                    currentIndex = i;
-                    if (currentIndex == PageButtons.Count())
-                        currentIndex--;
-                    PageButtonLineUp.Remove(removedPage.Tag.ToString());
-                    refreshButtons();
-                    break;
+                    if (PageButtons[i].Tag.ToString() == removedPage.Name)
+                    {
+                        Controls.Remove(PageButtons[i]);
+                        currentIndex = i;
+                        if (currentIndex == PageButtons.Count())
+                            currentIndex--;
+                        PageButtonLineUp.Remove(removedPage.Tag.ToString());
+                        refreshButtons();
+                        break;
+                    }
                 }
-            }
-            if (Pages.Count() == 1)
-            {
-                SelectedPage = Pages[0] as MSATabPage;
+                if (Pages.Count() == 1)
+                {
+                    SelectedPage = Pages[0] as MSATabPage;
+                }
+                else
+                {
+                    if (SelectedPage == removedPage && currentIndex != -1)
+                        SelectedPage = Pages[currentIndex] as MSATabPage;
+                }
+                if (MSATabPageClosed != null)
+                    MSATabPageClosed.Invoke(this, new ControlEventArgs(removedPage));
             }
             else
             {
-                if (SelectedPage == removedPage && currentIndex != -1)
-                    SelectedPage = Pages[currentIndex] as MSATabPage;
+                (removedPage as MSATabPage).OnMSATabPageClosing(new FormClosingEventArgs(CloseReason.UserClosing, false));
             }
-            if (MSATabPageClosed != null)
-                MSATabPageClosed.Invoke(this, new ControlEventArgs(removedPage));
         }
 
         public override string ToString()
@@ -346,7 +353,16 @@ namespace SphereScp
                 {
                     if (currrentButtonWidth < currentTabControlWidth)
                     {
-                        int width = Controls[PageButtonLineUp[i]].Width;
+                        int width = 0;
+                        try
+                        {
+                             width = Controls[PageButtonLineUp[i]].Width;
+                        }
+                        catch (Exception e)
+                        {
+                            PageButtonLineUp.RemoveAt(i);
+                            break;
+                        }
                         Controls[PageButtonLineUp[i]].Location = new Point(currrentButtonWidth, 0);
                         currrentButtonWidth += width;
                         Controls[PageButtonLineUp[i]].Visible = true;
@@ -358,6 +374,10 @@ namespace SphereScp
                     else
                         Controls[PageButtonLineUp[i]].BackColor = otherPageButtonColor;
                 }
+                else
+                {
+                    break;
+                }
             }
             for (int i = 0; i < Controls.Count; i++)
             {
@@ -365,6 +385,8 @@ namespace SphereScp
                     Controls[i].Location = new Point(this.Width - 23, 0);
                 else if (Controls[i] is Button && (Controls[i].Name.StartsWith("bts")))
                     Controls[i].Location = new Point(this.Width - 46, 0);
+                else
+                    break;
             }
             ButtonLineUpVisibleControl();
         }
@@ -399,7 +421,7 @@ namespace SphereScp
             set { _ctrl = value; }
         }
 
-        public MSATabPageClosingEventArgs(CloseReason closeReason, bool cancel, Control ctrl) : base(closeReason, cancel)
+        public MSATabPageClosingEventArgs(CloseReason closeReason, bool cancel, MSATabPage ctrl) : base(closeReason, cancel)
         {
             Control = ctrl;
         }

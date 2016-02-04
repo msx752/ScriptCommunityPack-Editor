@@ -52,8 +52,11 @@ namespace SphereScp
 
             set
             {
-                msaTabControl1.SelectedPage = value.Parent as MSATabPage;
-                value.Focus();
+                if (value.Parent != null)
+                {
+                    msaTabControl1.SelectedPage = value.Parent as MSATabPage;
+                    value.Focus();
+                }
             }
         }
 
@@ -232,21 +235,44 @@ namespace SphereScp
                 tb.ToolTip.Popup += ToolTip_Popup;
                 MSATabPage newPagem = new MSATabPage(tb, fileName != null ? Path.GetFileName(fileName) : "[new]");
                 newPagem.Tag = fileName;
+                newPagem.MSATabPageClosing += NewPagem_MSATabPageClosing;
                 msaTabControl1.MSATabPageClosed += msaTabControl1_MSATabPageClosed;
                 msaTabControl1.SelectedPageChanged += MsaTabControl1_SelectedPageChanged;
                 msaTabControl1.AddPage(newPagem);
                 documentMap1.BackgroundImage = tb.BackgroundImage;
+                documentMap1.Target = CurrentTB;
             }
             catch (Exception ex)
             {
                 if (MessageBox.Show(ex.Message, "Error", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error) == System.Windows.Forms.DialogResult.Retry)
                     CreateTab(fileName);
+
+                return;
+            }
+            msaTabControl1.SelectedPage.Tag = fileName;
+        }
+
+        private void NewPagem_MSATabPageClosing(object sender, FormClosingEventArgs e)
+        {
+            if (CurrentTB == null)
+                return;
+            MSATabPageClosingEventArgs args = new MSATabPageClosingEventArgs(e.CloseReason, e.Cancel, sender as MSATabPage);
+            tsFiles_TabStripItemClosing(args);
+            if (args.Cancel)
+            {
+                e.Cancel = true;
+                return;
+            }
+            else
+            {
+                (sender as MSATabPage).isNeedSave = false;
+                msaTabControl1.RemovePage(sender as MSATabPage);
             }
         }
 
         private void msaTabControl1_MSATabPageClosed(object sender, ControlEventArgs e)
         {
-            if (msaTabControl1.Pages.Count() == 0)
+            if (CurrentTB != null)
             {
                 ExpandedList.Clear();
                 treeView3.Nodes.Clear();
@@ -438,12 +464,9 @@ namespace SphereScp
 
         private void PowerfulCSharpEditor_FormClosing(object sender, FormClosingEventArgs e)
         {
-            List<MSATabPage> list = new List<MSATabPage>();
             try
             {
                 foreach (MSATabPage tab in msaTabControl1.Pages)
-                    list.Add(tab);
-                foreach (MSATabPage tab in list)
                 {
                     MSATabPageClosingEventArgs args = new MSATabPageClosingEventArgs(e.CloseReason, e.Cancel, tab);
                     tsFiles_TabStripItemClosing(args);
@@ -537,9 +560,9 @@ namespace SphereScp
                     {
                     }
                 }
-                BeginInvoke(
-                    new Action(() =>
-                    {
+                //BeginInvoke(
+                //    new Action(() =>
+                //    {
                         if (treeView3.Nodes.Count == 0)
                             CurrentTB.DelayedTextChangedInterval = 2000;
                         treeView3.Nodes.Clear();
@@ -547,8 +570,8 @@ namespace SphereScp
                         treeView3.Nodes.AddRange(newNodes.ToArray());
                         for (int i = 0; i < ExpandedList.Count; i++)
                             treeView3.Nodes[ExpandedList[i]].Expand();
-                    })
-                );
+                    //})
+                //);
             }
             catch (Exception e)
             {
@@ -722,6 +745,9 @@ namespace SphereScp
 
         private void tb_SelectionChangedDelayed(object sender, EventArgs e)
         {
+            if (CurrentTB != null)
+                return;
+
             var tb = sender as FastColoredTextBox;
             //remember last visit time
             if (tb.Selection.IsEmpty && tb.Selection.Start.iLine < tb.LinesCount)
@@ -752,9 +778,12 @@ namespace SphereScp
 
         private void tb_TextChangedDelayed(object sender, TextChangedEventArgs e)
         {
-            RefreshObjectExplorer((sender as FastColoredTextBox));
-            //show invisible chars
-            HighlightInvisibleChars(e.ChangedRange);
+            if (CurrentTB != null)
+            {
+                RefreshObjectExplorer((sender as FastColoredTextBox));
+                //show invisible chars
+                HighlightInvisibleChars(e.ChangedRange);
+            }
         }
 
         private void tb_ToolTipNeeded(object sender, ToolTipNeededEventArgs e)
@@ -802,7 +831,7 @@ namespace SphereScp
         {
             try
             {
-                if (CurrentTB != null && msaTabControl1.Pages.Count() > 0)
+                if (CurrentTB != null)
                 {
                     var tb = CurrentTB;
                     undoStripButton.Enabled = undoToolStripMenuItem.Enabled = tb.UndoEnabled;
@@ -813,7 +842,8 @@ namespace SphereScp
                     cutToolStripButton.Enabled = cutToolStripMenuItem.Enabled =
                     copyToolStripButton.Enabled = copyToolStripMenuItem.Enabled = !tb.Selection.IsEmpty;
                     printToolStripButton.Enabled = true;
-                    msaTabControl1.SelectedPage.isNeedSave = tb.IsChanged;
+                    if (msaTabControl1.SelectedPage != null)
+                        msaTabControl1.SelectedPage.isNeedSave = tb.IsChanged;
                 }
                 else
                 {
@@ -825,8 +855,8 @@ namespace SphereScp
                     printToolStripButton.Enabled = false;
                     undoStripButton.Enabled = undoToolStripMenuItem.Enabled = false;
                     redoStripButton.Enabled = redoToolStripMenuItem.Enabled = false;
-                    msaTabControl1.SelectedPage.isNeedSave = false;
-                    //dgvObjectExplorer.RowCount = 0;
+                    if (msaTabControl1.SelectedPage != null)
+                        msaTabControl1.SelectedPage.isNeedSave = false;
                 }
             }
             catch (Exception ex)

@@ -13,14 +13,25 @@ namespace SphereScp
     [Browsable(false)]
     public partial class MSATabPage : Panel
     {
-        public event EventHandler<FormClosingEventArgs> MSATabPageClosing;
+        public event EventHandler<FormClosingEventArgs> MSATabPageClosing = null;
         private string _pagetitle = "newPage";
         public bool isNeedSave { get; set; } = false;
         internal string ButtonName { get; set; } = "";
         public MSATabPage()
         {
             InitializeComponent();
+            MSATabPageClosing += MSATabPage_MSATabPageClosing;
         }
+        public virtual void OnMSATabPageClosing(FormClosingEventArgs e)
+        {
+            if (MSATabPageClosing != null)
+                MSATabPageClosing.Invoke(this, e);
+        }
+        private void MSATabPage_MSATabPageClosing(object sender, FormClosingEventArgs e)
+        {
+
+        }
+
         public MSATabPage(Control page, string Title) : this(page)
         {
             PageTitle = Title;
@@ -46,10 +57,12 @@ namespace SphereScp
                     _pagetitle = value;
             }
         }
-        public void ClosePage()
+        public bool ClosePage()
         {
-            if (MSATabPageClosing != null)
-                MSATabPageClosing.Invoke(this, new FormClosingEventArgs(CloseReason.UserClosing, false));
+            if (isNeedSave)
+                return false;
+            else
+                return true;
         }
         public T GetPage<T>() where T : Control
         {
