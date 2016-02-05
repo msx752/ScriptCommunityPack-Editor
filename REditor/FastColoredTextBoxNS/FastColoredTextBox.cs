@@ -1756,7 +1756,7 @@ namespace FastColoredTextBoxNS
                 return;
             //get word under mouse
             var r = new Range(this, place, place);
-            string hoveredWord = r.GetFragment("[a-zA-Z0-9@]").Text;
+            string hoveredWord = r.GetFragment("[a-zA-Z0-9@_]").Text;
             //event handler
             var ea = new ToolTipNeededEventArgs(place, hoveredWord);
             ToolTipNeeded(this, ea);

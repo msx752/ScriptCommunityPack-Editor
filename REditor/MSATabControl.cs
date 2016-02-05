@@ -166,9 +166,9 @@ namespace SphereScp
             _Pagecounter++;
         }
 
-        public void RemovePage(Control removedPage)
+        public void RemovePage(MSATabPage removedPage)
         {
-            if ((removedPage as MSATabPage).ClosePage())
+            if (removedPage.ClosePage())
             {
                 Controls.Remove(removedPage);
                 int currentIndex = 0;
@@ -180,7 +180,7 @@ namespace SphereScp
                         currentIndex = i;
                         if (currentIndex == PageButtons.Count())
                             currentIndex--;
-                        PageButtonLineUp.Remove(removedPage.Tag.ToString());
+                        PageButtonLineUp.Remove(removedPage.ButtonName);
                         refreshButtons();
                         break;
                     }
@@ -209,20 +209,7 @@ namespace SphereScp
         }
         protected override void OnClientSizeChanged(EventArgs e)///auto resize MSATabPage
         {
-            Rectangle tabcontrolloc = ClientRectangle;
-            Point newLoc = new Point(0, 25);
-            Size newSize = tabcontrolloc.Size;
-            foreach (Control item in Controls)
-            {
-                if (item is MSATabPage)
-                {
-                    if (item == SelectedPage)
-                    {
-                        item.Location = newLoc;
-                        item.Size = newSize;
-                    }
-                }
-            }
+            refreshPages();
             refreshButtons();
             base.OnClientSizeChanged(e);
         }
@@ -277,6 +264,7 @@ namespace SphereScp
             bPage.Padding = new Padding(0);
             bPage.FlatStyle = FlatStyle.Flat;
             bPage.MouseClick += BPage_MouseClick;
+            (Controls[page.Name] as MSATabPage).ButtonName = bPage.Name;
             Controls.Add(bPage);
         }
 
@@ -418,7 +406,7 @@ namespace SphereScp
             string MSATPage = (sender as ToolStripItem).Tag.ToString();
             Control MSATPageClosed = Controls[MSATPage];
             if (MSATPageClosed != null)
-                RemovePage(MSATPageClosed);
+                RemovePage(MSATPageClosed as MSATabPage);
         }
     }
 

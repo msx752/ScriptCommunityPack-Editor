@@ -59,6 +59,7 @@ namespace SphereScp
             this.ilAutocomplete = new System.Windows.Forms.ImageList(this.components);
             this.lbWordUnderMouse = new System.Windows.Forms.ToolStripStatusLabel();
             this.ssMain = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.btZoom = new System.Windows.Forms.ToolStripSplitButton();
             this.toolStripMenuItem11 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem10 = new System.Windows.Forms.ToolStripMenuItem();
@@ -315,21 +316,33 @@ namespace SphereScp
             this.lbWordUnderMouse.ForeColor = System.Drawing.Color.Gray;
             this.lbWordUnderMouse.Image = global::SphereScp.Properties.Resources.bg1;
             this.lbWordUnderMouse.Name = "lbWordUnderMouse";
-            this.lbWordUnderMouse.Size = new System.Drawing.Size(1004, 17);
+            this.lbWordUnderMouse.Size = new System.Drawing.Size(647, 17);
             this.lbWordUnderMouse.Spring = true;
             this.lbWordUnderMouse.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // ssMain
             // 
             this.ssMain.BackgroundImage = global::SphereScp.Properties.Resources.bg1;
+            this.ssMain.GripMargin = new System.Windows.Forms.Padding(0);
             this.ssMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel1,
             this.lbWordUnderMouse,
             this.btZoom});
-            this.ssMain.Location = new System.Drawing.Point(0, 598);
+            this.ssMain.Location = new System.Drawing.Point(200, 598);
             this.ssMain.Name = "ssMain";
-            this.ssMain.Size = new System.Drawing.Size(1074, 22);
+            this.ssMain.Size = new System.Drawing.Size(727, 22);
+            this.ssMain.SizingGrip = false;
             this.ssMain.TabIndex = 2;
             this.ssMain.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(10, 17);
+            this.toolStripStatusLabel1.Text = ".";
+            this.toolStripStatusLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.toolStripStatusLabel1.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
             // 
             // btZoom
             // 
@@ -397,7 +410,7 @@ namespace SphereScp
             // 
             // treeView3
             // 
-            this.treeView3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(17)))));
+            this.treeView3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(9)))));
             this.treeView3.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.treeView3.Dock = System.Windows.Forms.DockStyle.Left;
             this.treeView3.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
@@ -410,7 +423,7 @@ namespace SphereScp
             this.treeView3.ShowLines = false;
             this.treeView3.ShowPlusMinus = false;
             this.treeView3.ShowRootLines = false;
-            this.treeView3.Size = new System.Drawing.Size(200, 549);
+            this.treeView3.Size = new System.Drawing.Size(200, 571);
             this.treeView3.TabIndex = 14;
             this.treeView3.TabStop = false;
             // 
@@ -429,14 +442,14 @@ namespace SphereScp
             // 
             // fileToolStripMenuItem
             // 
-            this.fileToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
+            this.fileToolStripMenuItem.BackgroundImage = global::SphereScp.Properties.Resources.bg1;
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newToolStripMenuItem,
             this.openToolStripMenuItem,
             this.saveToolStripMenuItem,
             this.saveAsToolStripMenuItem,
-            this.exportHTMLToolStripMenuItem,
-            this.quitToolStripMenuItem});
+            this.quitToolStripMenuItem,
+            this.exportHTMLToolStripMenuItem});
             this.fileToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.fileToolStripMenuItem.Image = global::SphereScp.Properties.Resources.arrow_inf;
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
@@ -641,7 +654,9 @@ namespace SphereScp
             // 
             // btHighlightCurrentLine
             // 
+            this.btHighlightCurrentLine.Checked = true;
             this.btHighlightCurrentLine.CheckOnClick = true;
+            this.btHighlightCurrentLine.CheckState = System.Windows.Forms.CheckState.Checked;
             this.btHighlightCurrentLine.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.btHighlightCurrentLine.Image = global::SphereScp.Properties.Resources.edit_padding_top;
             this.btHighlightCurrentLine.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -758,6 +773,7 @@ namespace SphereScp
             // 
             // gotoButton
             // 
+            this.gotoButton.BackgroundImage = global::SphereScp.Properties.Resources.bg1;
             this.gotoButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.gotoButton.Image = ((System.Drawing.Image)(resources.GetObject("gotoButton.Image")));
             this.gotoButton.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -765,6 +781,8 @@ namespace SphereScp
             this.gotoButton.Size = new System.Drawing.Size(79, 22);
             this.gotoButton.Text = "Go to mark";
             this.gotoButton.DropDownOpening += new System.EventHandler(this.gotoButton_DropDownOpening);
+            this.gotoButton.MouseLeave += new System.EventHandler(this.fileToolStripMenuItem_MouseLeave);
+            this.gotoButton.MouseHover += new System.EventHandler(this.fileToolStripMenuItem_MouseHover);
             // 
             // tsMain
             // 
@@ -824,7 +842,7 @@ namespace SphereScp
             this.documentMap1.Location = new System.Drawing.Point(927, 49);
             this.documentMap1.Margin = new System.Windows.Forms.Padding(0);
             this.documentMap1.Name = "documentMap1";
-            this.documentMap1.Size = new System.Drawing.Size(147, 549);
+            this.documentMap1.Size = new System.Drawing.Size(147, 571);
             this.documentMap1.TabIndex = 15;
             this.documentMap1.Target = null;
             this.documentMap1.Text = "documentMap1";
@@ -837,11 +855,11 @@ namespace SphereScp
             this.BackgroundImage = global::SphereScp.Properties.Resources.bg1;
             this.ClientSize = new System.Drawing.Size(1074, 620);
             this.Controls.Add(this.msaTabControl1);
+            this.Controls.Add(this.ssMain);
             this.Controls.Add(this.treeView3);
             this.Controls.Add(this.documentMap1);
             this.Controls.Add(this.tsMain);
             this.Controls.Add(this.msMain);
-            this.Controls.Add(this.ssMain);
             this.ForeColor = System.Drawing.Color.White;
             this.MainMenuStrip = this.msMain;
             this.Name = "MAIN";
@@ -935,5 +953,6 @@ namespace SphereScp
         private System.Windows.Forms.ToolStrip tsMain;
         private FastColoredTextBoxNS.DocumentMap documentMap1;
         private MSATabControl msaTabControl1;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
     }
 }

@@ -16,11 +16,10 @@ namespace SphereScp
 {
     public partial class MAIN : Form
     {
-        public static Language currentLang = Language.Scp;
         bool canCancel = true;
         TreeNode canCollapse;
         Color changedLineColor = Color.FromArgb(255, 230, 230, 255);
-        Color currentLineColor = Color.FromArgb(215, 0, 0, 0);
+        Color currentLineColor = Color.FromArgb(255, 100, 0, 0);
 
 
         List<int> ExpandedList = new List<int>();
@@ -188,25 +187,20 @@ namespace SphereScp
                 MessageBox.Show("primarily load keywords");
                 return;
             }
-            if (currentLang != Language.Scp)
-            {
-                MessageBox.Show("this editor working with Language.Scp format. please dont change it");
-                return;
-            }
             try
             {
                 FastColoredTextBox tb = new FastColoredTextBox();
                 tb.AutoScroll = true;
                 tb.BorderStyle = BorderStyle.None;
-                tb.Font = new Font("Consolas", 9.75f);
+                tb.Font = new Font("Consolas", 11f);
                 tb.BackgroundImage = Properties.Resources.bg1;
                 tb.ForeColor = Color.White;
-                tb.LineNumberColor = Color.Black;
-                tb.IndentBackColor = Color.Gray;
+                tb.LineNumberColor = Color.White ;
+                tb.IndentBackColor = Color.FromArgb(80, Color.Gray);
                 tb.ContextMenuStrip = cmMain;
                 tb.Dock = DockStyle.Fill;
                 tb.LeftPadding = 5;
-                tb.Language = currentLang;
+                tb.Language = Language.Scp;
                 tb.AddStyle(new MarkerStyle(new SolidBrush(Color.FromArgb(50, Color.Gray))));//same words style
                 if (fileName != null)
                     tb.OpenFile(fileName);
@@ -273,13 +267,16 @@ namespace SphereScp
         {
             if (sender is ToolStripMenuItem)
                 (sender as ToolStripMenuItem).ForeColor = Color.Black;
-
+            else if (sender is ToolStripItem)
+                (sender as ToolStripItem).ForeColor = Color.Black;
         }
 
         private void fileToolStripMenuItem_MouseLeave(object sender, EventArgs e)
         {
             if (sender is ToolStripMenuItem)
                 (sender as ToolStripMenuItem).ForeColor = Color.White;
+            else if (sender is ToolStripItem)
+                (sender as ToolStripItem).ForeColor = Color.White;
 
         }
 
@@ -302,8 +299,12 @@ namespace SphereScp
                 FastColoredTextBox tb = tab.Controls[0] as FastColoredTextBox;
                 foreach (var bookmark in tb.Bookmarks)
                 {
-                    var item = gotoButton.DropDownItems.Add(bookmark.Name + " [" + Path.GetFileNameWithoutExtension(tab.Tag as String) + "]");
+                    ToolStripItem item = gotoButton.DropDownItems.Add(bookmark.Name + " [" + Path.GetFileNameWithoutExtension(tab.Tag as String) + "]");
                     item.Tag = bookmark;
+                    item.ForeColor = Color.White;
+                    item.BackgroundImage = Properties.Resources.bg1;
+                    item.MouseHover += fileToolStripMenuItem_MouseHover;
+                    item.MouseLeave += fileToolStripMenuItem_MouseLeave;
                     item.Click += (o, a) =>
                     {
                         var b = (Bookmark)(o as ToolStripItem).Tag;
@@ -449,7 +450,7 @@ namespace SphereScp
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ofdMain.Filter = string.Format("FileType (*.{0} )|*.{0}", currentLang.ToString().ToLower());
+            ofdMain.Filter = "ScriptCommunityPack (*.scp )|*.scp";
             if (ofdMain.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 CreateTab(ofdMain.FileName);
         }
@@ -459,7 +460,7 @@ namespace SphereScp
             CurrentTB.Paste();
         }
 
-        private void popupMenu_Opening(object sender, CancelEventArgs e)
+        private void popupMenu_Opening(object sender, CancelEventArgs e)// <<-----** need changes
         {
             //---block autocomplete menu for comments
             //get index of green style (used for comments)
@@ -698,8 +699,20 @@ namespace SphereScp
             var place = tb.PointToPlace(e.Location);
             var r = new Range(tb, place, place);
 
-            string text = r.GetFragment("[a-zA-Z]").Text;
-            lbWordUnderMouse.Text = text;
+            string text = r.GetFragment("[\\(\\)a-zA-Z_0-9]").Text;
+            int result = 0;
+            if (text.Length>0&& !int.TryParse(text, out result) && !(text[0] == '(') && !(text[text.Length - 1] == ')'))
+            {
+                List<Style> stls = tb.GetStylesOfChar(place);
+                int x = stls.FindIndex(p => p == tb.SyntaxHighlighter.styScpComments);
+                if (x > 0)
+                    return;
+                toolStripStatusLabel1.Text = text;
+            }
+            else
+            {
+                toolStripStatusLabel1.Text = "";
+            }
         }
 
         private void tb_SelectionChangedDelayed(object sender, EventArgs e)
@@ -749,9 +762,15 @@ namespace SphereScp
         {
             if (!string.IsNullOrEmpty(e.HoveredWord))
             {
+
                 if (e.HoveredWord != null | e.HoveredWord != "")
                 {
-                    PopupToolTip keyw = ScriptCommunityPack.keywordsInformation.Find(x => x.Name.ToLower().StartsWith(e.HoveredWord.ToLower()));
+                    List<Style> stls = CurrentTB.GetStylesOfChar(e.Place);
+                    int isComment = stls.FindIndex(p => p == CurrentTB.SyntaxHighlighter.styScpComments);
+                    if (isComment > 0)
+                        return;
+
+                    PopupToolTip keyw = ScriptCommunityPack.keywordsInformation.Find(x => x.Name.ToLower().StartsWith(e.HoveredWord.ToLower()) && !x.Properties.Contains(PropertyTypes.SnippetAuto));
                     if (keyw != null)
                     {
                         e.ToolTipTitle = keyw.Name;

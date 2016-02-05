@@ -112,7 +112,7 @@
     </Compile>
     <Compile Include="FastColoredTextBoxNS\EncodingDetector.cs" />
     <Compile Include="FastColoredTextBoxNS\MethodAutocompleteItem.cs" />
-    <Compile Include="FastColoredTextBoxNS\Render\ExplorerItemComparer.cs" />
+    <Compile Include="Render\ExplorerItemComparer.cs" />
     <Compile Include="FastColoredTextBoxNS\ExportToHTML.cs" />
     <Compile Include="FastColoredTextBoxNS\ExportToRTF.cs" />
     <Compile Include="FastColoredTextBoxNS\FastColoredTextBox.cs">
@@ -146,22 +146,22 @@
     <Compile Include="FastColoredTextBoxNS\Place.cs" />
     <Compile Include="FastColoredTextBoxNS\PlatformType.cs" />
     <Compile Include="FastColoredTextBoxNS\Range.cs" />
-    <Compile Include="FastColoredTextBoxNS\Render\DeclarationSnippet.cs" />
-    <Compile Include="FastColoredTextBoxNS\Render\ExplorerItem.cs" />
-    <Compile Include="FastColoredTextBoxNS\Render\Enum\ExplorerItemType.cs" />
-    <Compile Include="FastColoredTextBoxNS\Render\Enum\PropertyTypes.cs" />
-    <Compile Include="FastColoredTextBoxNS\Render\Enum\SyntaxType.cs" />
-    <Compile Include="FastColoredTextBoxNS\Render\Indexer\BaseDef.cs" />
-    <Compile Include="FastColoredTextBoxNS\Render\Indexer\CmdDefType.cs" />
-    <Compile Include="FastColoredTextBoxNS\Render\Indexer\IBaseDefine.cs" />
-    <Compile Include="FastColoredTextBoxNS\Render\Indexer\ObjectDef.cs" />
-    <Compile Include="FastColoredTextBoxNS\Render\Indexer\ScpIndexer.cs" />
-    <Compile Include="FastColoredTextBoxNS\Render\InsertEnterSnippet.cs" />
-    <Compile Include="FastColoredTextBoxNS\Render\InsertSpaceSnippet.cs" />
-    <Compile Include="FastColoredTextBoxNS\Render\InvisibleCharsRenderer.cs" />
-    <Compile Include="FastColoredTextBoxNS\Render\PopupInfo.cs" />
-    <Compile Include="FastColoredTextBoxNS\Render\PopupMenu.cs" />
-    <Compile Include="FastColoredTextBoxNS\Render\ScriptCommunityPack.cs" />
+    <Compile Include="Render\DeclarationSnippet.cs" />
+    <Compile Include="Render\ExplorerItem.cs" />
+    <Compile Include="Render\Enum\ExplorerItemType.cs" />
+    <Compile Include="Render\Enum\PropertyTypes.cs" />
+    <Compile Include="Render\Enum\SyntaxType.cs" />
+    <Compile Include="Render\Indexer\BaseDef.cs" />
+    <Compile Include="Render\Indexer\CmdDefType.cs" />
+    <Compile Include="Render\Indexer\IBaseDefine.cs" />
+    <Compile Include="Render\Indexer\ObjectDef.cs" />
+    <Compile Include="Render\Indexer\ScpIndexer.cs" />
+    <Compile Include="Render\InsertEnterSnippet.cs" />
+    <Compile Include="Render\InsertSpaceSnippet.cs" />
+    <Compile Include="Render\InvisibleCharsRenderer.cs" />
+    <Compile Include="Render\PopupInfo.cs" />
+    <Compile Include="Render\PopupMenu.cs" />
+    <Compile Include="Render\ScriptCommunityPack.cs" />
     <Compile Include="FastColoredTextBoxNS\SnippetAutocompleteItem.cs" />
     <Compile Include="FastColoredTextBoxNS\ReplaceForm.cs">
       <SubType>Form</SubType>

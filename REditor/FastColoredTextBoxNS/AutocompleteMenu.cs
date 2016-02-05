@@ -169,6 +169,15 @@ namespace FastColoredTextBoxNS
                 FocussedItemIndex = 0;
                 base.VerticalScroll.Value = 0;
                 Range fragment = tb.Selection.GetFragment(Menu.SearchPattern);
+
+               
+                List<Style> stls = tb.GetStylesOfChar(fragment.Start);
+                if (stls.Count>0)
+                {
+                    int isComment = stls.FindIndex(p => p == tb.SyntaxHighlighter.styScpComments);
+                    if (isComment > -1)
+                        return;
+                }
                 string text = fragment.Text;
                 Point position = tb.PlaceToPoint(fragment.End);
                 position.Offset(2, tb.CharHeight);
@@ -438,10 +447,11 @@ namespace FastColoredTextBoxNS
                 onlyShowToopTip = false;
                 return;
             }
-
+           
             string newText = item.GetTextForReplace();
             //replace text of fragment
             var tb = fragment.tb;
+            
             tb.BeginAutoUndo();
             tb.TextSource.Manager.ExecuteCommand(new SelectCommand(tb.TextSource));
             if (tb.Selection.ColumnSelectionMode)
