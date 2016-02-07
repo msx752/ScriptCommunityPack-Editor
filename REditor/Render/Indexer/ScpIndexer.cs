@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace FastColoredTextBoxNS.Render
@@ -36,6 +37,9 @@ namespace FastColoredTextBoxNS.Render
                     sr.ReadLine();
                     while ((currLine = sr.ReadLine()) != null)
                     {
+                        string mat1 = @"(.*?(:).*?(:).*?(:).*?(:).*?(:).*?(:).*?)";
+                        Regex rg1 = new Regex(mat1, RegexOptions.IgnoreCase | RegexOptions.Singleline);
+                        bool isCorrect = rg1.IsMatch(currLine);
                         //define
                         //define value
                         //id
@@ -43,40 +47,39 @@ namespace FastColoredTextBoxNS.Render
                         //defname
                         //line
                         //selected chars count
-                        string[] definatin = currLine.Split(':');
-                        IBaseDef valuedef = null;
-                        CmdDefType deftyp = (CmdDefType)Enum.Parse(typeof(CmdDefType), definatin[0], true);
-                        if (deftyp != CmdDefType.NONE)
+                        if (isCorrect)
                         {
-                            if (deftyp == CmdDefType.CHARDEF || deftyp == CmdDefType.ITEMDEF)
+                            string[] definatin = currLine.Split(':');
+                            IBaseDef valuedef = null;
+                            CmdDefType deftyp = (CmdDefType)Enum.Parse(typeof(CmdDefType), definatin[0], true);
+                            if (deftyp != CmdDefType.NONE)
                             {
-                                if (definatin[2] != "")//is children
+                                if (deftyp == CmdDefType.CHARDEF || deftyp == CmdDefType.ITEMDEF)
                                 {
-                                    valuedef = new ObjectDef(definatin[1], deftyp);
-                                    (valuedef as ObjectDef).ParentId = definatin[2];
-                                    (valuedef as ObjectDef).Name = definatin[3];
+                                    if (definatin[2] != "")//is children
+                                    {
+                                        valuedef = new ObjectDef(definatin[1], deftyp);
+                                        (valuedef as ObjectDef).ParentId = definatin[2];
+                                        (valuedef as ObjectDef).Name = definatin[3];
+                                    }
+                                    else if (definatin[4] != "")//is parent
+                                    {
+                                        valuedef = new ObjectDef(definatin[1], deftyp);
+                                        (valuedef as ObjectDef).Defname = definatin[4];
+                                    }
+                                    else//is parent (base parent is hardcoding)
+                                    {
+                                        valuedef = new ObjectDef(definatin[1], deftyp);
+                                        (valuedef as ObjectDef).Defname = definatin[4];
+                                    }
                                 }
-                                else if (definatin[4] != "")//is parent
+                                else
                                 {
-                                    valuedef = new ObjectDef(definatin[1], deftyp);
-                                    (valuedef as ObjectDef).Defname = definatin[4];
+                                    valuedef = new BaseDef(definatin[1], deftyp);
                                 }
-                                else//is parent (base parent is hardcoding)
-                                {
-                                    valuedef = new ObjectDef(definatin[1], deftyp);
-                                    (valuedef as ObjectDef).Defname = definatin[4];
-                                }
+                                valuedef.File = new FileInfo(item.Replace(pathIndex, pathScripts));
+                                valuedef.RangeOfCommand = new System.Drawing.Point(int.Parse(definatin[6]), int.Parse(definatin[5]));
                             }
-                            else
-                            {
-                                valuedef = new BaseDef(definatin[1], deftyp);
-                            }
-                            valuedef.File = new FileInfo(item.Replace(pathIndex, pathScripts));
-                            valuedef.RangeOfCommand = new System.Drawing.Point(int.Parse(definatin[6]), int.Parse(definatin[5]));
-                        }
-                        if (valuedef != null)
-                        {
-                            //Commands.Add(valuedef);
                             MethodAuto newScpCmd = new MethodAuto(valuedef.Cmd);
                             string define = string.Format("[{0} {1}]", valuedef.CmdType.ToString(), valuedef.Cmd);
                             if (valuedef is ObjectDef)
@@ -91,6 +94,7 @@ namespace FastColoredTextBoxNS.Render
                                 string titletext = string.Format("{0}\r\n{1}\r\n File: {2}    {{Line: {3}}}\r\nParent: {4}\r\nChild: {5}", (valuedef as ObjectDef).Name, "", valuedef.File.Name, valuedef.RangeOfCommand.Y, (valuedef as ObjectDef).ParentId, children);
                                 newScpCmd.ToolTipText = titletext;
                                 ScriptCommunityPack.fileScpCommands.Add(newScpCmd);
+
                             }
                         }
                     }
@@ -111,7 +115,7 @@ namespace FastColoredTextBoxNS.Render
                 else
                 {
                     FolderBrowserDialog opf = new FolderBrowserDialog();
-                    if (opf.ShowDialog()!= DialogResult.OK)
+                    if (opf.ShowDialog() != DialogResult.OK)
                     {
                         MessageBox.Show("please select correct folder");
                         return false;

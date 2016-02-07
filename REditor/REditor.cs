@@ -20,7 +20,7 @@ namespace SphereScp
         TreeNode canCollapse;
         Color changedLineColor = Color.FromArgb(255, 230, 230, 255);
         Color currentLineColor = Color.FromArgb(255, 100, 0, 0);
-
+        Color background = Color.FromArgb(0, 0, 9);
 
         List<int> ExpandedList = new List<int>();
 
@@ -192,10 +192,10 @@ namespace SphereScp
                 FastColoredTextBox tb = new FastColoredTextBox();
                 tb.AutoScroll = true;
                 tb.BorderStyle = BorderStyle.None;
-                tb.Font = new Font("Consolas", 11f);
+                tb.Font = new Font("Consolas", 9.75f);
                 tb.BackgroundImage = Properties.Resources.bg1;
                 tb.ForeColor = Color.White;
-                tb.LineNumberColor = Color.White ;
+                tb.LineNumberColor = Color.White;
                 tb.IndentBackColor = Color.FromArgb(80, Color.Gray);
                 tb.ContextMenuStrip = cmMain;
                 tb.Dock = DockStyle.Fill;
@@ -256,7 +256,7 @@ namespace SphereScp
         {
             ExportToHTML export = new ExportToHTML();
             string val = export.GetHtml(CurrentTB);
-            val = val.Replace(".fctbNone{", "body{background-color:" + CurrentTB.BackColor.Name + ";}.fctbNone{");
+            val = val.Replace(".fctbNone{", "body{background-color:" + background.Name.Substring(2) + ";}.fctbNone{");
             val = val.Replace("font-size: " + CurrentTB.Font.Size + "pt;", "font-size: 9pt;");
             StreamWriter sw = new StreamWriter(Path.Combine(Application.StartupPath, CurrentTB.Name + ".html"), false, Encoding.UTF8);
             sw.Write(val);
@@ -525,51 +525,41 @@ namespace SphereScp
             try
             {
                 List<TreeNode> newNodes = new List<TreeNode>();
-                Regex regex = new Regex(@"(?<range>(\[\w+\s+\w+(\s+\w+)?\]))|(?<range>((\bon=@)([a-z]?)+))|(((?:[a-z][a-z]+))(=)((?:[a-z][a-z0-9_]*)))", RegexOptions.IgnoreCase | RegexOptions.Multiline);
-                bool isDefineValue = true;
+                Regex regx1 = new Regex(@"(?<range>(\[\w+\s+\w+(\s+\w+)?\]))|(?<range>((\bon=@)([a-z]?)+))|(((?:[a-z][a-z]+))(=)((?:[a-z][a-z0-9_]*)))", RegexOptions.IgnoreCase | RegexOptions.Multiline);
+                bool isTriggerValue = false;
                 TreeNode newNode = null;
-                foreach (Match r in regex.Matches(text))
+                foreach (Match r1 in regx1.Matches(text))
                 {
                     try
                     {
-                        string s = r.Value;
-                        s = s.Trim();
+                        string mat1 = @"(\[\w+\s+\w+(\s+\w+)?\])";
+                        Regex rg1 = new Regex(mat1, RegexOptions.IgnoreCase | RegexOptions.Singleline);
+                        bool isDefine = rg1.IsMatch(r1.Value);
 
-                        if (s.ToLower().StartsWith("["))
+                        string mat2 = "(?:[a-z][a-z]+)(=)(?:[a-z][a-z0-9_]*)";
+                        Regex rg2 = new Regex(mat2, RegexOptions.IgnoreCase | RegexOptions.Singleline);
+                        bool isProperty = rg2.IsMatch(r1.Value);
+
+                        string mat3 = "((on=@[a-z]?)+)";
+                        Regex rg3 = new Regex(mat3, RegexOptions.IgnoreCase | RegexOptions.Singleline);
+                        bool isTrigger = rg3.IsMatch(r1.Value);
+                        if (isDefine)
                         {
-                            string[] parts = s.Split(' ');
-                            if (parts.Length <= 2)
-                            {
-                                isDefineValue = true;
-                                string tit = parts[0].ToUpper().Replace("İ", "I") + " ";
-
-                                for (int i = 1; i < parts.Length; i++)
-                                    tit = tit + parts[i] + " ";
-                                newNode = new TreeNode(tit) { ImageIndex = 0, Tag = r.Index };
-                                newNodes.Add(newNode);
-                            }
+                            isTriggerValue = false;
+                            string tit = r1.Value.ToUpper().Replace("İ", "I") + " ";
+                            newNode = new TreeNode(tit) { ImageIndex = 0, Tag = r1.Index };
+                            newNodes.Add(newNode);
                         }
-                        else
+                        else if (isTrigger)
                         {
-                            if (s.ToLower().Contains("on=@"))
-                            {
-                                string[] parts = s.Split('@');
-                                if (parts[1].Length > 0)
-                                {
-                                    isDefineValue = false;
-                                    TreeNode newTrigger = new TreeNode(parts[0].ToUpper() + "@ " + parts[1]) { ImageIndex = 7, Tag = r.Index };
-                                    newNodes[newNodes.Count - 1].Nodes.Add(newTrigger);
-                                }
-                            }
-                            else
-                            {
-                                string[] parts = s.Split('=');
-                                if (parts.Length == 2 && isDefineValue)//isDefineValue is only define's propertie not trigger's 
-                                {
-                                    TreeNode newProperty = new TreeNode(parts[0].ToUpper() + "= " + parts[1]) { ImageIndex = 6, Tag = r.Index };
-                                    newNodes[newNodes.Count - 1].Nodes.Add(newProperty);
-                                }
-                            }
+                            isTriggerValue = true;
+                            TreeNode newTrigger = new TreeNode(r1.Value) { ImageIndex = 7, Tag = r1.Index };
+                            newNodes[newNodes.Count - 1].Nodes.Add(newTrigger);
+                        }
+                        else if (isProperty && !isTriggerValue)
+                        {
+                            TreeNode newProperty = new TreeNode(r1.Value) { ImageIndex = 6, Tag = r1.Index };
+                            newNodes[newNodes.Count - 1].Nodes.Add(newProperty);
                         }
                     }
                     catch (Exception e)
@@ -701,7 +691,7 @@ namespace SphereScp
 
             string text = r.GetFragment("[\\(\\)a-zA-Z_0-9]").Text;
             int result = 0;
-            if (text.Length>0&& !int.TryParse(text, out result) && !(text[0] == '(') && !(text[text.Length - 1] == ')'))
+            if (text.Length > 0 && !int.TryParse(text, out result) && !(text[0] == '(') && !(text[text.Length - 1] == ')'))
             {
                 List<Style> stls = tb.GetStylesOfChar(place);
                 int x = stls.FindIndex(p => p == tb.SyntaxHighlighter.styScpComments);

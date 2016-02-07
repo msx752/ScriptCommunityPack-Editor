@@ -169,8 +169,7 @@ namespace FastColoredTextBoxNS
                 FocussedItemIndex = 0;
                 base.VerticalScroll.Value = 0;
                 Range fragment = tb.Selection.GetFragment(Menu.SearchPattern);
-
-               
+                
                 List<Style> stls = tb.GetStylesOfChar(fragment.Start);
                 if (stls.Count>0)
                 {
