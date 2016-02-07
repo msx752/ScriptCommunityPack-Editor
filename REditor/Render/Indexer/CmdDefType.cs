@@ -7,6 +7,6 @@
         DIALOG = 4,
         EVENTS = 8,
         FUNCTION = 16,
-        NONE = 32
+        UNDEFINED = 32
     }
 }

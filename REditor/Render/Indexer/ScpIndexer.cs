@@ -52,7 +52,7 @@ namespace FastColoredTextBoxNS.Render
                             string[] definatin = currLine.Split(':');
                             IBaseDef valuedef = null;
                             CmdDefType deftyp = (CmdDefType)Enum.Parse(typeof(CmdDefType), definatin[0], true);
-                            if (deftyp != CmdDefType.NONE)
+                            if (deftyp != CmdDefType.UNDEFINED)
                             {
                                 if (deftyp == CmdDefType.CHARDEF || deftyp == CmdDefType.ITEMDEF)
                                 {
@@ -132,80 +132,102 @@ namespace FastColoredTextBoxNS.Render
                     return false;
                 }
                 string[] FileList = Directory.GetFiles(pathScripts, "*.scp", SearchOption.AllDirectories);
+
+                string regex_define = @"(?<range>(\[\w+\s+\w+(\s+\w+)?\]))";//[ITEMDEF I_ITEM]
+                string regex_id = @"(?<range>(ID(\s|)=(\s|)([a-z0-9_]+)))";//ID = I_SWORD94 89384 _
+                string regex_name = @"(?<range>(NAME(\s|)=(\s|)([a-z0-9_( )]+)(\s|)))";//NAME = 33FULL SPELLBOOK  _
+                string regex_defname = @"(?<range>(DEFNAME(\s|)=(\s|)([a-z0-9_( )]+)(\s|)))";//DEFNAME =  _
+
+                Regex regx1 = new Regex(regex_define + "|" + regex_id + "|" + regex_name + "|" + regex_defname + "|(\r\n)", RegexOptions.IgnoreCase | RegexOptions.Singleline);
                 for (int i = 0; i < FileList.Length; i++)
                 {
                     List<string> commandList = new List<string>();
                     FileInfo fif = new FileInfo(FileList[i]);
                     StreamReader sr = new StreamReader(fif.FullName, Encoding.UTF8);
                     commandList.Add(string.Format("LastWriteTime:{0}", fif.LastWriteTime.Ticks));
-                    string currLine;
-                    int iLine = -1;
-                    while ((currLine = sr.ReadLine()) != null)
+                    //////////////////////////////////////////////////////////////////////////////
+                    string text = sr.ReadToEnd();
+                    CmdDefType defType0 = CmdDefType.UNDEFINED;
+                    int currentMethodLine0 = 1;
+                    string Define0 = "";
+                    string Id0 = "";
+                    string Name0 = "";
+                    string Defname0 = "";
+                    string Cmd0 = "";
+                    int before_line = 0;
+                    int before_lenght = 0;
+                    foreach (Match r1 in regx1.Matches(text))
                     {
-                        int currentMethodLine = 0;
-                        iLine++;
-                        if (currLine.ToLower().StartsWith("["))
+                        if (r1.Value == "\r\n")
                         {
-                            string Define = currLine.Trim('[').Trim(']').ToLower().Replace("ı", "i");
-                            if (Define.Split(' ').Length == 2)
+                            currentMethodLine0++;
+                            continue;
+                        }
+                        string value = r1.Value.Replace("\r", "");
+                        Regex rg1 = new Regex(regex_define, RegexOptions.IgnoreCase | RegexOptions.Singleline);
+                        bool isDefine = rg1.IsMatch(value);
+                        Regex rg4 = new Regex(regex_id, RegexOptions.IgnoreCase | RegexOptions.Singleline);
+                        bool isID = rg4.IsMatch(value);
+                        Regex rg5 = new Regex(regex_name, RegexOptions.IgnoreCase | RegexOptions.Singleline);
+                        bool isName = rg5.IsMatch(value);
+                        Regex rg6 = new Regex(regex_defname, RegexOptions.IgnoreCase | RegexOptions.Singleline);
+                        bool isDefname = rg6.IsMatch(value);
+
+                        if (isDefine)
+                        {
+                            if (defType0 == CmdDefType.ITEMDEF || defType0 == CmdDefType.CHARDEF)
                             {
-                                currentMethodLine = iLine + 1;//method line number
-                                string cType = Define.Split(' ')[0];//defname
-                                CmdDefType defType;
-                                switch (cType)
-                                {
-                                    case "itemdef":
-                                        defType = CmdDefType.ITEMDEF;
-                                        break;
+                                //deftype:id:name:defname::indexNumber:indexLenght
+                                commandList.Add(string.Format("{0}:{1}:{2}:{3}:{4}:{5}:{6}", defType0.ToString(), Cmd0, Id0, Name0, Defname0, before_line, before_lenght));
+                                Id0 = "";
+                                Name0 = "";
+                                Defname0 = "";
+                            }
+                            before_line = currentMethodLine0;
+                            before_lenght = r1.Length;
+                            Define0 = value.Trim('[').Trim(']').ToLower().Replace("ı", "i");
+                            string cType = Define0.Split(' ')[0];//defname
+                            switch (cType)
+                            {
+                                case "itemdef":
+                                    defType0 = CmdDefType.ITEMDEF;
+                                    break;
+                                case "chardef":
+                                    defType0 = CmdDefType.CHARDEF;
+                                    break;
+                                case "dialog":
+                                    defType0 = CmdDefType.DIALOG;
+                                    break;
+                                case "events":
+                                    defType0 = CmdDefType.EVENTS;
+                                    break;
+                                case "function":
+                                    defType0 = CmdDefType.FUNCTION;
+                                    break;
+                                default:
+                                    defType0 = CmdDefType.UNDEFINED;
+                                    break;
+                            }
+                            Cmd0 = Define0.Split(' ')[1];//defname's value
 
-                                    case "chardef":
-                                        defType = CmdDefType.CHARDEF;
-                                        break;
-
-                                    case "dialog":
-                                        defType = CmdDefType.DIALOG;
-                                        break;
-
-                                    case "events":
-                                        defType = CmdDefType.EVENTS;
-                                        break;
-
-                                    case "function":
-                                        defType = CmdDefType.FUNCTION;
-                                        break;
-
-                                    default:
-                                        defType = CmdDefType.NONE;
-                                        break;
-                                }
-                                if (defType != CmdDefType.NONE)
-                                {
-                                    string Cmd = Define.Split(' ')[1];//defname's value
-                                    string Id = "";
-                                    string Name = "";
-                                    string Defname = "";
-                                    while ((currLine = sr.ReadLine()) != null)
-                                    {
-                                        iLine++;
-                                        Define = currLine.ToLower().Replace("ı", "i");
-                                        if (Define.Replace(" ", "").StartsWith("[") || defType == CmdDefType.FUNCTION || defType == CmdDefType.DIALOG || defType == CmdDefType.EVENTS)
-                                        {
-                                            //deftype:id:name:defname::indexNumber:indexLenght
-                                            commandList.Add(string.Format("{0}:{1}:{2}:{3}:{4}:{5}:{6}", defType.ToString(), Cmd, Id, Name, Defname, currentMethodLine, (cType.Length + Cmd.Length + 1)));
-                                            break;
-                                        }
-                                        else if (Define.StartsWith("id="))
-                                            Id = currLine.Replace(" ", "").Substring(3);
-                                        else if (Define.StartsWith("name="))
-                                            Name = currLine.Substring(5);
-                                        else if (Define.StartsWith("defname="))
-                                            Defname = currLine.Substring(8);
-                                    }
-                                }
+                            if (defType0 == CmdDefType.FUNCTION || defType0 == CmdDefType.DIALOG || defType0 == CmdDefType.EVENTS)
+                            {
+                                //deftype:id:name:defname::indexNumber:indexLenght
+                                commandList.Add(string.Format("{0}:{1}:{2}:{3}:{4}:{5}:{6}", defType0.ToString(), Cmd0, "", "", "", currentMethodLine0, r1.Length));
+                                continue;
                             }
                         }
+                        else if (isID)
+                            Id0 = value.Split('=')[1];
+                        else if (isName)
+                            Name0 = value.Split('=')[1];
+                        else if (isDefname)
+                            Defname0 = value.Split('=')[1];
+                        else
+                        {
+                            //UNDEFINED VALUE
+                        }
                     }
-                    sr.Close();
                     FileInfo newFilePath = new FileInfo(FileList[i].Replace(pathScripts, pathIndex));
                     if (!newFilePath.Directory.Exists)
                         Directory.CreateDirectory(newFilePath.Directory.FullName);
@@ -219,7 +241,7 @@ namespace FastColoredTextBoxNS.Render
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception ef)
             {
                 return false;
             }

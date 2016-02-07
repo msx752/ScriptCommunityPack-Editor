@@ -203,7 +203,7 @@ namespace FastColoredTextBoxNS
                             || text.StartsWith("e_", true, eng)
                             || text.StartsWith("f_", true, eng)))
                         {
-                            CmdDefType typ = CmdDefType.NONE;
+                            CmdDefType typ = CmdDefType.UNDEFINED;
                             if (splited[0].StartsWith("i_", true, eng))
                                 typ = CmdDefType.ITEMDEF;
                             else if (splited[0].StartsWith("c_", true, eng))
