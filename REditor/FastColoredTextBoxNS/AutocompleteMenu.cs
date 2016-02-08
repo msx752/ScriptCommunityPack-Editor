@@ -169,9 +169,9 @@ namespace FastColoredTextBoxNS
                 FocussedItemIndex = 0;
                 base.VerticalScroll.Value = 0;
                 Range fragment = tb.Selection.GetFragment(Menu.SearchPattern);
-                
+
                 List<Style> stls = tb.GetStylesOfChar(fragment.Start);
-                if (stls.Count>0)
+                if (stls.Count > 0)
                 {
                     int isComment = stls.FindIndex(p => p == tb.SyntaxHighlighter.styScpComments);
                     if (isComment > -1)
@@ -264,10 +264,10 @@ namespace FastColoredTextBoxNS
 
                     if (finded.Count > 0)
                     {
-                    //    finded = finded.OrderBy(p => p.Text)
-                    //    .Where(p => !(p is InsertEnterSnippet) && !(p is InsertSpaceSnippet))
-                    //    .Where(p => !p.ToolTipText.StartsWith("\r\n\r\n"))// unknown define
-                    //    .ToList();
+                        //    finded = finded.OrderBy(p => p.Text)
+                        //    .Where(p => !(p is InsertEnterSnippet) && !(p is InsertSpaceSnippet))
+                        //    .Where(p => !p.ToolTipText.StartsWith("\r\n\r\n"))// unknown define
+                        //    .ToList();
 
                         while (finded.Count >= 31)//max listed func
                             finded.RemoveAt(30);
@@ -446,11 +446,11 @@ namespace FastColoredTextBoxNS
                 onlyShowToopTip = false;
                 return;
             }
-           
+
             string newText = item.GetTextForReplace();
             //replace text of fragment
             var tb = fragment.tb;
-            
+
             tb.BeginAutoUndo();
             tb.TextSource.Manager.ExecuteCommand(new SelectCommand(tb.TextSource));
             if (tb.Selection.ColumnSelectionMode)
@@ -469,11 +469,22 @@ namespace FastColoredTextBoxNS
                 else if (ScriptCommunityPack.keywordsInformation.FindIndex(p => p.Name == newText && p.Properties.Contains(PropertyTypes.SnippetAuto)) != -1)//snippet auto control
                     tb.Selection.Start = fragment.Start;
                 else
-                    tb.Selection.Start = new Place(tb.Selection.Start.iChar - 1, tb.Selection.Start.iLine);//KEYWORD auto CONTROL
-
+                {
+                    //tb.Selection.Start = new Place(tb.Selection.Start.iChar - 1, tb.Selection.Start.iLine);//KEYWORD auto CONTROL
+                    string[] lineDots = fragment.Text.Split('.');
+                    string newcmdRewrite = lineDots[lineDots.Length - 1];
+                    if (newText.ToLower().StartsWith(".@"))//.On=@ (DOT bug fixed) || TRİGGER AUTO CONTROL
+                    {
+                        lineDots = lineDots[0].Split('@');
+                        string newtriggerRewrite = lineDots[lineDots.Length - 1]; 
+                        newText = newText.Substring(newtriggerRewrite.Length+2);
+                    }
+                    else
+                    {
+                        newText = newText.Substring(newcmdRewrite.Length + 1);
+                    }
+                }
                 tb.Selection.End = fragment.End;
-                if (newText.ToLower().StartsWith(".@"))//.On=@ (DOT bug fixed) || TRİGGER AUTO CONTROL
-                    newText = newText.Replace(".@", "=@");
             }
             tb.InsertText(newText);
             tb.TextSource.Manager.ExecuteCommand(new SelectCommand(tb.TextSource));
