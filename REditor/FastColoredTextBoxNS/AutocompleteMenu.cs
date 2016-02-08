@@ -225,8 +225,9 @@ namespace FastColoredTextBoxNS
                         else if (splited.Length == 1
                             && text.StartsWith("on=", true, eng))
                         {
+                            splited = text.Split('=');
                             finded = sourceItems
-                                  .Where(p => p.Text.StartsWith("@", true, eng))
+                                  .Where(p => p.Text.StartsWith("@"+ splited[1], true, eng))
                                   .ToList();
                         }
                         else if (splited.Length == 1
