@@ -12,6 +12,8 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Drawing.Drawing2D;
 using FastColoredTextBoxNS.Render;
+using SphereScp.Render;
+
 namespace SphereScp
 {
     public partial class MAIN : Form
@@ -262,23 +264,7 @@ namespace SphereScp
             sw.Write(val);
             sw.Close();
         }
-
-        private void fileToolStripMenuItem_MouseHover(object sender, EventArgs e)
-        {
-            if (sender is ToolStripMenuItem)
-                (sender as ToolStripMenuItem).ForeColor = Color.Black;
-            else if (sender is ToolStripItem)
-                (sender as ToolStripItem).ForeColor = Color.Black;
-        }
-
-        private void fileToolStripMenuItem_MouseLeave(object sender, EventArgs e)
-        {
-            if (sender is ToolStripMenuItem)
-                (sender as ToolStripMenuItem).ForeColor = Color.White;
-            else if (sender is ToolStripItem)
-                (sender as ToolStripItem).ForeColor = Color.White;
-
-        }
+        
 
         private void findToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -303,8 +289,6 @@ namespace SphereScp
                     item.Tag = bookmark;
                     item.ForeColor = Color.White;
                     item.BackgroundImage = Properties.Resources.bg1;
-                    item.MouseHover += fileToolStripMenuItem_MouseHover;
-                    item.MouseLeave += fileToolStripMenuItem_MouseLeave;
                     item.Click += (o, a) =>
                     {
                         var b = (Bookmark)(o as ToolStripItem).Tag;
@@ -583,9 +567,19 @@ namespace SphereScp
             {
             }
         }
-
+        internal class NoHighlightRenderer : ToolStripProfessionalRenderer
+        {
+            protected override void OnRenderMenuItemBackground(ToolStripItemRenderEventArgs e)
+            {
+                if (e.Item.OwnerItem == null)
+                {
+                    base.OnRenderMenuItemBackground(e);
+                }
+            }
+        }
         private void REditor_Load(object sender, EventArgs e)
         {
+            msMain.Renderer = new StripMenuRenderer();
             treeView3.ImageList = ilAutocomplete;
             treeView3.BeforeSelect += TreeView3_BeforeSelect;
             treeView3.NodeMouseClick += TreeView1_NodeMouseClick;
