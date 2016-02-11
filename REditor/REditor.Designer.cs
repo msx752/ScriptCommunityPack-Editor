@@ -1,5 +1,4 @@
 ﻿
-
 using newTabControl;
 
 namespace SphereScp
@@ -77,8 +76,8 @@ namespace SphereScp
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportHTMLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadSphereScriptsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadKeywordsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -412,7 +411,7 @@ namespace SphereScp
             // 
             // treeView3
             // 
-            this.treeView3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(9)))));
+            this.treeView3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(17)))));
             this.treeView3.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.treeView3.Dock = System.Windows.Forms.DockStyle.Left;
             this.treeView3.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
@@ -431,7 +430,7 @@ namespace SphereScp
             // 
             // msMain
             // 
-            this.msMain.BackColor = System.Drawing.SystemColors.Control;
+            this.msMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(17)))));
             this.msMain.BackgroundImage = global::SphereScp.Properties.Resources.bg1;
             this.msMain.GripMargin = new System.Windows.Forms.Padding(0);
             this.msMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -451,8 +450,8 @@ namespace SphereScp
             this.openToolStripMenuItem,
             this.saveToolStripMenuItem,
             this.saveAsToolStripMenuItem,
-            this.quitToolStripMenuItem,
-            this.exportHTMLToolStripMenuItem});
+            this.exportHTMLToolStripMenuItem,
+            this.quitToolStripMenuItem});
             this.fileToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.fileToolStripMenuItem.Image = global::SphereScp.Properties.Resources.arrow_inf;
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
@@ -461,67 +460,66 @@ namespace SphereScp
             // 
             // newToolStripMenuItem
             // 
-            this.newToolStripMenuItem.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("newToolStripMenuItem.BackgroundImage")));
+            this.newToolStripMenuItem.BackgroundImage = global::SphereScp.Properties.Resources.bg1;
             this.newToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.newToolStripMenuItem.Image = global::SphereScp.Properties.Resources.appbar_page_new;
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.newToolStripMenuItem.Text = "New";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
             // openToolStripMenuItem
             // 
-            this.openToolStripMenuItem.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("openToolStripMenuItem.BackgroundImage")));
+            this.openToolStripMenuItem.BackgroundImage = global::SphereScp.Properties.Resources.bg1;
             this.openToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.openToolStripMenuItem.Image = global::SphereScp.Properties.Resources.appbar_folder_open;
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.openToolStripMenuItem.Text = "Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // saveToolStripMenuItem
             // 
-            this.saveToolStripMenuItem.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("saveToolStripMenuItem.BackgroundImage")));
+            this.saveToolStripMenuItem.BackgroundImage = global::SphereScp.Properties.Resources.bg1;
             this.saveToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.saveToolStripMenuItem.Image = global::SphereScp.Properties.Resources.appbar_save;
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // saveAsToolStripMenuItem
             // 
-            this.saveAsToolStripMenuItem.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("saveAsToolStripMenuItem.BackgroundImage")));
+            this.saveAsToolStripMenuItem.BackgroundImage = global::SphereScp.Properties.Resources.bg1;
             this.saveAsToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.saveAsToolStripMenuItem.Image = global::SphereScp.Properties.Resources.appbar_save;
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.saveAsToolStripMenuItem.Text = "Save as ...";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
             // 
-            // quitToolStripMenuItem
-            // 
-            this.quitToolStripMenuItem.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("quitToolStripMenuItem.BackgroundImage")));
-            this.quitToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
-            this.quitToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
-            this.quitToolStripMenuItem.Text = "Quit";
-            this.quitToolStripMenuItem.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
-            // 
             // exportHTMLToolStripMenuItem
             // 
-            this.exportHTMLToolStripMenuItem.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("exportHTMLToolStripMenuItem.BackgroundImage")));
+            this.exportHTMLToolStripMenuItem.BackgroundImage = global::SphereScp.Properties.Resources.bg1;
             this.exportHTMLToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.exportHTMLToolStripMenuItem.Image = global::SphereScp.Properties.Resources.backward0_16x16;
             this.exportHTMLToolStripMenuItem.Name = "exportHTMLToolStripMenuItem";
-            this.exportHTMLToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.exportHTMLToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.exportHTMLToolStripMenuItem.Text = "Export HTML";
             this.exportHTMLToolStripMenuItem.Click += new System.EventHandler(this.exportHTMLToolStripMenuItem_Click);
             // 
+            // quitToolStripMenuItem
+            // 
+            this.quitToolStripMenuItem.BackgroundImage = global::SphereScp.Properties.Resources.bg1;
+            this.quitToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
+            this.quitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.quitToolStripMenuItem.Text = "Quit";
+            this.quitToolStripMenuItem.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
+            // 
             // loadSphereScriptsToolStripMenuItem
             // 
-            this.loadSphereScriptsToolStripMenuItem.BackColor = System.Drawing.Color.Black;
-            this.loadSphereScriptsToolStripMenuItem.BackgroundImage = global::SphereScp.Properties.Resources.bg1;
+            this.loadSphereScriptsToolStripMenuItem.BackColor = System.Drawing.SystemColors.Control;
             this.loadSphereScriptsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.loadKeywordsToolStripMenuItem,
             this.loadToolStripMenuItem});
@@ -533,7 +531,7 @@ namespace SphereScp
             // 
             // loadKeywordsToolStripMenuItem
             // 
-            this.loadKeywordsToolStripMenuItem.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("loadKeywordsToolStripMenuItem.BackgroundImage")));
+            this.loadKeywordsToolStripMenuItem.BackgroundImage = global::SphereScp.Properties.Resources.bg1;
             this.loadKeywordsToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.loadKeywordsToolStripMenuItem.Name = "loadKeywordsToolStripMenuItem";
             this.loadKeywordsToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
@@ -542,7 +540,7 @@ namespace SphereScp
             // 
             // loadToolStripMenuItem
             // 
-            this.loadToolStripMenuItem.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("loadToolStripMenuItem.BackgroundImage")));
+            this.loadToolStripMenuItem.BackgroundImage = global::SphereScp.Properties.Resources.bg1;
             this.loadToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
             this.loadToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
@@ -809,8 +807,11 @@ namespace SphereScp
             this.msaTabControl1.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.msaTabControl1.Location = new System.Drawing.Point(200, 49);
             this.msaTabControl1.Margin = new System.Windows.Forms.Padding(0);
+            this.msaTabControl1.MyProperty = 0;
             this.msaTabControl1.Name = "msaTabControl1";
             this.msaTabControl1.SelectedPage = null;
+            this.msaTabControl1.ShowCloseButton = false;
+            this.msaTabControl1.ShowSwitchButton = false;
             this.msaTabControl1.Size = new System.Drawing.Size(727, 549);
             this.msaTabControl1.TabIndex = 16;
             this.msaTabControl1.Text = "msaTabControl1";
