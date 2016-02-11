@@ -1,36 +1,35 @@
-﻿using System;
+﻿using FastColoredTextBoxNS;
+using FastColoredTextBoxNS.Render;
+using newTabControl;
+using SphereScp.Render;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
-using FastColoredTextBoxNS;
-using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Drawing.Drawing2D;
-using FastColoredTextBoxNS.Render;
-using SphereScp.Render;
+using System.Windows.Forms;
 
 namespace SphereScp
 {
     public partial class MAIN : Form
     {
-        bool canCancel = true;
-        TreeNode canCollapse;
-        Color changedLineColor = Color.FromArgb(255, 230, 230, 255);
-        Color currentLineColor = Color.FromArgb(255, 100, 0, 0);
-        Color background = Color.FromArgb(0, 0, 9);
-
-        List<int> ExpandedList = new List<int>();
+        private Color background = Color.FromArgb(0, 0, 9);
+        private bool canCancel = true;
+        private TreeNode canCollapse;
+        private Color changedLineColor = Color.FromArgb(255, 230, 230, 255);
+        private Color currentLineColor = Color.FromArgb(255, 100, 0, 0);
+        private List<int> ExpandedList = new List<int>();
 
         //List<ExplorerItem> explorerList = new List<ExplorerItem>();
-        Style invisibleCharsStyle = new InvisibleCharsRenderer(Pens.Gray);
-        DateTime lastNavigatedDateTime = DateTime.Now;
-        MarkerStyle sameWordsStyle = new MarkerStyle(new SolidBrush(Color.FromArgb(50, Color.Gray)));
-        bool tbFindChanged = false;
+        private Style invisibleCharsStyle = new InvisibleCharsRenderer(Pens.Gray);
+
+        private DateTime lastNavigatedDateTime = DateTime.Now;
+        private MarkerStyle sameWordsStyle = new MarkerStyle(new SolidBrush(Color.FromArgb(50, Color.Gray)));
+        private bool tbFindChanged = false;
 
         public MAIN()
         {
@@ -264,7 +263,6 @@ namespace SphereScp
             sw.Write(val);
             sw.Close();
         }
-        
 
         private void findToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -427,6 +425,7 @@ namespace SphereScp
                 msaTabControl1.RemovePage(sender as MSATabPage);
             }
         }
+
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CreateTab(null);
@@ -483,7 +482,6 @@ namespace SphereScp
             }
             catch (Exception ef)
             {
-
             }
         }
 
@@ -567,16 +565,7 @@ namespace SphereScp
             {
             }
         }
-        internal class NoHighlightRenderer : ToolStripProfessionalRenderer
-        {
-            protected override void OnRenderMenuItemBackground(ToolStripItemRenderEventArgs e)
-            {
-                if (e.Item.OwnerItem == null)
-                {
-                    base.OnRenderMenuItemBackground(e);
-                }
-            }
-        }
+
         private void REditor_Load(object sender, EventArgs e)
         {
             msMain.Renderer = new StripMenuRenderer();
@@ -746,7 +735,6 @@ namespace SphereScp
         {
             if (!string.IsNullOrEmpty(e.HoveredWord))
             {
-
                 if (e.HoveredWord != null | e.HoveredWord != "")
                 {
                     List<Style> stls = CurrentTB.GetStylesOfChar(e.Place);
@@ -875,6 +863,7 @@ namespace SphereScp
             if (!ExpandedList.Contains(e.Node.Index))
                 ExpandedList.Add(e.Node.Index);
         }
+
         private void TreeView3_BeforeSelect(object sender, TreeViewCancelEventArgs e)
         {
             if (e.Action == TreeViewAction.Unknown)
@@ -882,6 +871,7 @@ namespace SphereScp
             else if (e.Action == TreeViewAction.ByMouse)
                 e.Cancel = canCancel;
         }
+
         private void TreeView3_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -910,6 +900,7 @@ namespace SphereScp
                 }
             }
         }
+
         private void tsFiles_TabStripItemClosing(MSATabPageClosingEventArgs e)
         {
             if ((e.Control.Controls[0] as FastColoredTextBox).IsChanged)
@@ -920,6 +911,7 @@ namespace SphereScp
                         if (!Save(e.Control as MSATabPage))
                             e.Cancel = true;
                         break;
+
                     case DialogResult.Cancel:
                         e.Cancel = true;
                         break;
@@ -942,6 +934,17 @@ namespace SphereScp
         {
             if (CurrentTB != null)
                 CurrentTB.Zoom = int.Parse((sender as ToolStripItem).Tag.ToString());
+        }
+
+        internal class NoHighlightRenderer : ToolStripProfessionalRenderer
+        {
+            protected override void OnRenderMenuItemBackground(ToolStripItemRenderEventArgs e)
+            {
+                if (e.Item.OwnerItem == null)
+                {
+                    base.OnRenderMenuItemBackground(e);
+                }
+            }
         }
     }
 }

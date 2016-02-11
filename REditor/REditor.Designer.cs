@@ -1,4 +1,7 @@
 ﻿
+
+using newTabControl;
+
 namespace SphereScp
 {
     partial class MAIN
@@ -103,7 +106,7 @@ namespace SphereScp
             this.bookmarkMinusButton = new System.Windows.Forms.ToolStripButton();
             this.gotoButton = new System.Windows.Forms.ToolStripDropDownButton();
             this.tsMain = new System.Windows.Forms.ToolStrip();
-            this.msaTabControl1 = new SphereScp.MSATabControl();
+            this.msaTabControl1 = new newTabControl.MSATabControl();
             this.documentMap1 = new FastColoredTextBoxNS.DocumentMap();
             this.cmMain.SuspendLayout();
             this.ssMain.SuspendLayout();

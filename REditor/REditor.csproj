@@ -68,7 +68,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Optimize>false</Optimize>
@@ -184,18 +184,6 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="FastColoredTextBoxNS\VisualMarker.cs" />
-    <Compile Include="MSATabControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="MSATabControl.Designer.cs">
-      <DependentUpon>MSATabControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MSATabPage.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="MSATabPage.Designer.cs">
-      <DependentUpon>MSATabPage.cs</DependentUpon>
-    </Compile>
     <Compile Include="REditor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -315,6 +303,12 @@
     <None Include="Resources\appbar.cog.png" />
     <None Include="Resources\appbar.card.png" />
     <None Include="Resources\camera.flash.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\new-TabControl\newTabControl\newTabControl.csproj">
+      <Project>{71641735-0e57-482c-9c3e-3e4e81a4adee}</Project>
+      <Name>newTabControl</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
