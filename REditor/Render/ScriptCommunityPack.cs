@@ -806,7 +806,6 @@ namespace FastColoredTextBoxNS.Render
             if (texti.Length > 1)
             {
                 Rectangle rct = e.Bounds;
-                //rct.Height = 48;
                 g.FillRectangle(b, rct);
 
                 g.DrawString(texti[0], new Font(e.Font.FontFamily, 9f, FontStyle.Bold), Brushes.Black,
@@ -828,7 +827,6 @@ namespace FastColoredTextBoxNS.Render
                 }
                 else if (texti.Length > 4)
                 {
-                    //texti[3]=texti[3] + " ]";
                     for (int i = 3; i < texti.Length; i++)
                     {
                         if (i == texti.Length - 1)

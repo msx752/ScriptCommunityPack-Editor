@@ -23,8 +23,6 @@ namespace SphereScp
         private Color changedLineColor = Color.FromArgb(255, 230, 230, 255);
         private Color currentLineColor = Color.FromArgb(255, 100, 0, 0);
         private List<int> ExpandedList = new List<int>();
-
-        //List<ExplorerItem> explorerList = new List<ExplorerItem>();
         private Style invisibleCharsStyle = new InvisibleCharsRenderer(Pens.Gray);
 
         private DateTime lastNavigatedDateTime = DateTime.Now;
@@ -125,10 +123,10 @@ namespace SphereScp
         private void BuildAutocompleteMenu(AutocompleteMenu popupMenu)
         {
             List<AutoCompleteItem> items = new List<AutoCompleteItem>();
-            items.AddRange(ScriptCommunityPack.loadKwCommand<MethodAuto>(PropertyTypes.TriggerAuto));//improved
-            items.AddRange(ScriptCommunityPack.loadKwCommand<DeclarationAuto>(PropertyTypes.DeclarationAuto));//improved
-            items.AddRange(ScriptCommunityPack.loadKwCommand<SnippetAuto>(PropertyTypes.SnippetAuto));//improved
-            items.AddRange(ScriptCommunityPack.loadKwCommand<MethodAuto>(true, PropertyTypes.SnippetAuto, PropertyTypes.DeclarationAuto, PropertyTypes.TriggerAuto));//improved
+            items.AddRange(ScriptCommunityPack.loadKwCommand<MethodAuto>(PropertyTypes.TriggerAuto));
+            items.AddRange(ScriptCommunityPack.loadKwCommand<DeclarationAuto>(PropertyTypes.DeclarationAuto));
+            items.AddRange(ScriptCommunityPack.loadKwCommand<SnippetAuto>(PropertyTypes.SnippetAuto));
+            items.AddRange(ScriptCommunityPack.loadKwCommand<MethodAuto>(true, PropertyTypes.SnippetAuto, PropertyTypes.DeclarationAuto, PropertyTypes.TriggerAuto));
             items.AddRange(ScriptCommunityPack.fileScpCommands);//NEW scp commands
 
             items.Add(new InsertSpaceSnippet());
