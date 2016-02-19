@@ -464,7 +464,7 @@ namespace SphereScp
             this.newToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.newToolStripMenuItem.Image = global::SphereScp.Properties.Resources.appbar_page_new;
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
             this.newToolStripMenuItem.Text = "New";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
@@ -474,7 +474,7 @@ namespace SphereScp
             this.openToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.openToolStripMenuItem.Image = global::SphereScp.Properties.Resources.appbar_folder_open;
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
             this.openToolStripMenuItem.Text = "Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
@@ -484,7 +484,7 @@ namespace SphereScp
             this.saveToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.saveToolStripMenuItem.Image = global::SphereScp.Properties.Resources.appbar_save;
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
@@ -494,7 +494,7 @@ namespace SphereScp
             this.saveAsToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.saveAsToolStripMenuItem.Image = global::SphereScp.Properties.Resources.appbar_save;
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
             this.saveAsToolStripMenuItem.Text = "Save as ...";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
             // 
@@ -504,7 +504,7 @@ namespace SphereScp
             this.exportHTMLToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.exportHTMLToolStripMenuItem.Image = global::SphereScp.Properties.Resources.backward0_16x16;
             this.exportHTMLToolStripMenuItem.Name = "exportHTMLToolStripMenuItem";
-            this.exportHTMLToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exportHTMLToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
             this.exportHTMLToolStripMenuItem.Text = "Export HTML";
             this.exportHTMLToolStripMenuItem.Click += new System.EventHandler(this.exportHTMLToolStripMenuItem_Click);
             // 
@@ -513,7 +513,7 @@ namespace SphereScp
             this.quitToolStripMenuItem.BackgroundImage = global::SphereScp.Properties.Resources.bg1;
             this.quitToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
-            this.quitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.quitToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
             this.quitToolStripMenuItem.Text = "Quit";
             this.quitToolStripMenuItem.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
             // 
@@ -846,7 +846,7 @@ namespace SphereScp
             this.ForeColor = System.Drawing.Color.White;
             this.MainMenuStrip = this.msMain;
             this.Name = "MAIN";
-            this.Text = "REditor";
+            this.Text = "ScriptCommunityPack-Editor";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PowerfulCSharpEditor_FormClosing);
             this.Load += new System.EventHandler(this.REditor_Load);
             this.cmMain.ResumeLayout(false);
